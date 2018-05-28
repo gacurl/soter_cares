@@ -1,0 +1,75 @@
+<div class="col-md-12">
+  <h4>Prospective Communities</h4>
+  <table class="table table-condensed ero-table">
+    <tr style='font-weight: bold'>
+      <td>Prospective</td>
+      <td>Community</td>
+      <td>Licenses</td>
+      <td>Activities</td>
+      <td>Dining</td>
+      <td>Features</td>
+      <td>Exclusion</td>
+      <td>Semi-Private</td>
+      <td>Semi-Private Rate</td>
+      <td>Private</td>
+      <td>Private Rate</td>
+      <td>Community Fee</td>
+      <td>Pets</td>
+      <td>Transportation</td>
+    </tr>
+    <% @contact.prospects.each do |community| %>
+        <tr>
+          <td>
+            <%= form_tag contact_destroy_prospective_communities_path(@contact), remote: true do %>
+                <%= hidden_field_tag :community_id, community.id %>
+              <%= button_tag type: 'submit', class: "btn btn-danger btn-xs" do %>
+                  <% "#{fa_icon "minus-circle"} Remove".html_safe %>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to community.name, community %>
+          </td>
+          <td><% community.license_types.each do |license| %>
+                 <%= license.name + ", " %>
+                <% end %></td>
+                
+          <td><%= highlight(community.activity_list.join(", "), @contact.activity_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %></td>
+          <td><%= highlight(community.dining_list.join(", "), @contact.dining_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %></td>
+          <td><%= highlight(community.feature_list.join(", "), @contact.feature_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %></td>
+          <td><%= highlight(community.undesired_list.join(", "), @contact.undesired_list, highlighter: '<em style="color: red; font-weight: bold">\1</em>') %></td>
+          <% if community.semi_private_cents > @contact.finance.monthly_cents
+            highlight = "danger"
+          else
+            highlight = "success"
+          end %>
+          <td><%= community.availabilities.where(capacity_type: "Semi-Private").last.number_available if community.availabilities.where(capacity_type: "Semi-Private").last %></td>
+          <td class="<%= highlight %>"><%= number_to_currency(community.semi_private) %></td>
+          <td><%= community.availabilities.where(capacity_type: "Private").last.number_available if community.availabilities.where(capacity_type: "Private").last %></td>
+          <% if community.private_cents > @contact.finance.monthly_cents
+            highlight = "danger"
+          else
+            highlight = "success"
+          end %>
+          <td class="<%= highlight %>"><%= number_to_currency(community.private) %></td>
+          <% if community.community_fee_cents > @contact.finance.liquid_cents
+            highlight = "danger"
+          else
+            highlight = "success"
+          end %>
+          <td class="<%= highlight %>"><%= number_to_currency(community.community_fee) %></td>
+          <td><%= if community.pets?
+                "Yes"
+                else
+                "No" 
+                end %></td>
+          <td><%= if community.transport?
+                "Yes"
+                else
+                "No" 
+                end %></td>
+        </tr>
+      <% end %>
+    
+  </table>
+</div>

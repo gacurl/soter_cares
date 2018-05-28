@@ -1,0 +1,5 @@
+<% @communities = [] %>
+$(function () {
+  $('#modal-window').modal('toggle');
+  $('#contact').html("<%= j render(partial: 'contact') %>");
+});

@@ -1,0 +1,22 @@
+<h6 style='margin-bottom: 1px'><%= page_entries_info prospects, :model => "prospects" %></h6>
+    <%= will_paginate prospects, :param_name => 'prospect_page', :style => 'font-size: 9px; margin: 1px' %>
+<table class="table table-condensed ero-table">
+      <tr style='font-weight: bold'>
+        <td>Name</td>
+        <td>Placement Date</td>
+        <td>Status</td>
+        <td>Location</td>
+      </tr>
+    
+    
+    <% prospects.each do |contact| %>
+      <tr>
+        <td><%= link_to contact.name, contact %></td>
+        <td><%= contact.placement.strftime("%m/%d/%Y") if contact.placement %><%= "Unknown" unless contact.placement %></td>
+        <td><%= contact.results.last.result_type.name if contact.results.any? %></td>
+        <td><%= contact.location %></td>
+      </tr>
+    <% end %>
+    </table>
+    <%= will_paginate prospects, :param_name => 'prospect_page', :style => 'font-size: 9px; margin: 1px' %>
+ 

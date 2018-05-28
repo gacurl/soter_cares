@@ -1,0 +1,29 @@
+<table class="table table-condensed ero-table">
+  <tr style='font-weight: bold'>
+    <td>Name</td>
+    <td>S/P Availability</td>
+    <td>Private Availability</td>
+    <td>Company</td>
+    <td></td>
+  </tr>
+
+
+<% @communities.each do |community| %>
+  <tr>
+    <td><%= link_to community.name, community %></td>
+    <td><%= community.availabilities.where(capacity_type: "Semi-Private")
+              .order(:created_at).last.number_available unless community
+              .availabilities.where(capacity_type: "Semi-Private").empty? %></td>
+    <td><%= community.availabilities.where(capacity_type: "Private")
+              .order(:created_at).last.number_available unless community
+              .availabilities.where(capacity_type: "Private").empty? %></td>
+    <td><%= link_to community.company.name, community.company if community.company %></td>
+    <td><%= link_to "Delete", community, method: :delete,
+                  data: { confirm: "Are you sure you want to delete #{community.name}?" },
+                  class: "btn-sm btn-danger" if current_user.admin %></td>
+  </tr>
+<% end %>
+</table>
+<h6 style='margin-bottom: 1px'><%= page_entries_info @communities, :model => "communities" %></h6>
+<%= will_paginate @communities, :param_name => 'page', :style => 'font-size: 9px; margin: 1px' %>
+     

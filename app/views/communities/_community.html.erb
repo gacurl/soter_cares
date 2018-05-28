@@ -1,0 +1,406 @@
+<h3><%= @community.name %> <%= link_to "Edit Name", edit_community_path(@community, section: :name),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs" } %></h3>
+
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Community Information
+      <%= link_to "Update", edit_community_path(@community, section: :info),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr>
+          <td style='font-weight: bold'>Name:</td><td><%= @community.name %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Company:</td><td><%= link_to @community.company.name, @community.company if @community.company %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Website:</td><td><%= link_to @community.website, @community.website if @community.website.present? %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>AL License:</td><td><%= @community.al_license %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Phone:</td><td><%= link_to number_to_phone(@community.phone_number, area_code: true), "tel:#{@community.phone_number}" %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Fax:</td><td><%= number_to_phone(@community.fax, area_code: true) %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Account:</td><td><%= @community.account_number[0..3] + "-" +  @community.account_number[4..7] if @community.account_number %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Open Since:</td><td><%= @community.open_since.strftime("%m/%d/%Y") if @community.open_since %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Executive Director:</td>
+          <td><% if @community.executive_director %>
+                <%= link_to @community.executive_director.first_name + " " + @community.executive_director.last_name, @community.executive_director %>
+                <%  end %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Nursing Director:</td>
+          <td><% if @community.nursing_director %>
+                <%= link_to @community.nursing_director.first_name + " " + @community.nursing_director.last_name, @community.nursing_director %>
+                <%  end %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Admissions Director:</td>
+          <td><% if @community.admissions_director %>
+                <%= link_to @community.admissions_director.first_name + " " + @community.admissions_director.last_name, @community.admissions_director %>
+                <%  end %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Marketing Director:</td>
+          <td><% if @community.marketing_director %>
+                <%= link_to @community.marketing_director.first_name + " " + @community.marketing_director.last_name, @community.marketing_director %>
+                <%  end %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Preferred Pharmacy:</td>
+          <td><% if @community.pharmacy %>
+                <%= link_to @community.pharmacy.name, @community.pharmacy %>
+                <%  end %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Address:</td>
+          <td>
+              <% if @community.zip_code %>
+                <%= @community.address_1 %><br>
+                <% if @community.address_2.present? %>
+                    <%= @community.address_2 %><br>
+                  <% end %>
+                <%= @community.zip_code.city.name %> <%= @community.zip_code.city.county.state.two_digit_code %>, <%= @community.zip_code.code %>
+              <% end %>
+          </td>
+        </tr>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Capacity
+      <%= link_to "Update", edit_community_path(@community, section: :capacity),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr>
+          <td style='font-weight: bold'>Semi-Private Availability:</td><td><%= "#{@community.availabilities.where(capacity_type: 'Semi-Private')
+                                                                              .order(:created_at).last.number_available} (#{@community.availabilities.where(capacity_type: 'Semi-Private')
+                                                                              .order(:created_at).last.created_at.strftime("%m/%d/%Y")})" unless @community
+                                                                              .availabilities.where(capacity_type: "Semi-Private").empty? %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Semi-Private Capacity:</td><td><%= @community.semi_private_capacity %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Private Availability:</td><td><%= "#{@community.availabilities.where(capacity_type: 'Private')
+                                                                              .order(:created_at).last.number_available} (#{@community.availabilities.where(capacity_type: 'Private')
+                                                                              .order(:created_at).last.created_at.strftime("%m/%d/%Y")})" unless @community
+                                                                              .availabilities.where(capacity_type: "Private").empty? %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Private Capacity:</td><td><%= @community.private_capacity %></td>
+        </tr>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Prices
+      <%= link_to "Update", edit_community_path(@community, section: :prices),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr>
+          <td style='font-weight: bold'>Semi-Private Rate:</td><td><%= number_to_currency(@community.semi_private) %>/mo</td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Private Rate:</td><td><%= number_to_currency(@community.private) %>/mo</td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Community Fee:</td><td><%= number_to_currency(@community.community_fee) %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Respite Rate:</td><td><%= number_to_currency(@community.respite_rate) %>/day</td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Adult Day Care Rate:</td><td><%= number_to_currency(@community.adult_day_care_rate) %>/day</td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Second Person Rate:</td><td><%= number_to_currency(@community.second_person_fee) %></td>
+        </tr>
+        <% if @community.pets? %>
+          <tr>
+            <td style='font-weight: bold'>Pet Fee (Monthly):</td><td><%= number_to_currency(@community.pet_fee) %>/month</td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+     Files
+    </div>
+    <div class="panel-body" id="file-dropzone">
+      <table class="table table-condensed ero-table" id="files">
+          <tr style='font-weight: bold;'>
+            <th>Name</th>
+            <th>Posted</th>
+            <th>User</th>
+          </tr>
+          <tbody>
+            <%= render partial: "data_files/file_list", locals: {object: @community} %>
+          </tbody>
+      </table>
+      <div class="actions">
+        <%#= f.submit %>
+      </div>
+      <%= form_for([@community, @data_file]) do |f| %>
+        <div class="field">
+          <%#= f.label :image %>
+          <%= f.file_field :file, class: "file-button" %>
+        
+          <%= f.submit "Upload", class: 'btn btn-primary' %>
+        </div>
+        
+      <% end %>
+    </div> 
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Licenses
+      <%= link_to "Update", edit_community_path(@community, section: :licenses),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <% @community.license_types.each do |license| %>
+          <tr>
+            <td><%= license.name %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Medicaid Providers
+      <%= link_to "Update", edit_community_path(@community, section: :providers),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <% @community.medicaid_providers.each do |provider| %>
+          <tr>
+            <td><%= provider.name %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Clinicians
+      <%= link_to "Update", edit_community_path(@community, section: :clinician),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr>
+          <td style="font-weight: bold">Position</td>
+          <td style="font-weight: bold">Name</td>
+        </tr>
+        
+        <% @community.clinicians.each do |clinician| %>
+          <tr>
+            <td><%= clinician.position.title if clinician.position %></td>
+            <td><%= link_to clinician.first_name + " " + clinician.last_name, clinician %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Employees
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr  style='font-weight: bold'>
+          <td>Name</td>
+          <td>Position</td>
+        </tr>
+        <% @community.employees.each do |contact| %>
+          <tr>
+            <td><%= link_to contact.first_name + " " + contact.last_name, contact %></td>
+            <td><%= contact.position.title if contact.position %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+     Matching Criteria
+     <%= link_to "Update", edit_community_path(@community, section: :matching),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %> 
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr>
+          <td style='font-weight: bold'>Activities:</td><td><%= @community.activity_list %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Dining Options:</td><td><%= @community.dining_list %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Features:</td><td><%= @community.feature_list %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Exclusion:</td><td><%= @community.undesired_list %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Pets:</td><td><%= if @community.pets?
+                "Yes"
+                else
+                "No" 
+                end %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Transportation:</td><td><%= if @community.transport?
+                "Yes"
+                else
+                "No"
+                end %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Average Age:</td><td><%= @community.average_age %></td>
+        </tr>
+      </table>
+    </div> 
+  </div>
+  
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        Residents
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Name</td>
+            <td>Placed</td>
+            <td>Type</td>            
+          </tr>
+        
+        <% @community.patients.each do |patient| %>
+            <% 
+            private_placement = patient.results.where(community_id: @community.id, result_type: ResultType.find_by(name: "Placed Private")).last
+            semi_private_placement = patient.results.where(community_id: @community.id, result_type: ResultType.find_by(name: "Placed Semi-Private")).last
+            
+            if private_placement.present? && semi_private_placement.present?
+              if private_placement.updated_at > semi_private_placement.updated_at
+                placement = private_placement
+              else
+                placement = semi_private_placement
+              end
+            elsif private_placement
+              placement = private_placement
+            else
+              placement = semi_private_placement
+            end
+            %>
+          
+          <tr>
+            <td><%= link_to patient.first_name + " " + patient.last_name, patient %></td>
+            <td><%= placement.created_at.strftime("%m/%d/%Y") %></td>
+            <td><%= placement.result_type.name %></td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </div>
+</div>
+<div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Notes
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Date</td>
+            <td>User</td>
+            <td>Content</td>
+          </tr>
+        
+        <% @community.notes.order(created_at: :asc).each do |note| %>
+          <tr>
+            <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+            <td><%= note.user.try(:name) %></td>
+            <td><%= sanitize nl2br(note.content) %></td>
+          </tr>
+        <% end %>
+        </table>
+        <%= link_to "#{fa_icon "plus-circle"} New".html_safe, community_new_note_path(@community, @note),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-primary" } %> 
+      </div>
+    </div>
+  </div>
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+     Pictures
+    </div>
+    <div class="panel-body"  id="picture-dropzone">
+      <div class="row">
+        <div id="photos">
+          <% @community.photos.each do |photo| %>
+            <div class="col-sm-2">
+              <% disposition = "attachment; filename=#{photo.image.original_filename.inspect}" %>
+              <% if Rails.env.production? %>
+                <%= link_to image_tag(photo.image.url(response_content_disposition: disposition, 
+                        virtual_host: true, host: "https://storage.sotercares.com"), class: "img-responsive"), community_photo_path(@community, photo) %>
+              <% else %>
+                <%= link_to image_tag(photo.image.url(response_content_disposition: disposition), class: "img-responsive"), community_photo_path(@community, photo) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="image_actions">
+        <%#= f.submit %>
+      </div>
+      <br>
+      <%= form_for([@community, @photo]) do |f| %>
+        <div class="field col-md-4">
+          <%#= f.label :image %>
+          <%= f.file_field :image, class: "image-button" %>
+        
+          <%= f.submit "Upload", class: 'btn btn-primary' %>
+        </div>
+        
+      <% end %>
+    </div> 
+  </div>
+</div>

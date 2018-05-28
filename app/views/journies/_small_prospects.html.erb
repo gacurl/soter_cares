@@ -1,0 +1,15 @@
+<table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Community</td>
+            <td>Result</td>
+          </tr>
+        
+        <% @prospect.prospects.each do |community| %>
+          <tr>
+            <td>
+              <%= link_to community.name, community %>
+            </td>
+            <td><%= @prospect.results.where(community: community).last.result_type.name if @prospect.results.where(community: community).last %></td>
+          </tr>
+        <% end %>
+        </table>

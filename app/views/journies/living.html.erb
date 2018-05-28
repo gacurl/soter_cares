@@ -1,0 +1,26 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Community Search</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    Thank you for taking the first step in finding the best care solution for you and your family.  Please take a moment to give us a little better understanding of your individual situation so we can best meet your exact needs.
+  </p>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">What is their current living situation? (Multiple answers can be given)</p>
+  <div class="row">
+    <div class="col-md-6">
+      <%= form_tag(update_living_journies_path) do %>
+        <%= check_box_tag 'home_alone', 'Living at home alone' %><span style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif"> Living at home alone</span><br>
+        <%= check_box_tag 'home_with_spouse', 'Living at home with spouse or significant other' %><span style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif"> Living at home with spouse or significant other</span><br>
+        <%= check_box_tag 'friend', 'Living with a friend' %><span style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif"> Living with a friend</span><br>
+        <%= check_box_tag 'family', 'Living with family' %><span style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif"> Living with family</span><br>
+        <%= check_box_tag 'rehab', 'Currently at Rehab' %><span style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif"> Currently at Rehab</span><br>
+        <%= check_box_tag 'hospital', 'Currently at Hospital' %><span style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif"> Currently at Hospital</span><br>
+        <%= check_box_tag 'state', 'Living out of state' %><span style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif"> Living out of state</span>
+        <%= hidden_field_tag :prospect_id, @prospect.id %>
+        <%= hidden_field_tag :lead_id, @lead.id %>
+        <div><%= submit_tag 'Next', class: 'btn btn-primary' %></div>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<br>

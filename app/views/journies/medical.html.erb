@@ -1,0 +1,29 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif; font-size: 40px">Community Search</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    What are the current clinical needs?
+  </p>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Begin typing the clinical needs in the box and we will display a list of options from which to pick. Add as many as you need.</p>
+  <div class="row">
+    <div class="col-sm-10">
+      <%= form_tag(update_medical_journies_path) do %>
+        <%= select_tag :new_license_list_tokens,
+                options_from_collection_for_select(TaggingManual.tokens('licenses', params[:q]), 
+                    :id, :name), multiple: true, class: "col-md-12", id: 'licenses_list' %>
+         <%= hidden_field_tag :prospect_id, @prospect.id %>
+        <%= hidden_field_tag :lead_id, @lead.id %>
+        <div><%= submit_tag 'Next', class: 'btn btn-primary' %></div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<br>
+
+<script type="text/javascript">
+    $(document).on('turbolinks:load', function() {
+      $('#licenses_list').select2({
+        theme: "bootstrap"
+      });
+    });
+</script>

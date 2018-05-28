@@ -1,0 +1,552 @@
+<% title = case params[:section]
+    when "info"
+      "Community Info"
+    when "matching"
+      "Matching Criteria"
+    when "licenses"
+      "Licenses"
+    when "prices"
+      "Prices"
+    when "capacity"
+      "Capacity and Availability"
+    when "clinician"
+      "Clinicians"
+    when "name"
+      "Name"
+    when "providers"
+      "Medicaid"
+end %>
+
+
+<%= form_for(@community, remote: true) do |f| %>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title"><%= "Edit " + title %></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <% case params[:section] %>
+          <% when "info" %>
+          <div class="form-group row">
+            <%= f.label "AL License", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :al_license, class: 'form-control', 
+                  placeholder: "License #" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :company, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :company, class: 'form-control', 
+                  placeholder: "Company Name", id: "company" %>
+              <%= f.hidden_field :company_id, id: "company_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :website, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :website, class: 'form-control', 
+                  placeholder: "Website URL", id: "website" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label "Open Since", class: "col-sm-3 control-label" %>
+            <div class="col-sm-3">
+              <%= f.text_field :open_since_input, class: 'form-control', id: 'open_since', readonly: true %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :executive_director, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :executive_director, class: 'form-control', 
+                  placeholder: 'Search by Last or First Name - select "New" to create', id: "executive_director" %>
+              <%= f.hidden_field :executive_director_id, :id => "executive_director_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :nursing_director, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :nursing_director, class: 'form-control', 
+                  placeholder: 'Search by Last or First Name - select "New" to create', id: "nursing_director" %>
+              <%= f.hidden_field :nursing_director_id, :id => "nursing_director_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :admissions_director, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :admissions_director, class: 'form-control', 
+                  placeholder: 'Search by Last or First Name - select "New" to create', id: "admissions_director" %>
+              <%= f.hidden_field :admissions_director_id, :id => "admissions_director_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :marketing_director, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :marketing_director, class: 'form-control', 
+                  placeholder: 'Search by Last or First Name - select "New" to create', id: "marketing_director" %>
+              <%= f.hidden_field :marketing_director_id, :id => "marketing_director_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :pharmacy, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :pharmacy, class: 'form-control', 
+                  placeholder: "Pharmacy Name", id: "pharmacy" %>
+              <%= f.hidden_field :pharmacy_id, id: "pharmacy_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :phone_number, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :phone_number, class: 'form-control', 
+                  placeholder: "XXX-XXX-XXXX" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :fax, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :fax, class: 'form-control', 
+                  placeholder: "XXX-XXX-XXXX" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :address, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :address_1, class: 'form-control', 
+                  placeholder: "Street Address" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10 col-sm-offset-2">
+              <%= f.text_field :address_2, class: 'form-control', 
+                  placeholder: "Apt. or P.O. Box Number" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :zip, class: "col-sm-2 control-label" %>
+            <div class="col-sm-6">
+              <%= f.text_field :zip_code, class: 'form-control', 
+                  placeholder: "5-digit Zip Code", id: "zip_code" %>
+              <%= f.hidden_field :zip_code_id, :id => "zip_code_id" %>
+            </div>
+          </div>
+        
+        <% when "matching" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Activities", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :activity_list_tokens,
+                        data: {load: @community_activities} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Dining Options", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :dining_list_tokens,
+                        data: {load: @community_dinings} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Features", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :feature_list_tokens,
+                        data: {load: @community_features} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Exclusion", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :undesired_list_tokens,
+                        data: {load: @community_undesireds} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-sm-4  col-sm-offset-2">
+                  <%= f.label :pets, class: 'checkbox inline' do %>
+                  <%= f.check_box :pets %>
+                    <span>Pets</span>
+                  <% end %>
+                  <%= f.label :transport, class: 'checkbox inline' do %>
+                  <%= f.check_box :transport %>
+                    <span>Transport</span>
+                  <% end %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label "Average Age", class: "col-sm-3 control-label" %>
+            <div class="col-sm-4">
+              <%= f.text_field :average_age, class: 'form-control', 
+                  placeholder: "Enter Number" %>
+            </div>
+          </div>
+        <% when "licenses" %>
+          <div class="row">
+            <div class="col-sm-10  col-sm-offset-2">
+              <%= f.collection_check_boxes(:license_type_ids, LicenseType.order(name: :desc).all, :id, :name) do |b| %>
+                 <%= b.label class:"label-checkbox" do %>
+                   <%= b.check_box + " " + b.text %>
+                <% end %>
+                <br>
+              <% end %>
+            </div>
+          </div>
+        <% when "providers" %>
+          <div class="row">
+            <div class="col-sm-10  col-sm-offset-2">
+              <%= f.collection_check_boxes(:medicaid_provider_ids, MedicaidProvider.all, :id, :name) do |b| %>
+                 <%= b.label class:"label-checkbox" do %>
+                   <%= b.check_box + " " + b.text %>
+                <% end %>
+                <br>
+              <% end %>
+            </div>
+          </div>
+        <% when "prices" %>
+          <table class="table table-condensed ero-table">
+            <tr>
+              <td style='font-weight: bold'>Semi-Private (Monthly):</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :semi_private, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+              <td style='font-weight: bold'>Private (Monthly):</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :private, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+              <td style='font-weight: bold'>Community Fee (1-time):</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :community_fee, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+              <td style='font-weight: bold'>Respite Rate (Daily):</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :respite_rate, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+              <td style='font-weight: bold'>Adult Day Care Rate (Daily):</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :adult_day_care_rate, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+              <td style='font-weight: bold'>Second Person Fee:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :second_person_fee, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+              <td style='font-weight: bold'>Pet Fee (Monthly):</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :pet_fee, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+          </table>
+        <% when "capacity" %>
+          <table class="table table-condensed ero-table">
+            <tr>
+              <td style='font-weight: bold'>Update Semi-Private Availability:</td>
+              <td><%= f.text_field :semi_private_availability, class: 'form-control', id: 'result_date', placeholder: 'Number' %></td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Semi-Private Capacity:</td>
+              <td><%= f.text_field :semi_private_capacity, class: 'form-control', id: 'result_date', placeholder: 'Number' %></td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Update Private Availability:</td>
+              <td><%= f.text_field :private_availability, class: 'form-control', id: 'result_date', placeholder: 'Number' %></td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Private Capacity:</td>
+              <td><%= f.text_field :private_capacity, class: 'form-control', id: 'result_date', placeholder: 'Number' %></td>
+            </tr>
+          </table>
+        <% when "clinician" %>
+          <div class="row">
+            <%= f.label "Add Clinician", class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :clinician_search, class: 'form-control', 
+                    placeholder: 'Search by Last or First Name - select "New" to create', id: "clinician_search" %>
+              <%= f.hidden_field :clinician_id, :id => "clinician_id" %>
+            </div>
+          </div>
+        <% when "name" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+              </div>
+              <div class="row">
+                <%= f.label :name, class: "col-sm-1 control-label" %>
+                <div class="col-sm-5">
+                  <%= f.text_field :name, class: 'form-control',
+                        placeholder: 'Community Name' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+          <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+
+
+<script>
+  $(function () {
+    <% if @community.company %>
+      $( "#company" ).val("<%= @community.company.name %>");
+      $( "#company_id" ).val("<%= @community.company.id %>");
+    <% end %>
+    $("#company").autocomplete({
+      source: "/companies/autocomplete",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#company").val(ui.item.label);
+        $("#company_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#company").val(ui.item.label);
+      }
+    });
+    <% if @community.pharmacy %>
+      $( "#pharmacy" ).val("<%= @community.pharmacy.name %>");
+      $( "#pharmacy_id" ).val("<%= @community.pharmacy.id %>");
+    <% end %>
+    $("#pharmacy").autocomplete({
+      source: "/communities/<%= @community.id %>/autocomplete_pharmacies",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#pharmacy").val(ui.item.label);
+        $("#pharmacy_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#pharmacy").val(ui.item.label);
+      }
+    });
+    $("#clinician_search").autocomplete({
+      source: "/contacts/autocomplete_clinician",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#clinician_search").val(ui.item.label);
+        $("#clinician_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#clinician_search").val(ui.item.label);
+      }
+    });
+    $( "#open_since" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      defaultDate: "-10y",
+      minDate: "-90y",
+      maxDate: new Date()
+    });
+    <% if @community.zip_code %>
+      $( "#zip_code" ).val("<%= @community.zip_code.code %>");
+      $( "#zip_code_id" ).val("<%= @community.zip_code.id %>");
+    <% end %>
+    $("#zip_code").autocomplete({
+      source: "/zip_codes/autocomplete",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#zip_code").val(ui.item.label);
+        $("#zip_code_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#zip_code").val(ui.item.label);
+      }
+    });
+    <% if @community.executive_director %>
+      $( "#executive_director" ).val("<%= @community.executive_director.first_name + " " +  @community.executive_director.last_name %>");
+      $( "#executive_director_id" ).val("<%= @community.executive_director.id %>");
+    <% end %>
+    $("#executive_director").autocomplete({
+      source: "/contacts/autocomplete_business",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#executive_director").val(ui.item.label);
+        $("#executive_director_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#executive_director").val(ui.item.label);
+      }
+    });
+    <% if @community.nursing_director %>
+      $( "#nursing_director" ).val("<%= @community.nursing_director.first_name + " " +  @community.nursing_director.last_name %>");
+      $( "#nursing_director_id" ).val("<%= @community.nursing_director.id %>");
+    <% end %>
+    $("#nursing_director").autocomplete({
+      source: "/contacts/autocomplete_business",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#nursing_director").val(ui.item.label);
+        $("#nursing_director_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#nursing_director").val(ui.item.label);
+      }
+    });
+    <% if @community.admissions_director %>
+      $( "#admissions_director" ).val("<%= @community.admissions_director.first_name + " " +  @community.admissions_director.last_name %>");
+      $( "#admissions_director_id" ).val("<%= @community.admissions_director.id %>");
+    <% end %>
+    $("#admissions_director").autocomplete({
+      source: "/contacts/autocomplete_business",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#admissions_director").val(ui.item.label);
+        $("#admissions_director_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#admissions_director").val(ui.item.label);
+      }
+    });
+    <% if @community.marketing_director %>
+      $( "#marketing_director" ).val("<%= @community.marketing_director.first_name + " " +  @community.marketing_director.last_name %>");
+      $( "#marketing_director_id" ).val("<%= @community.marketing_director.id %>");
+    <% end %>
+    $("#marketing_director").autocomplete({
+      source: "/contacts/autocomplete_business",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#marketing_director").val(ui.item.label);
+        $("#marketing_director_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#marketing_director").val(ui.item.label);
+      }
+    });
+  });
+  $( function() {
+    $( "#open_since" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      defaultDate: "-70y",
+      minDate: "-110y",
+      maxDate: new Date()
+    });
+    
+    $('.selectpicker').selectpicker({
+      });
+     
+    $("#community_activity_list_tokens").tokenInput(
+      "/contacts/activities.json", {
+      theme: 'facebook',
+      minChars: 3,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#community_activity_list_tokens').data('load')
+    });
+    $("#community_dining_list_tokens").tokenInput(
+      "/contacts/dinings.json", {
+      theme: 'facebook',
+      minChars: 3,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#community_dining_list_tokens').data('load')
+    });
+    $("#community_feature_list_tokens").tokenInput(
+      "/contacts/features.json", {
+      theme: 'facebook',
+      minChars: 3,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#community_feature_list_tokens').data('load')
+    });
+    $("#community_undesired_list_tokens").tokenInput(
+      "/contacts/undesireds.json", {
+      theme: 'facebook',
+      minChars: 3,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#community_undesired_list_tokens').data('load')
+    });
+    
+  } );
+</script>

@@ -1,0 +1,19 @@
+<% if @contact.contact_type == "Resident" && 
+      @contact.placement_status == PlacementStatus.find_by(status: "Placed") &&
+      !@contact.deceased? %>
+    <div class="row">
+      <%= render(:partial => 'resident') %>
+    </div>
+  <% elsif @contact.contact_type == "Resident" %>
+    <div class="row">
+      <%= render(:partial => 'prospect') %>
+    </div>
+  <% elsif @contact.contact_type == "Family" %>
+    <div class="row">
+      <%= render(:partial => 'family') %>
+    </div>
+  <% elsif @contact.contact_type == "Business" %>
+    <div class="row">
+      <%= render(:partial => 'business') %>
+    </div>
+  <% end %>

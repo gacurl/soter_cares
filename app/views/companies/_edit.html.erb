@@ -1,0 +1,136 @@
+<% title = case params[:section]
+    when "info"
+      "Company Info"
+    when "name"
+      "Name"
+    when "communities"
+      "Communities"
+end %>
+
+
+<%= form_for(@company, remote: true) do |f| %>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title"><%= "Edit " + title %></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <% case params[:section] %>
+          <% when "communities" %>
+            <div class="form-group row">
+            <%= f.label :community, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :community, class: 'form-control', 
+                  placeholder: "Community Name", id: "community" %>
+              <%= f.hidden_field :community_id, id: "community_id" %>
+            </div>
+          </div>
+          <% when "info" %>
+          <div class="form-group row">
+            <%= f.label :phone_number, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :phone_number, class: 'form-control', 
+                  placeholder: "XXX-XXX-XXXX" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :fax, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :fax, class: 'form-control', 
+                  placeholder: "XXX-XXX-XXXX" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :address, class: "col-sm-2 control-label" %>
+            <div class="col-sm-10">
+              <%= f.text_field :address_1, class: 'form-control', 
+                  placeholder: "Street Address" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10 col-sm-offset-2">
+              <%= f.text_field :address_2, class: 'form-control', 
+                  placeholder: "Apt. or P.O. Box Number" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :zip, class: "col-sm-2 control-label" %>
+            <div class="col-sm-6">
+              <%= f.text_field :zip_code, class: 'form-control', 
+                  placeholder: "5-digit Zip Code", id: "zip_code" %>
+              <%= f.hidden_field :zip_code_id, :id => "zip_code_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :website, class: "col-sm-1 control-label" %>
+            <div class="col-sm-6">
+              <%= f.text_field :website, class: 'form-control',
+                    placeholder: 'Website URL' %>
+            </div>
+          </div>
+        <% when "name" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+              </div>
+              <div class="row">
+                <%= f.label :name, class: "col-sm-1 control-label" %>
+                <div class="col-sm-5">
+                  <%= f.text_field :name, class: 'form-control',
+                        placeholder: 'Company Name' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        <% end %>
+      </div>
+      <div class="modal-footer">
+          <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+
+
+<script>
+  $(function () {
+    $("#community").autocomplete({
+      source: "/communities/autocomplete",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#community").val(ui.item.label);
+        $("#community_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#community").val(ui.item.label);
+      }
+    });
+    
+    <% if @company.zip_code %>
+      $( "#zip_code" ).val("<%= @company.zip_code.code %>");
+      $( "#zip_code_id" ).val("<%= @company.zip_code.id %>");
+    <% end %>
+    $("#zip_code").autocomplete({
+      source: "/zip_codes/autocomplete",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#zip_code").val(ui.item.label);
+        $("#zip_code_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#zip_code").val(ui.item.label);
+      }
+    });
+  });
+</script>

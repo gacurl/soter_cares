@@ -1,0 +1,28 @@
+<div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Notes
+        </div>
+        <div class="panel-body">
+          <table class="table table-condensed ero-table">
+            <tr style='font-weight: bold'>
+              <td>Date</td>
+              <td>User</td>
+              <td>Content</td>
+            </tr>
+          
+          <% @contact.notes.order(created_at: :asc).each do |note| %>
+            <tr>
+              <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+              <td><%= note.user.try(:name) %></td>
+              <td><%= sanitize nl2br(note.content) %></td>
+            </tr>
+          <% end %>
+          </table>
+          <%= link_to "#{fa_icon "plus-circle"} New".html_safe, contact_new_note_path(@contact, @note),
+              {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+              class: "btn btn-primary" } %> 
+        </div>
+      </div>
+  </div> 
+  

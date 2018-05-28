@@ -1,0 +1,32 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Community Search</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    There are a total of <strong><%= @communities.count %> communities</strong> that are potential matches.<br>
+   
+    <% if @lead == @prospect %>
+       What is your current age?
+    <% else %>
+      <% case @prospect.gender %>
+      <% when "Male" %>
+        <% relation =  @prospect.relationships.find_by(relation: @lead).relationship_type.male_name %>
+      <% when "Female" %>
+        <% relation =  @prospect.relationships.find_by(relation: @lead).relationship_type.female_name %>
+      <% else %>
+        <% relation = "Loved One" %>
+      <% end %>
+      What is your <%= relation %>'s age?
+    <% end %>
+  </p>
+  <div class="row">
+    <div class="col-md-3">
+      <%= form_tag(update_age_journies_path) do %>
+        <%= text_field_tag :age, nil, placeholder: 'Enter age', class: "form-control" %>
+         <%= hidden_field_tag :prospect_id, @prospect.id %>
+        <%= hidden_field_tag :lead_id, @lead.id %>
+        <div><%= submit_tag 'Next', class: 'btn btn-primary' %></div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<br>

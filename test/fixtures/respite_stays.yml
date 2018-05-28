@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contact: one
+  community: one
+  start: 2017-11-12 17:33:59
+  stop: 2017-11-12 17:33:59
+  fee: 
+
+two:
+  contact: two
+  community: two
+  start: 2017-11-12 17:33:59
+  stop: 2017-11-12 17:33:59
+  fee: 

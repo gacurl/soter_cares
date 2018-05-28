@@ -1,0 +1,40 @@
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title"><%= @community.name %> Pricing</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-condensed ero-table">
+          <tr>
+            <td style='font-weight: bold'>Semi-Private Rate:</td><td><%= number_to_currency(@community.semi_private) %>/mo</td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Private Rate:</td><td><%= number_to_currency(@community.private) %>/mo</td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Community Fee:</td><td><%= number_to_currency(@community.community_fee) %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Respite Rate:</td><td><%= number_to_currency(@community.respite_rate) %>/day</td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Adult Day Care Rate:</td><td><%= number_to_currency(@community.adult_day_care_rate) %>/day</td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Second Person Rate:</td><td><%= number_to_currency(@community.second_person_fee) %></td>
+          </tr>
+          <% if @community.pets? %>
+            <tr>
+              <td style='font-weight: bold'>Pet Fee (Monthly):</td><td><%= number_to_currency(@community.pet_fee) %>/month</td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>

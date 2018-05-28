@@ -1,0 +1,36 @@
+<% provide(:title, 'User Index') %>
+<div class="col-md-12">
+<h1 style='text-align: center'>User Index</h1>
+  <table>
+      <tr>
+        <td style="padding-top: 4px"><%= will_paginate %></td>
+        <td style="padding-left: 10px"><%= link_to "Create New User", new_user_path, id: "new-user", 
+              class: 'btn btn-primary', style: 'margin-bottom: 5px' %></td>
+      </tr>
+     
+    </table>
+</div>  
+  <div class='col-md-12'>
+    <table class="table table-condensed ero-table">
+      <tr style='font-weight: bold'>
+        <td>Name</td>
+        <td>E-Mail</td>
+        <td>Admin</td>
+        <td>Disabled</td>
+          
+      </tr>
+      
+      <% @users.each do |user| %>
+        
+        <tr>
+          <td><%= link_to user.name, edit_user_path(user) %></td>
+          <td><%= user.email %></td>
+          <td><%= check_box_tag("Admin", "1", user.admin, disabled: true) %></td>
+          <td><%= check_box_tag("Disabled", "1", user.disable, disabled: true) %></td>
+        </tr>
+      <% end %>
+     </table>
+     
+    <%= will_paginate %>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<h6 style='margin-bottom: 1px'><%= page_entries_info members, :model => "family members/advocates" %></h6>
+    <%= will_paginate members, :param_name => 'family_page', :style => 'font-size: 9px; margin: 1px' %>
+  
+<table class="table table-condensed ero-table">
+      <tr style='font-weight: bold'>
+        <td>Name</td>
+        <td>Location</td>
+      </tr>
+    
+    
+    <% members.each do |contact| %>
+      <tr>
+        <td><%= link_to contact.name, contact %></td>
+        <td><%= contact.location %></td>
+      </tr>
+    <% end %>
+    </table>
+    <%= will_paginate members, :param_name => 'family_page', :style => 'font-size: 9px; margin: 1px' %>
+  

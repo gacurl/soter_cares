@@ -1,0 +1,23 @@
+<h6 style='margin-bottom: 1px'><%= page_entries_info businesses, :model => "business contacts" %></h6>
+    <%= will_paginate businesses, :param_name => 'business_page', :style => 'font-size: 9px; margin: 1px' %>
+ 
+<table class="table table-condensed ero-table">
+      <tr style='font-weight: bold'>
+        <td>Name</td>
+        <td>Community</td>
+        <td>Company</td>
+        <td>Status</td>
+      </tr>
+    
+    
+    <% businesses.each do |contact| %>
+      <tr>
+        <td><%= link_to contact.name, contact %></td>
+        <td><%= link_to contact.community.name, contact.community if contact.community %></td>
+        <td><%= link_to contact.company.name, contact.company if contact.company %></td>
+        <td><%= contact.results.last.result_type.name if contact.results.any? %></td>
+      </tr>
+    <% end %>
+    </table>
+    <%= will_paginate businesses, :param_name => 'business_page', :style => 'font-size: 9px; margin: 1px' %>
+ 

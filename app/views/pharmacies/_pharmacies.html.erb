@@ -1,0 +1,24 @@
+<table class="table table-condensed ero-table">
+  <tr style='font-weight: bold'>
+    <td>Name</td>
+    <td>Location</td>
+    <td>Communities</td>
+    <td></td>
+  </tr>
+
+
+<% @pharmacies.each do |pharmacy| %>
+  <tr>
+    <td><%= link_to pharmacy.name, pharmacy %></td>
+    <td><%= (pharmacy.zip_code.city.name + ", " + 
+                  pharmacy.zip_code.city.county.state.two_digit_code) if 
+                  pharmacy.zip_code %></td>
+    <td><%= pharmacy.communities_count %></td>
+    <td><%= link_to "Delete", pharmacy, method: :delete,
+                  data: { confirm: "Are you sure you want to delete #{pharmacy.name}?" },
+                  class: "btn-sm btn-danger" if current_user.admin %></td>
+  </tr>
+<% end %>
+</table>
+<h6 style='margin-bottom: 1px'><%= page_entries_info @pharmacies, :model => "pharmacies" %></h6>
+<%= will_paginate @pharmacies, :param_name => 'page', :style => 'font-size: 9px; margin: 1px' %>

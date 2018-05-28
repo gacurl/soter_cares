@@ -1,0 +1,93 @@
+<h3><%= @pharmacy.name %></h3>
+
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Pharmacy Information
+      <%= link_to "Update", edit_pharmacy_path(@pharmacy, section: :info),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr>
+          <td style='font-weight: bold'>Name:</td><td><%= @pharmacy.name %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Phone:</td><td><%= link_to number_to_phone(@pharmacy.phone_number, area_code: true), "tel:#{@pharmacy.phone_number}" if @pharmacy.phone_number %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Fax:</td><td><%= number_to_phone(@pharmacy.fax, area_code: true) %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Email:</td><td><%= mail_to @pharmacy.email %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Website:</td><td><%= @pharmacy.website %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Address:</td>
+          <td>
+              <% if @pharmacy.zip_code %>
+                <%= @pharmacy.address_1 %><br>
+                <% if @pharmacy.address_2 %>
+                  <%= @pharmacy.address_2 %><br>
+                <% end %>
+                <%= @pharmacy.zip_code.city.name %> <%= @pharmacy.zip_code.city.county.state.two_digit_code %>, <%= @pharmacy.zip_code.code %>
+              <% end %>
+          </td>
+        </tr>
+      </table>
+    </div> 
+  </div>
+</div>
+  
+<div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Communities
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Name</td>
+            <td>Distance</td>
+          </tr>
+        
+        <% @pharmacy.communities.each do |community| %>
+          <tr>
+            <td><%= link_to community.name, community %></td>
+            <td><%= @pharmacy.distance_from([community.latitude, community.longitude]).round(1) %> miles</td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+    </div>
+    
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Notes
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Date</td>
+            <td>User</td>
+            <td>Content</td>
+          </tr>
+        
+        <% @pharmacy.notes.order(created_at: :asc).each do |note| %>
+          <tr>
+            <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+            <td><%= note.user.try(:name) %></td>
+            <td><%= sanitize nl2br(note.content) %></td>
+          </tr>
+        <% end %>
+        </table>
+        <%= link_to "#{fa_icon "plus-circle"} New".html_safe, pharmacy_new_note_path(@pharmacy, @note),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-primary" } %> 
+      </div>
+    </div>
+  </div>

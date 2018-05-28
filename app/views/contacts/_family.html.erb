@@ -1,0 +1,152 @@
+<h3><%= @contact.first_name %> <%= @contact.last_name %> - <%= "Resident" if @contact.placement_status == PlacementStatus.find_by(status: "Placed") %>
+    <%= "Prospect" unless @contact.placement_status == PlacementStatus.find_by(status: "Placed") %> Family 
+    <%= link_to "Edit Name", edit_contact_path(@contact, section: :name),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs" } %></h3>
+<div class="col-md-12" id="leads">
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Case
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr>
+            <td>Case Manager:</td><td><%= @contact.user.try(:name) %></td>
+          </tr>
+        </table>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Contact Information
+        <%= link_to "Update", edit_contact_path(@contact, section: :info),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %>
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr>
+            <td style='font-weight: bold'>Gender:</td><td><%= @contact.gender %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Email:</td><td><%= mail_to @contact.email %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Work Email:</td><td><%= mail_to @contact.work_email %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Cell Phone:</td><td><%= link_to number_to_phone(@contact.cell_phone, area_code: true), "tel:#{@contact.cell_phone}" if @contact.cell_phone %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Home Phone:</td><td><%= link_to number_to_phone(@contact.home_phone, area_code: true), "tel:#{@contact.home_phone}" if @contact.home_phone %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Work Phone:</td><td><%= link_to number_to_phone(@contact.work_phone, area_code: true), "tel:#{@contact.work_phone}" if @contact.work_phone %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Address:</td>
+            <td>
+                <% if @contact.zip_code %>
+                  <%= @contact.address_1 %><br>
+                  <% if @contact.address_2.present? %>
+                    <%= @contact.address_2 %><br>
+                  <% end %>
+                  <%= @contact.location %> <%= @contact.zip_code.code %>
+                <% end %>
+            </td>
+          </tr>
+        </table>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">
+     Files
+    </div>
+    <div class="panel-body" id='#file-dropzone'>
+      <table class="table table-condensed ero-table" id="files">
+          <tr style='font-weight: bold;'>
+            <th>Name</th>
+            <th>Posted</th>
+            <th>User</th>
+          </tr>
+          <tbody>
+            <%= render partial: "data_files/file_list", locals: {object: @contact} %>
+          </tbody>
+      </table>
+      <div class="actions">
+        <%#= f.submit %>
+      </div>
+     
+      <%= form_for([@contact, @data_file]) do |f| %>
+        <div class="field">
+          <%#= f.label :image %>
+          <%= f.file_field :file, class: "file-button" %>
+        
+          <%= f.submit "Upload", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+        
+      
+    </div> 
+  </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Family Members/Advocates
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Name</td>
+            <td>Relationship</td>
+            <td>Status</td>
+            
+          </tr>
+          <% @contact.relationships.each do |relationship| %>
+            <tr>
+              <td><%= link_to relationship.relation.first_name + " " + relationship.relation.last_name, relationship.relation %></td>
+              <td><%= "Great" if relationship.great? %> <%= "Step" if relationship.step? %>  <%= relationship.relationship_type.male_opposite if relationship.relation.gender == "Male" %>
+                  <%= relationship.relationship_type.female_opposite if relationship.relation.gender == "Female" %> <%= "In-Law" if relationship.in_law? %></td>
+              <td><%= if relationship.relation.placement_status == PlacementStatus.find_by(status: "Placed")
+                        relationship.relation.placement_status.status
+                      elsif relationship.relation.placement
+                        "Placement in #{(relationship.relation.placement - Date.today).to_i} " +
+                        "days (" + relationship.relation.placement.strftime("%m/%d/%Y") + ")"
+                      end %>
+              </td>
+              
+            </tr>
+          <% end %>
+        </table>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Notes
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Date</td>
+            <td>User</td>
+            <td>Content</td>
+          </tr>
+        
+        <% @contact.notes.order(created_at: :asc).each do |note| %>
+          <tr>
+            <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+            <td><%= note.user.try(:name) %></td>
+            <td><%= sanitize nl2br(note.content) %></td>
+          </tr>
+        <% end %>
+        </table>
+        <%= link_to "#{fa_icon "plus-circle"} New".html_safe, contact_new_note_path(@contact, @note),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-primary" } %> 
+      </div>
+    </div>
+  </div>
+  </div>
+</div>

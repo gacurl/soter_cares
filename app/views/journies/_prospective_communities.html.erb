@@ -1,0 +1,8 @@
+<p><%= "No communities added yet." if @prospect.prospects.empty? %></p>
+<% @prospect.prospects.each do |community| %>
+    <% if community.website %>
+      <strong><%= link_to community.name, community.website, target: '_blank' %></strong><em> - <%= community.zip_code.city.name %>, <%= community.zip_code.city.county.state.two_digit_code %></em><br>
+    <% else %>
+      <strong><%= community.name %></strong><em> - <%= community.zip_code.city.name %>, <%= community.zip_code.city.county.state.two_digit_code %></em><br>
+  <% end %>        
+<% end %>        

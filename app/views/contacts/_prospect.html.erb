@@ -1,0 +1,533 @@
+<% if @contact.deceased? %>
+<h3><%= @contact.first_name %> <%= @contact.last_name %> - Deceased <%= link_to "Edit Name", edit_contact_path(@contact, section: :name),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs" } %> </h3>
+
+<% else %>
+<h3><%= @contact.first_name %> <%= @contact.last_name %> - Prospect <%= link_to "Edit Name", edit_contact_path(@contact, section: :name),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs" } %> </h3>
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary list-buttons" id="review">Review/Update</button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default list-buttons" id='find-community'>Find Community</button>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<% end %>
+<div id="review-page" class="row lists">
+<div class="col-lg-8">
+  
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Case
+        <%= link_to "Update", edit_contact_path(@contact, section: :case),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %> 
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr>
+            <td style='font-weight: bold'>Case Manager:</td>
+              <td><%= @contact.user.name if @contact.user %></td>
+            <td style='font-weight: bold'>Case ID:</td>
+              <td><%= (@contact.case_id[0..3] + "-" + @contact.case_id[4..7]) if @contact.case_id %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Referral Source:</td>
+              <td><%= link_to @contact.referrer.try(:name), @contact.referrer if @contact.referrer %></td>
+            <td style='font-weight: bold'>Referring Company:</td>
+            <td><%= link_to @contact.referrer.company.try(:name), @contact.referrer.try(:company) if @contact.referrer %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Est. Placement:</td>
+              <td><%= @contact.placement.strftime("%m/%d/%Y") if @contact.placement %></td>
+            <td style='font-weight: bold'>Days:</td>
+              <td><%= (@contact.placement - Date.today).to_i if @contact.placement %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Veteran:</td><td><%= check_box_tag("Veteran", "1", @contact.veteran, disabled: true) %></td>
+            <td style='font-weight: bold'>Medicaid:</td><td><%= check_box_tag("Medicaid", "1", @contact.medicaid, disabled: true) %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold' colspan="2">Medicaid Provider:</td>
+            <td colspan="2"><%= @contact.medicaid_provider.try(:name) %></td>
+          </tr>
+        </table>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Contact Information
+        <%= link_to "Update", edit_contact_path(@contact, section: :info),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %>
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr>
+            <td style='font-weight: bold'>SSN:</td>
+            <td><%= @contact.ssn %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Gender:</td><td><%= @contact.gender %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>DOB:</td><td><%= @contact.dob.strftime("%m/%d/%Y") if @contact.dob %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Email:</td><td><%= mail_to @contact.email %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Work Email:</td><td><%= mail_to @contact.work_email %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Cell Phone:</td><td><%= link_to number_to_phone(@contact.cell_phone, area_code: true), "tel:#{@contact.cell_phone}" if @contact.cell_phone %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Home Phone:</td><td><%= link_to number_to_phone(@contact.home_phone, area_code: true), "tel:#{@contact.home_phone}" if @contact.home_phone %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Work Phone:</td><td><%= link_to number_to_phone(@contact.work_phone, area_code: true), "tel:#{@contact.work_phone}" if @contact.work_phone %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Address:</td>
+            <td>
+                <% if @contact.zip_code %>
+                  <%= @contact.address_1 %><br>
+                  <% if @contact.address_2.present? %>
+                    <%= @contact.address_2 %><br>
+                  <% end %>
+                  <%= @contact.zip_code.city.name %> <%= @contact.zip_code.city.county.state.two_digit_code %>, <%= @contact.zip_code.code %>
+                <% end %>
+            </td>
+          </tr>
+        </table>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Family Members/Advocates
+        <%= link_to "Assign", contact_decision_makers_path(@contact),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %>
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Name</td>
+            <td>Relationship</td>
+            <td>Decision Maker</td>
+          </tr>
+          <% @contact.relationships.each do |relationship| %>
+            <tr>
+              <td><%= link_to relationship.relation.first_name + " " + relationship.relation.last_name, relationship.relation %></td>
+              <td><%= "Great" if relationship.great? %> <%= "Step" if relationship.step? %>  <%= relationship.relationship_type.male_opposite if relationship.relation.gender == "Male" %>
+                  <%= relationship.relationship_type.female_opposite if relationship.relation.gender == "Female" %> <%= "In-Law" if relationship.in_law? %></td>
+              <td><%= DecisionMaker.find_by(relationship_id: relationship.id).hierarchy unless DecisionMaker.find_by(relationship_id: relationship.id).nil? %></td>
+            </tr>
+          <% end %>
+        </table>
+        <%= form_for @contact, url: contact_add_family_path(@contact), remote: true, html: { class: "col-md-12 form-inline" } do |f| %>
+          <div class="row">
+            <%= f.label "Add Family", class: "col-sm-3 control-label" %>
+            <div class="col-sm-6">
+              <%= f.text_field :family_search, class: 'form-control', 
+                    placeholder: "Search Last Name", id: "family_search" %>
+              <%= f.hidden_field :relation_id, value: @contact.id, :id => "relation_id" %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+              <div class="gender_male">
+                <%= f.select :male_relationship_type, options_from_collection_for_select(
+                      RelationshipType.all, :id, :male_opposite), { include_blank: "Select Relationship" }, { class: 'form-inline selectpicker'} %>
+              </div>
+              <div class="gender_female">
+                <%= f.select :female_relationship_type, options_from_collection_for_select(
+                      RelationshipType.all, :id, :female_opposite), { include_blank: "Select Relationship" }, { class: 'form-inline selectpicker'} %>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <%= button_tag type: 'submit', class: "btn btn-success hide pull-left", id: "add_family_button" do %>
+                <%= "#{fa_icon "plus-circle"} Add".html_safe %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <div class="row">
+          <div class="col-md-3">
+            <br>
+            <%= link_to "#{fa_icon "plus-circle"} Create New".html_safe, 
+              new_contact_path(contact: { contact_type: "Family", 
+              resident_search: "#{@contact.first_name + " " + @contact.last_name}",
+              relation_id: @contact.id }), class: "btn btn-primary", id: "create_new" %>
+          </div>
+        </div>
+      </div> 
+    </div>
+    
+    
+      
+    
+  </div>
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Prospective Communities
+      </div>
+      <div class="panel-body" id="small_prospects">
+        <%= render 'small_prospects' %>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Results
+       <%= link_to "Add", contact_new_result_path(@contact, @result),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %> 
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Date</td>
+            <td>Community</td>
+            <td>Result</td>
+          </tr>
+        
+        <% @contact.results.order(created_at: :asc).each do |result| %>
+          <tr>
+            <td><%= result.updated_at.strftime("%m/%d/%Y") %></td>
+            <td>
+              <%= link_to result.community.name, result.community if result.community %>
+              <%= "N/A" unless result.community %>
+            </td>
+            <td>
+                <%= link_to result.result_type.name, contact_edit_result_path(@contact, result_id: result.id),
+                      {remote: true, data: { toggle: "modal", target: '#modal-window' } } %>   
+            </td>
+          </tr>
+        <% end %>
+        </table>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Finances
+       <%= link_to "Update", contact_edit_finance_path(@contact),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %> 
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr>
+            <td style='font-weight: bold'>Liquid Assets:</td><td><%= number_to_currency(@contact.finance.liquid) if @contact.finance %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Hard Assets:</td><td><%= number_to_currency(@contact.finance.hard) if @contact.finance %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Short-term Debt:</td><td><%= number_to_currency(@contact.finance.short) if @contact.finance %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Long-term Debt:</td><td><%= number_to_currency(@contact.finance.long) if @contact.finance %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Monthly Cash Flow:</td><td><%=number_to_currency(@contact.finance.monthly) if @contact.finance %></td>
+          </tr>
+          <% if @contact.medicaid? %>
+            <tr>
+              <td style='font-weight: bold'>Monthly Medicaid:</td><td><%=number_to_currency(@contact.finance.medicaid) if @contact.finance %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div> 
+    </div>
+    <% if @contact.veteran %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Veteran Benefits
+            <%= link_to "Update", edit_contact_path(@contact, section: :veteran),
+                {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+                class: "btn btn-default btn-xs pull-right" } %> 
+          </div>
+          <div class="panel-body">
+            <table class="table table-condensed ero-table">
+              <tr>
+                <td style='font-weight: bold'>Start Service:</td><td><%= @contact.pay_entry_base_date.strftime("%m/%d/%Y") if  @contact.pay_entry_base_date %></td>
+              </tr>
+              <tr>
+                <td style='font-weight: bold'>End Service:</td><td><%= @contact.end_of_active_service.strftime("%m/%d/%Y") if @contact.end_of_active_service %></td>
+              </tr>
+              <tr>
+                <td style='font-weight: bold'>VA Application:</td><td><%= @contact.va_application_submitted.strftime("%m/%d/%Y") if @contact.va_application_submitted %></td>
+              </tr>
+              <tr>
+                <td style='font-weight: bold'>Benefit Received:</td><td><%= @contact.benefit_received.strftime("%m/%d/%Y") if @contact.benefit_received %></td>
+              </tr>
+            </table>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <% if @contact.medicaid %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Medicaid Benefits
+            <%= link_to "Update", edit_contact_path(@contact, section: :medicaid),
+                {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+                class: "btn btn-default btn-xs pull-right" } %> 
+          </div>
+          <div class="panel-body">
+            <table class="table table-condensed ero-table">
+              <tr>
+                <td style='font-weight: bold'>ICP:</td><td><%= check_box_tag("ICP", "1", @contact.medicaid_icp, disabled: true) %></td>
+              </tr>
+              <tr>
+                <td style='font-weight: bold'>LTMC:</td><td><%= check_box_tag("LTMC", "1", @contact.medicaid_ltmc, disabled: true) %></td>
+              </tr>
+            </table>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Notes
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Date</td>
+            <td>User</td>
+            <td>Content</td>
+          </tr>
+        
+        <% @contact.notes.order(created_at: :asc).each do |note| %>
+          <tr>
+            <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+            <td><%= note.user.try(:name) %></td>
+            <td><%= sanitize nl2br(note.content) %></td>
+          </tr>
+        <% end %>
+        </table>
+        <%= link_to "#{fa_icon "plus-circle"} New".html_safe, contact_new_note_path(@contact, @note),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-primary" } %> 
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Matching Criteria
+       <%= link_to "Update", edit_contact_path(@contact, section: :matching),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %> 
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr>
+            <td style='font-weight: bold'>Activities:</td><td><%= @contact.activity_list %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Dining Options:</td><td><%= @contact.dining_list %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Features:</td><td><%= @contact.feature_list %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Exclusion:</td><td><%= @contact.undesired_list %></td>
+          </tr>
+          <tr>
+            <td style='font-weight: bold'>Clinical Needs:</td><td><%= @contact.license_list %></td>
+          </tr>
+        </table>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">
+     Files
+    </div>
+    <div class="panel-body" id='#file-dropzone'>
+      <table class="table table-condensed ero-table" id="files">
+          <tr style='font-weight: bold;'>
+            <th>Name</th>
+            <th>Posted</th>
+            <th>User</th>
+          </tr>
+          <tbody>
+            <%= render partial: "data_files/file_list", locals: {object: @contact} %>
+          </tbody>
+      </table>
+      <div class="actions">
+        <%#= f.submit %>
+      </div>
+      <%= form_for([@contact, @data_file]) do |f| %>
+        <div class="field">
+          <%#= f.label :image %>
+          <%= f.file_field :file, class: "file-button" %>
+        
+          <%= f.submit "Upload", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div> 
+  </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Clinical History
+       <%= link_to "Update", edit_contact_path(@contact, section: :clinical),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %> 
+      </div>
+      <div class="panel-body">
+        <%= sanitize nl2br(@contact.clinical_history) %>
+        <%= "None entered" unless @contact.clinical_history %>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Personal History<%= link_to "Update", edit_contact_path(@contact, section: :personal),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %> 
+      </div>
+      <div class="panel-body">
+        <%= sanitize nl2br(@contact.personal_history) %>
+        <%= "None entered" unless @contact.personal_history %>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       Respite Stays<%= link_to "New", contact_new_respite_path(@contact),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs pull-right" } %> 
+      </div>
+      <div class="panel-body">
+        <table class="table">
+            <tr style='font-weight: bold'>
+              <td>Comunity</td>
+              <td>Start</td>
+              <td>End</td>
+              <td>Total</td>
+            </tr>
+        <% @contact.respite_stays.each do |stay| %>
+          <tr>
+            <td><%= stay.community.name %></td>            
+            <td><%= stay.start.strftime("%m/%d/%Y") %></td>            
+            <td><%= stay.stop.try(:strftime, "%m/%d/%Y") %></td>            
+            <td><%= number_to_currency((stay.fee_cents * (stay.stop.to_date - stay.start.to_date).to_i).to_f/100) %></td>            
+          </tr>
+        <% end %>
+        </table>
+      </div> 
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="find-community-page" class="row hide">
+  <div id="prospective-communities" class="row">
+    <%= render(:partial => 'prospective_communities') %>
+  </div>
+  <h4>Search for Communities</h4>
+  <div class="col-md-6">
+    
+    <%= form_tag(contact_distance_search_path(@contact), method: :get, remote: true) do %>
+      <%= label_tag(:city, "Enter Location and Distance", class: "col-sm-2 control-label") %>
+      <div class="col-sm-4">
+        <%= text_field_tag :city, nil, class: 'form-control', 
+                      placeholder: "Enter City, State", id: "city" %>
+                <%= hidden_field_tag :city_id, id: "city_id" %>
+      </div>
+      <div class="col-sm-3">
+        <%= text_field_tag :distance, nil, class: 'form-control', 
+                      placeholder: "Max Distance", id: "distance" %>
+      </div>
+      <div class="col-sm-3">
+        <%= submit_tag "Search", class: "btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-6"></div>
+  <div id="communities" class="row">
+    <%= render(:partial => 'community_results') %>
+  </div>
+</div>
+
+<script>
+  $("#family_search").autocomplete({
+      source: "/contacts/autocomplete_family",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#family_search").val(ui.item.label);
+        $("#relation_id").val(ui.item.value);
+        $("#add_family_button").removeClass("hide");
+   //     $("#create_new").addClass("hide");
+        var gender_type = ui.item.gender;
+        if (gender_type == "Male") {
+          $(".gender_male").show();
+          $(".gender_female").hide();
+        }
+        else if (gender_type == "Female") {
+        $(".gender_male").hide();
+        $(".gender_female").show();
+        }
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#family_search").val(ui.item.label);
+      }
+    });
+  
+  $("#city").autocomplete({
+    source: "/cities/autocomplete",
+    minLength: 3,
+    select: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+      $("#city_id").val(ui.item.value);
+    },
+    focus: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+    }
+  });  
+    
+  $("#search-button").click(function(){
+    $(".search-hide").hide();
+  });
+
+  $('#review').click(function() {
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#review').addClass('btn-primary');
+    $('.lists').hide();
+     $('#find-community-page').hide();
+    $('#review-page').show();
+  });
+  $('#find-community').click(function() {
+    $('#find-community-page').removeClass('hide');
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#find-community').addClass('btn-primary');
+    $('.lists').hide();
+    $('#find-community-page').show();
+  });
+</script>

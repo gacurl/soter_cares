@@ -1,0 +1,20 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif; font-size: 40px">Profile Complete</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    We have sent you a validation email with a link. That link will enable you to begin searching locations with the specific matching criteria established during the interview process.<br>
+
+    One of our Family Advocates will be in touch with you shortly.<br>
+    <br>
+
+  <% if @lead.validated? %>
+    <div class="row">
+      Since you validated your cell phone, you have immediate access to our location searching. The link in the email we sent you can be used to return directly to our
+      location search page. <br>
+    
+      <%= link_to "Location Searching", location_search_journies_path(lead_id: @lead.id, prospect_id: @prospect.id), class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+</div>
+<br>

@@ -1,0 +1,42 @@
+<% provide(:title, 'Pharmacies') %>
+<h3><%= current_user.name %></h3>
+
+<h3>Pharmacies <%= link_to "#{fa_icon "plus-circle"} New".html_safe, new_pharmacy_path,  
+              class: "btn btn-primary" %> </h3>
+<div class="col-md-6">
+  <%= form_tag(pharmacies_path, method: :get, remote: true) do %>
+      <%= label_tag(:city, "Enter Location and Distance", class: "col-sm-2 control-label") %>
+      <div class="col-sm-4">
+        <%= text_field_tag :city, nil, class: 'form-control', 
+                      placeholder: "Enter City, State", id: "city" %>
+                <%= hidden_field_tag :city_id, id: "city_id" %>
+      </div>
+      <div class="col-sm-3">
+        <%= text_field_tag :distance, nil, class: 'form-control', 
+                      placeholder: "Max Distance", id: "distance" %>
+      </div>
+      <div class="col-sm-3">
+        <%= submit_tag "Search", class: "btn btn-success" %>
+      </div>
+    <% end %>
+</div>
+
+<div id='pharmacies'>
+  <%= render 'pharmacies' %>
+</div>
+
+<script>
+  $("#city").autocomplete({
+    source: "/cities/autocomplete",
+    minLength: 3,
+    select: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+      $("#city_id").val(ui.item.value);
+    },
+    focus: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+    }
+  });  
+</script>

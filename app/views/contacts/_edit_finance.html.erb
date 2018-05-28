@@ -1,0 +1,215 @@
+<%= form_for(@finance, url: contact_save_finance_path([@contact, @finance]), remote: true) do |f| %>
+  <div class="modal-dialog" style="overflow-y: initial !important" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title">Edit Finances</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="height: 540px; overflow-y: auto;">
+          <table class="table table-condensed ero-table">
+            <tr>
+              <td style='font-weight: bold'>Checking:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :checking, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Savings:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :savings, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Money Market:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :money_market, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Life Insurance:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :life_insurance, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Health Savings:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :health_savings, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Other Cash:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :other_cash, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Securities:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :securities, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Treasury Bills:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :treasury_bills, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Other Investments:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :other_investments, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Retirement Accounts:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :retirement_accounts, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Real Estate:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :real_estate, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Automobiles:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :automobile, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Other Property:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :other_property, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Notes Receivable:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :notes_receivable, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Accounts Payable:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :accounts_payable, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Credit Cards:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :credit_card_debt, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Auto Loan:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :auto_loan, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Mortgage:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :mortgage, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Other Liabilities:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :other_liabilities, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Medicaid:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :medicaid, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Veteran's Aid:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :veterans_aid, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Pension/Annuity:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :pension_annuity, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Social Security:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :social_security, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Other Retirement:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :other_retirement, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+          </table>
+       
+      </div>
+      <div class="modal-footer">
+          <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+

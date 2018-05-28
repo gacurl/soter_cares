@@ -1,0 +1,268 @@
+<% provide(:title, 'Settings') %>
+<h1>Settings</h1>
+<div id="accordion">
+  <h3>License Types</h3>
+  <div>
+    <div class="row">
+      <%= form_tag update_multiple_license_types_path, method: :put do %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>License Type</th>
+            <th>Clinical Needs</th>
+            <th></th>
+          </tr>
+          <% @licenses.order(name: :desc).each do |license| %>
+            <%= fields_for "licenses[]", license do |f| %>
+              <tr>
+                <td><%= f.text_field :name, class: 'form-control' %></td>
+                <td><%= f.text_area(:license_list, cols: 20, rows: 3, 
+                        placeholder: "Clinical Needs (separate with commas)", 
+                        class: 'form-control',
+                        style: "overflow-y: scroll") %></td>
+                <td><%= link_to "Delete", license, method: :delete, 
+                      data: { confirm: "Are you sure you want to delete #{license.name}?" }, 
+                      class: "btn btn-danger btn-sm", style: "color: white" %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+        <%= submit_tag "Update Licenses", class: "btn btn-primary btn-sm" %>
+      <% end %>  
+    </div>
+    <br>
+    <div class="row">
+      <%= form_for(@license) do |f| %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th> New License</th>
+          </tr>
+          <tr>
+            <td><%= f.text_field :name, class: 'form-control', 
+                          placeholder: "New License Type" %></td>
+          </tr>
+        </table>
+        <%= f.submit "Create License", class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+  <h3>Results</h3>
+  <div>
+    <div class="row">
+      <%= form_tag update_multiple_result_types_path, method: :put do %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>Result</th>
+            <th></th>
+          </tr>
+          <% @results.each do |result| %>
+            <%= fields_for "results[]", result do |f| %>
+              <tr>
+                <td><%= f.text_field :name, class: 'form-control' %></td>
+                <td><%= link_to "Delete", result, method: :delete, 
+                      data: { confirm: "Are you sure you want to delete #{result.name}?" }, 
+                      class: "btn btn-danger btn-sm", style: "color: white" %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+        <%= submit_tag "Update Results", class: "btn btn-primary btn-sm" %>
+      <% end %>  
+    </div>
+    <br>
+    <div class="row">
+      <%= form_for(@result) do |f| %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>New Result</th>
+          </tr>
+          <tr>
+            <td><%= f.text_field :name, class: 'form-control', 
+                          placeholder: "New Result" %></td>
+          </tr>
+        </table>
+        <%= f.submit "Create Result", class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+  <h3>Positions</h3>
+  <div>
+    <div class="row">
+      <%= form_tag update_multiple_positions_path, method: :put do %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>Position</th>
+            <th>Clinician</th>
+            <th></th>
+          </tr>
+          <% @positions.each do |position| %>
+            <%= fields_for "positions[]", position do |f| %>
+              <tr>
+                <td><%= f.text_field :title, class: 'form-control' %></td>
+                <td><%= f.check_box :clinician %></td>
+                <td><%= link_to "Delete", position, method: :delete, 
+                      data: { confirm: "Are you sure you want to delete #{position.title}?" }, 
+                      class: "btn btn-danger btn-sm", style: "color: white" %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+        <%= submit_tag "Update Positions", class: "btn btn-primary btn-sm" %>
+      <% end %>  
+    </div>
+    <br>
+    <div class="row">
+      <%= form_for(@position) do |f| %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th> New Position</th>
+          </tr>
+          <tr>
+            <td><%= f.text_field :title, class: 'form-control', 
+                          placeholder: "New Position" %></td>
+          </tr>
+        </table>
+        <%= f.submit "Create Position", class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+  <h3>Placement Status</h3>
+  <div>
+    <div class="row">
+      <%= form_tag update_multiple_placement_statuses_path, method: :put do %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>Status</th>
+            <th></th>
+          </tr>
+          <% @statuses.each do |status| %>
+            <%= fields_for "placement_statuses[]", status do |f| %>
+              <tr>
+                <td><%= f.text_field :status, class: 'form-control' %></td>
+                <td><%= link_to "Delete", status, method: :delete, 
+                      data: { confirm: "Are you sure you want to delete #{status.status}?" }, 
+                      class: "btn btn-danger btn-sm", style: "color: white" %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+        <%= submit_tag "Update Placement Statuses", class: "btn btn-primary btn-sm" %>
+      <% end %>  
+    </div>
+    <br>
+    <div class="row">
+      <%= form_for(@status) do |f| %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>New Status</th>
+          </tr>
+          <tr>
+            <td><%= f.text_field :status, class: 'form-control', 
+                          placeholder: "New Placement Status" %></td>
+          </tr>
+        </table>
+        <%= f.submit "Create Placement Status", class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+  <h3>Medicaid Providers</h3>
+  <div>
+    <div class="row">
+      <%= form_tag update_multiple_medicaid_providers_path, method: :put do %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>Provider</th>
+            <th></th>
+          </tr>
+          <% @providers.each do |provider| %>
+            <%= fields_for "medicaid_providers[]", provider do |f| %>
+              <tr>
+                <td><%= f.text_field :name, class: 'form-control' %></td>
+                <td><%= link_to "Delete", provider, method: :delete, 
+                      data: { confirm: "Are you sure you want to delete #{provider.name}?" }, 
+                      class: "btn btn-danger btn-sm", style: "color: white" %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+        <%= submit_tag "Update Medicaid Providers", class: "btn btn-primary btn-sm" %>
+      <% end %>  
+    </div>
+    <br>
+    <div class="row">
+      <%= form_for(@provider) do |f| %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>New Provider</th>
+          </tr>
+          <tr>
+            <td><%= f.text_field :name, class: 'form-control', 
+                          placeholder: "New Medicaid Provider" %></td>
+          </tr>
+        </table>
+        <%= f.submit "Create Medicaid Provider", class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+  <h3>Employees</h3>
+  <div>
+    <div class="row">
+      <%= form_tag update_multiple_users_path, method: :put do %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Profile</th>
+            <th>Pic Link</th>
+            <th>Admin</th>
+            <th>Disable</th>
+          </tr>
+          <% @users.each do |user| %>
+            <%= fields_for "users[]", user do |u| %>
+              <tr>
+                <td><%= u.text_field :name, class: 'form-control' %></td>
+                <td><%= u.email_field :email, class: 'form-control' %></td>
+                <td><%= u.text_field :profile, class: 'form-control' %></td>
+                <td><%= u.text_field :pic_link, class: 'form-control' %></td>
+                <td><%= u.check_box :admin %></td>
+                <td><%= u.check_box :disable %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+        <%= submit_tag "Update Users", class: "btn btn-primary btn-sm" %>
+      <% end %>  
+    </div>
+    <br>
+    <div class="row">
+      <%= form_for(@new_user) do |f| %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Profile</th>
+            <th>Pic Link</th>
+            <th>Admin</th>
+            <th>Disable</th>
+          </tr>
+          <tr>
+            <td><%= f.text_field :name, class: 'form-control', placeholder: "New employee name" %></td>
+            <td><%= f.email_field :email, class: 'form-control', placeholder: "New employee email" %></td>
+            <td><%= f.email_field :profile, class: 'form-control', placeholder: "Employee profile..." %></td>
+            <td><%= f.email_field :pic_link, class: 'form-control', placeholder: "Picture Link" %></td>
+            <td><%= f.check_box :admin %></td>
+            <td><%= f.check_box :disable %></td>
+          </tr>
+        </table>
+        <%= f.submit "Create User", class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  $( "#accordion" ).accordion({ 
+    collapsible: true,
+    heightStyle: "content"
+  });
+</script>

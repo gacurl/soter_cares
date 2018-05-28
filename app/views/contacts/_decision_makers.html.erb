@@ -1,0 +1,39 @@
+<%= form_tag(contact_update_decision_makers_path([@contact]), remote: true, method: :put) do %>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title">Decision Makers</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-condensed ero-table">
+          <% @contact.decision_makers.order(hierarchy: :asc).each do |decision| %>
+              <%= fields_for "decision_makers[]", decision do |f| %>
+                <%= f.hidden_field :hierarchy, value: decision.hierarchy %>
+                <tr>
+                  <td><%= decision.hierarchy %></td>
+                  <td><%= f.select(:relationship_id, options_from_collection_for_select(
+                            @contact.relationships, :id, :name, decision.relationship_id), 
+                            { include_blank: "None selected" }, 
+                            { class: 'form-inline selectpicker'}) %></td>
+                </tr>
+            <% end %>
+          <% end %>
+        </table>
+      </div>
+      <div class="modal-footer">
+          <%= submit_tag "Save Changes", class: "btn btn-primary" %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  $( function() {
+    $('.selectpicker').selectpicker({
+      });
+  });
+</script>

@@ -1,0 +1,43 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif; font-size: 40px">Community Search</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    There are a total of <strong><%= @communities.count %> communities</strong> that are potential matches. Please tell us a little about your budget to help narrow your search.
+  </p>
+
+<%= form_for(@finance, url: update_budget_journies_path(prospect_id: @prospect.id, lead_id: @lead.id)) do |f| %>
+    <div class="row">
+      <div class="col-md-6">
+          <table class="table table-condensed ero-table">
+            <tr>
+              <td style='font-weight: bold'>Savings:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :savings, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Pension/Annuity:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :pension_annuity, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td style='font-weight: bold'>Social Security:</td>
+              <td><div class="input-group">
+                    <div class="input-group-addon">$</div>
+                      <%= f.text_field :social_security, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+                  </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+          <%= f.submit "Next", class: "btn btn-primary" %>
+<% end %>
+
+</div>
+<br>

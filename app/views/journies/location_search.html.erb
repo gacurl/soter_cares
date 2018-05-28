@@ -1,0 +1,100 @@
+<br>
+
+<div class="container">
+  <div class="col-md-6 info-box">
+    <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Location Search</h1>
+    <hr>
+      <%= form_tag(distance_search_journies_path(prospect_id: @prospect.id, lead_id: @lead.id), method: :get, remote: true) do %>
+        <div class="col-sm-6">
+          <%= text_field_tag :city, nil, class: 'form-control', 
+                        placeholder: "Enter City, State", id: "city" %>
+                  <%= hidden_field_tag :city_id, id: "city_id" %>
+        </div>
+        <div class="col-sm-4">
+          <%= text_field_tag :distance, nil, class: 'form-control', 
+                        placeholder: "Max Dist (miles)", id: "distance" %>
+        </div>
+        <div class="col-sm-2">
+          <%= submit_tag "Search", class: "btn btn-success" %>
+        </div>
+      <% end %>
+      <p>Only communities licensed to meet your clinical needs will be shown.</p>
+    </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-5 info-box">
+    <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Watch List</h1>
+    <hr>
+    Clicking community name will open website if it exists
+    <div id="find-community-page">
+      <div id="prospective-communities">
+          <%= render(:partial => 'prospective_communities') %>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="communities" class="row">
+  <%= render(:partial => 'community_results') %>
+</div>
+
+
+<script>
+  $("#family_search").autocomplete({
+      source: "/contacts/autocomplete_family",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#family_search").val(ui.item.label);
+        $("#relation_id").val(ui.item.value);
+        $("#add_family_button").removeClass("hide");
+   //     $("#create_new").addClass("hide");
+        var gender_type = ui.item.gender;
+        if (gender_type == "Male") {
+          $(".gender_male").show();
+          $(".gender_female").hide();
+        }
+        else if (gender_type == "Female") {
+        $(".gender_male").hide();
+        $(".gender_female").show();
+        }
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#family_search").val(ui.item.label);
+      }
+    });
+  
+  $("#city").autocomplete({
+    source: "/cities/autocomplete",
+    minLength: 3,
+    select: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+      $("#city_id").val(ui.item.value);
+    },
+    focus: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+    }
+  });  
+    
+  $("#search-button").click(function(){
+    $(".search-hide").hide();
+  });
+
+  $('#review').click(function() {
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#review').addClass('btn-primary');
+    $('.lists').hide();
+     $('#find-community-page').hide();
+    $('#review-page').show();
+  });
+  $('#find-community').click(function() {
+    $('#find-community-page').removeClass('hide');
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#find-community').addClass('btn-primary');
+    $('.lists').hide();
+    $('#find-community-page').show();
+  });
+</script>

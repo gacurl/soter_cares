@@ -1,0 +1,551 @@
+<% title = case params[:section]
+    when "case"
+      "Case"
+    when "info"
+      "Contact Information"
+    when "personal"
+      "Personal History"
+    when "clinical"
+      "Clinical History"
+    when "veteran"
+      "Veteran Information"
+    when "medicaid"
+      "Medicaid Information"
+    when "matching"
+      "Characteristics"
+    when "clinics"
+      "Communities"
+    when "business_case" 
+      "Company and Position"
+    when "name"
+      "Name"
+end %>
+
+
+<%= form_for(@contact, remote: true) do |f| %>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title"><%= "Edit " + title %></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <% case params[:section] %>
+        <% when "case" %>
+          <% if current_user.admin? %>
+            <div class="form-group row">
+              <%= f.label "Case Manager", class: "col-sm-4 control-label" %>
+              <div class="col-sm-4">
+                <% if @contact.user %>
+                  <%= f.select :user_id, options_from_collection_for_select(
+                      User.where.not(disable: true), :id, :name, @contact.user.id), {}, { class: 'form-inline selectpicker'} %>
+                <% else %>
+                  <%= f.select :user_id, options_from_collection_for_select(
+                      User.where.not(disable: true), :id, :name), {}, { class: 'form-inline selectpicker'} %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          <div class="form-group row">
+            <%= f.label "Referral Source", class: "col-sm-4 control-label" %>
+            <div class="col-sm-4">
+              <% if @contact.referrer 
+                    id = @contact.referrer.id
+                    name = @contact.referrer.name
+                  else
+                    id = nil
+                    name = nil
+                  end %>
+              
+              <%= f.text_field :referrer, class: 'form-control',
+                        value: name,
+                        placeholder: 'Search by Name', id: "referrer" %>
+                  <%= f.hidden_field :referrer_id, value: id, id: "referrer_id" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :est_placement, class: "col-sm-4 control-label" %>
+            <div class="col-sm-4">
+              <%= f.text_field :placement_input, class: 'form-control', id: 'placement_input', readonly: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4  col-sm-offset-4">
+              <%= f.label :veteran, class: 'checkbox inline' do %>
+              <%= f.check_box :veteran %>
+                <span>Veteran</span>
+              <% end %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4  col-sm-offset-4">
+            <%= f.label :medicaid, class: 'checkbox inline' do %>
+              <%= f.check_box :medicaid %>
+                <span>Medicaid</span>
+              <% end %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :medicaid_provider, class: "col-sm-4 control-label" %>
+            <%= f.select :medicaid_provider_id, options_from_collection_for_select(
+                MedicaidProvider.all, :id, :name), { include_blank: true }, { class: 'form-inline selectpicker'} %></td>
+          </div>
+        <% when "info" %>
+          <div class="form-group row">
+            <%= f.label(:ssn, "SSN", class: "col-sm-2 control-label") %>
+            <div class="col-sm-5">
+              <%= f.text_field :ssn, class: 'form-control', placeholder: "9-digit SSN" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <%= f.label :gender, class: "col-sm-2 control-label" %>
+            <div class="col-sm-3">
+              <%= f.select(:gender,  
+                    [['Male', 'Male'], ['Female', 'Female']], { include_blank: true },
+                    {class: 'form-inline selectpicker'}) %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label "Birthday", class: "col-sm-3 control-label" %>
+            <div class="col-sm-3">
+              <%= f.text_field :dob_input, class: 'form-control', id: 'dob', readonly: true %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :email, class: "col-sm-2 control-label" %>
+            <div class="col-sm-5">
+              <%= f.email_field :email, class: 'form-control', placeholder: "Personal Email" %>
+            </div>
+            <div class="col-sm-5">
+              <%= f.email_field :work_email, class: 'form-control', placeholder: "Work Email" %>
+             </div>
+          </div>
+          <div class="form-group row">
+            <%= f.label :phones, class: "col-sm-2 control-label" %>
+            <div class="col-sm-5">
+              <%= f.text_field :cell_phone, class: 'form-control', placeholder: "Cell Phone" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-5 col-sm-offset-2">
+              <%= f.text_field :work_phone, class: 'form-control', placeholder: "Work Phone" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-5 col-sm-offset-2">
+              <%= f.text_field :home_phone, class: 'form-control', placeholder: "Home Phone" %>
+            </div>
+          </div>
+          <div class="form-group row">
+          <%= f.label :address, class: "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.text_field :address_1, class: 'form-control', 
+                  placeholder: "Street Address" %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-10 col-sm-offset-2">
+            <%= f.text_field :address_2, class: 'form-control', 
+                  placeholder: "Apt. or P.O. Box Number" %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <%= f.label :zip, class: "col-sm-2 control-label" %>
+          <div class="col-sm-6">
+            <%= f.text_field :zip_code, class: 'form-control', 
+                  placeholder: "5-digit Zip Code", id: "zip_code" %>
+            <%= f.hidden_field :zip_code_id, :id => "zip_code_id" %>
+          </div>
+        </div>
+        <% when "personal" %>
+          <div class="form-group row">
+            <%= f.label :personal_history, class: "col-sm-4 control-label" %>
+            <div class="col-sm-12">
+              <%= f.text_area(:personal_history, cols: 20, rows: 20, 
+                  placeholder: "Enter personal history...", class: 'form-control',
+                  style: "overflow-y: scroll") %>
+            </div>
+          </div>
+        <% when "clinical" %>
+          <div class="form-group row">
+            <%= f.label :clinical_history, class: "col-sm-4 control-label" %>
+            <div class="col-sm-12">
+              <%= f.text_area(:clinical_history, cols: 20, rows: 20, 
+                  placeholder: "Enter clinical history...", class: 'form-control',
+                  style: "overflow-y: scroll") %>
+            </div>
+          </div>
+        <% when "medicaid" %>
+          <div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <%= f.label :medicaid_icp, class: 'checkbox inline' do %>
+              <%= f.check_box :medicaid_icp %>
+                <span>ICP</span>
+              <% end %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4  col-sm-offset-4">
+              <%= f.label :medicaid_ltmc, class: 'checkbox inline' do %>
+              <%= f.check_box :medicaid_ltmc %>
+                <span>LTMC</span>
+              <% end %>
+            </div>
+          </div>
+        <% when "veteran" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Start Service", class: "col-sm-4 control-label col-sm-offset-2" %>
+                <div class="col-sm-3">
+                  <%= f.text_field :pay_entry_base_date_input, class: 'form-control', id: 'pay_entry_base_date', readonly: true %>
+                </div>
+              </div>
+              <div class="row">
+                <%= f.label "End Service", class: "col-sm-4 control-label col-sm-offset-2" %>
+                <div class="col-sm-3">
+                  <%= f.text_field :end_of_active_service_input, class: 'form-control', id: 'end_of_active_service', readonly: true %>
+                </div>
+              </div>
+              <div class="row">
+                <%= f.label "VA Application", class: 'col-sm-4 control-label col-sm-offset-2' %>
+                <div class="col-sm-3">
+                  <%= f.text_field :va_application_submitted_input, class: 'form-control', id: 'va_application_submitted', readonly: true %>
+                </div>
+              </div>
+              <div class="row">
+                <%= f.label "Benefit Received", class: "col-sm-4 control-label col-sm-offset-2" %>
+                <div class="col-sm-3">
+                  <%= f.text_field :benefit_received_input, class: 'form-control', id: 'benefit_received', readonly: true %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% when "matching" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Activities", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :activity_list_tokens,
+                        data: {load: @contact_activities} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Dining Options", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :dining_list_tokens,
+                        data: {load: @contact_dinings} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Features", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :feature_list_tokens,
+                        data: {load: @contact_features} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Exclusion", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :undesired_list_tokens,
+                        data: {load: @contact_undesireds} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Clinical Needs", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :license_list_tokens,
+                        data: {load: @contact_licenses} %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        <% when "clinics" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+                <%= f.label "Add Community", class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.text_field :community_search, class: 'form-control', 
+                        placeholder: 'Search by Name', id: "community_search" %>
+                  <%= f.hidden_field :clinic_id, id: "clinic_id" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% when "business_case" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+              </div>
+              <div class="row">
+                <%= f.label :community, class: "col-sm-2 control-label" %>
+                
+                <% if @contact.community 
+                    id = @contact.community.id
+                    name = @contact.community.name
+                  else
+                    id = nil
+                    name = nil
+                  end %>
+                <div class="col-sm-10">
+                  <%= f.text_field :community, class: 'form-control',
+                        value: name,
+                        placeholder: 'Search by Name', id: "community" %>
+                  <%= f.hidden_field :community_id, value: id, id: "community_id" %>
+                </div>
+              </div>
+              <div class="row">
+                <%= f.label :company, class: "col-sm-2 control-label" %>
+                
+                <% if @contact.company 
+                    id = @contact.company.id
+                    name = @contact.company.name
+                  else
+                    id = nil
+                    name = nil
+                  end %>
+                <div class="col-sm-10">
+                  <%= f.text_field :company, class: 'form-control',
+                        value: name,
+                        placeholder: 'Search by Name', id: "company" %>
+                  <%= f.hidden_field :company_id, value: id, id: "company_id" %>
+                </div>
+              </div>
+              <div class="row">
+                <%= f.label :position, class: "col-sm-2 control-label" %>
+                <div class="col-sm-10">
+                  <%= f.select :position_id, options_from_collection_for_select(
+                      Position.all.order(:title), :id, :title), { include_blank: "Select Position" }, { class: 'form-inline selectpicker'} %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% when "name" %>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="row">
+              </div>
+              <div class="row">
+                <%= f.label :name, class: "col-sm-1 control-label" %>
+                <div class="col-sm-3">
+                  <%= f.text_field :first_name, class: 'form-control',
+                        placeholder: 'First Name' %>
+                </div>
+                <div class="col-sm-3">
+                  <%= f.text_field :middle_name, class: 'form-control',
+                        placeholder: 'Middle Name' %>
+                </div>
+                <div class="col-sm-5">
+                  <%= f.text_field :last_name, class: 'form-control',
+                        placeholder: 'Last Name' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        
+      </div>
+      <div class="modal-footer">
+          <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  $(function () {
+    
+    <% if @contact.zip_code %>
+      $( "#zip_code" ).val("<%= @contact.zip_code.code %>");
+      $( "#zip_code_id" ).val("<%= @contact.zip_code.id %>");
+    <% end %>
+    $( "#placement_input" ).val("<%= @contact.placement.strftime("%m/%d/%Y") if @contact.placement %>");
+    $("#zip_code").autocomplete({
+      source: "/zip_codes/autocomplete",
+      minLength: 3,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#zip_code").val(ui.item.label);
+        $("#zip_code_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#zip_code").val(ui.item.label);
+      }
+    });
+    $("#referrer").autocomplete({
+      source: "/contacts/autocomplete",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#referrer").val(ui.item.label);
+        $("#referrer_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#referrer").val(ui.item.label);
+      }
+    });
+    $("#company").autocomplete({
+      source: "/companies/autocomplete",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#company").val(ui.item.label);
+        $("#company_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#company").val(ui.item.label);
+      }
+    });
+    $("#community").autocomplete({
+      source: "/communities/autocomplete",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#community").val(ui.item.label);
+        $("#community_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#community").val(ui.item.label);
+      }
+    });
+    $("#community_search").autocomplete({
+      source: "/communities/autocomplete",
+      minLength: 2,
+      select: function(event, ui) {
+        event.preventDefault();
+        $("#community_search").val(ui.item.label);
+        $("#clinic_id").val(ui.item.value);
+      },
+      focus: function(event, ui) {
+        event.preventDefault();
+        $("#community_search").val(ui.item.label);
+      }
+    });
+  });
+  $( function() {
+    $( "#dob" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      defaultDate: "-70y",
+      minDate: "-110y",
+      maxDate: new Date()
+    });
+    $( "#pay_entry_base_date" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      defaultDate: "-50y",
+      minDate: "-90y",
+      maxDate: new Date()
+    });
+    $( "#end_of_active_service" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      defaultDate: "-40y",
+      minDate: "-90y",
+      maxDate: new Date()
+    });
+    $( "#benefit_received" ).datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
+    $( "#placement_input" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      defaultDate: "+90d"
+    });
+    $( "#va_application_submitted" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      defaultDate: "+90d"
+    });
+    $('.selectpicker').selectpicker({
+      });
+     
+    $("#contact_activity_list_tokens").tokenInput(
+      "/contacts/activities.json", {
+      theme: 'facebook',
+      minChars: 1,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#contact_activity_list_tokens').data('load')
+    });
+    $("#contact_dining_list_tokens").tokenInput(
+      "/contacts/dinings.json", {
+      theme: 'facebook',
+      minChars: 3,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#contact_dining_list_tokens').data('load')
+    });
+    $("#contact_feature_list_tokens").tokenInput(
+      "/contacts/features.json", {
+      theme: 'facebook',
+      minChars: 1,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#contact_feature_list_tokens').data('load')
+    });
+    $("#contact_undesired_list_tokens").tokenInput(
+      "/contacts/undesireds.json", {
+      theme: 'facebook',
+      minChars: 1,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#contact_undesired_list_tokens').data('load')
+    });
+    $("#contact_license_list_tokens").tokenInput(
+      "/contacts/licenses.json", {
+      theme: 'facebook',
+      minChars: 1,
+      searchDelay: 200,
+      allowCustomEntry: true,
+      preventDuplicates: true,
+      allowFreeTagging: true,
+      tokenValue: 'id',
+      prePopulate: $('#contact_license_list_tokens').data('load')
+    });
+  } );
+</script>

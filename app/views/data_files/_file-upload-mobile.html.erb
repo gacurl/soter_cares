@@ -1,0 +1,8 @@
+<%= form_for([@contact, @data_file]) do |f| %>
+  <div class="field hidden-md hidden-lg">
+    <%#= f.label :image %>
+    <%= f.file_field :file, class: "filestyle file-button" %>
+  
+    <%= f.submit "Upload", class: 'btn btn-primary' %>
+  </div>
+<% end %>

@@ -1,0 +1,21 @@
+<table class="table table-condensed ero-table">
+  <tr style='font-weight: bold'>
+    <td>Name</td>
+    <td>Communities</td>
+    <td></td>
+  </tr>
+
+
+<% @companies.each do |company| %>
+  <tr>
+    <td><%= link_to company.name, company %></td>
+    <td><%= company.communities_count %></td>
+    <td><%= link_to "Delete", company, method: :delete,
+                  data: { confirm: "Are you sure you want to delete #{company.name}?" },
+                  class: "btn-sm btn-danger" if current_user.admin %></td>
+  </tr>
+<% end %>
+</table>
+<h6 style='margin-bottom: 1px'><%= page_entries_info @companies, :model => "companies" %></h6>
+<%= will_paginate @companies, :param_name => 'page', :style => 'font-size: 9px; margin: 1px' %>
+     

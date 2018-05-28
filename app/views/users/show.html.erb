@@ -1,0 +1,123 @@
+<% provide(:title, 'Dashboard') %>
+
+<h3><%= current_user.name %></h3>
+
+<div class="col-md-12" id="leads">
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Leads
+      </div>
+      <div class="panel-body">
+          <table class="table table-condensed ero-table">
+            <tr style='font-weight: bold'>
+              <td>Date of Entry</td>
+              <td>Name</td>
+              <td>Status</td>
+            </tr>
+          
+          
+          <% @leads.each do |lead| %>
+            <tr>
+              <td><%= lead.created_at.strftime("%m/%d/%Y") %></td>
+              <td><%= link_to lead.name, lead %></td>
+              <td><%= lead.results.last.result_type.name %></td>
+            </tr>
+          <% end %>
+          </table>
+          <h6 style='margin-bottom: 1px'><%= page_entries_info @leads, :model => "leads" %></h6>
+          <%= will_paginate @leads, :param_name => 'lead_page', :style => 'font-size: 9px; margin: 1px' %>
+      </div> 
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Near Placement
+      </div>
+      <div class="panel-body">
+          <table class="table table-condensed ero-table">
+            <tr style='font-weight: bold'>
+              <td>Est. Placement Date</td>
+              <td>Name</td>
+              <td>Status</td>
+            </tr>
+          
+          
+          <% @near_placements.each do |placement| %>
+            <tr>
+              <td><%= placement.placement.strftime("%m/%d/%Y") %></td>
+              <td><%= link_to placement.name, placement %></td>
+              <td><%= placement.placement_status.status %></td>
+            </tr>
+          <% end %>
+          </table>
+          <h6 style='margin-bottom: 1px'><%= page_entries_info @near_placements, :model => "placements" %></h6>
+          <%= will_paginate @near_placements, :param_name => 'placement_page', :style => 'font-size: 9px; margin: 1px' %>
+      </div> 
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Placements
+      </div>
+      <div class="panel-body">
+          <table class="table table-condensed ero-table">
+            <tr style='font-weight: bold'>
+              <td>Placement Date</td>
+              <td>Name</td>
+              <td>Community</td>
+              <td>Rate</td>
+              <td>Deferred Rate</td>
+            </tr>
+          
+          
+          <% @recent_placements.each do |placement| %>
+            <tr>
+              <td><%= placement.results.last.updated_at.try(:strftime, "%m/%d/%Y") %></td>
+              <td><%= link_to placement.name, placement %></td>
+              <td><%= placement.facility.name %></td>
+              <td><%= number_to_currency(placement.results.last.rate) %></td>
+              <td><%= number_to_currency(placement.results.last.deferred_rate) %></td>
+            </tr>
+          <% end %>
+          </table>
+          <h6 style='margin-bottom: 1px'><%= page_entries_info @recent_placements, :model => "placements" %></h6>
+          <%= will_paginate @recent_placements, :param_name => 'recent_placement_page', :style => 'font-size: 9px; margin: 1px' %>
+      </div> 
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        My Notes
+      </div>
+      <div class="panel-body">
+        <h6 style='margin-bottom: 1px'><%= page_entries_info @notes, :model => "notes" %></h6>
+          <%= will_paginate @notes, :param_name => 'notes_page', :style => 'font-size: 9px; margin: 1px' %>
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Date</td>
+            <td></td>
+            <td>Content</td>
+            <% if @user.admin? %>
+              <td>User</td>
+              <td></td>
+            <% end %>
+          </tr>
+        
+        <% @notes.order(created_at: :asc).each do |note| %>
+          <tr>
+            <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+            <td><%= link_to note.notable.name, polymorphic_path(note.notable) if note.notable.present? %></td>
+            <td><%= sanitize nl2br(note.content) %></td>
+            <% if @user.admin? %>
+              <td><%= note.user.try(:name) %></td>
+              <td><%= link_to "Delete", note, method: :delete, class: "btn btn-sm btn-danger", data: { confirm: "Are you sure?" } %></td>
+            <% end %>
+          </tr>
+        <% end %>
+        </table>
+          <%= will_paginate @notes, :param_name => 'notes_page', :style => 'font-size: 9px; margin: 1px' %>
+      </div>
+    </div>
+  </div>

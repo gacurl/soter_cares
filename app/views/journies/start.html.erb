@@ -1,0 +1,33 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Community Search</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    Thank you for taking the first step in finding the best care solution for you and your family.  Please take a moment to give us a little better understanding of your individual situation so we can best meet your exact needs.
+  </p>
+  <p>Who are you looking for?</p>
+  <div class="row">
+    <div class="col-md-4">
+      <ul>
+        <% RelationshipType.where('male_name != female_name').each do |rt| %>
+          <li><%= link_to rt.male_name, living_journies_path(relationship_type_id: rt.id, gender: "Male") %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <ul>
+        <% RelationshipType.where('male_name != female_name').each do |rt| %>
+          <li><%= link_to rt.female_name, living_journies_path(relationship_type_id: rt.id, gender: "Female") %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <ul>
+        <li><%= link_to "Self", living_journies_path(self_guided: true) %></li>
+        <% RelationshipType.where('male_name = female_name').each do |rt| %>
+          <li><%= link_to rt.female_name, living_journies_path(relationship_type_id: rt.id) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+<br>

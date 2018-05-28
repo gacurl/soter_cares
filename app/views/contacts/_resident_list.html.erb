@@ -1,0 +1,20 @@
+<h6 style='margin-bottom: 1px'><%= page_entries_info residents, :model => "residents" %></h6>
+    <%= will_paginate residents, :param_name => 'resident_page', :style => 'font-size: 9px; margin: 1px' %>
+
+<table class="table table-condensed ero-table">
+      <tr style='font-weight: bold'>
+        <td>Name</td>
+        <td>Placement Date</td>
+        <td>Status</td>
+      </tr>
+    
+    
+    <% residents.each do |contact| %>
+      <tr>
+        <td><%= link_to contact.first_name + " " + contact.last_name, contact %></td>
+        <td><%= contact.results.last.updated_at.strftime("%m/%d/%Y") if contact.results.any? %></td>
+        <td><%= contact.results.last.result_type.name if contact.results.any? %></td>
+      </tr>
+    <% end %>
+    </table>
+     <%= will_paginate residents, :param_name => 'resident_page', :style => 'font-size: 9px; margin: 1px' %>

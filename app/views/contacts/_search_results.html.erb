@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group btn-group-xs" role="group">
+        <button type="button" class="btn btn-primary list-buttons" id="all">All</button>
+      </div>
+      <div class="btn-group btn-group-xs" role="group">
+        <button type="button" class="btn btn-default list-buttons" id="prospective">Prospects</button>
+      </div>
+      <div class="btn-group btn-group-xs" role="group">
+        <button type="button" class="btn btn-default list-buttons" id='family'>Family</button>
+      </div>
+      <div class="btn-group btn-group-xs" role="group">
+        <button type="button" class="btn btn-default list-buttons" id="residents">Residents</button>
+      </div>
+      <div class="btn-group btn-group-xs" role="group">
+        <button type="button" class="btn btn-default list-buttons" id='business'>Business</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="contact-list" class="lists">
+    <%= render(:partial => 'contact_list', locals: { contacts: @contacts }) %>
+</div>
+<div id="prospective-list" class="hide lists">
+    <%= render(:partial => 'prospective_list', locals: { prospects: @prospects }) %>
+</div>
+<div id="residents-list" class="hide lists">
+    <%= render(:partial => 'resident_list', locals: { residents: @residents }) %>
+</div>
+<div id="family-list" class="hide lists">
+    <%= render(:partial => 'family_list', locals: { members: @family }) %>
+</div>
+<div id="business-list" class="hide lists">
+    <%= render(:partial => 'business_list', locals: { businesses: @businesses }) %>
+</div>
+
+<script>
+    $('#all').click(function() {
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#all').addClass('btn-primary');
+    $('.lists').hide();
+    $('#contact-list').show();
+  });
+  $('#prospective').click(function() {
+    $('#prospective-list').removeClass('hide');
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#prospective').addClass('btn-primary');
+    $('.lists').hide();
+    $('#prospective-list').show();
+  });
+  $('#residents').click(function() {
+    $('#residents-list').removeClass('hide');
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#residents').addClass('btn-primary');
+    $('.lists').hide();
+    $('#residents-list').show();
+  });
+  $('#family').click(function() {
+    $('#family-list').removeClass('hide');
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#family').addClass('btn-primary');
+    $('.lists').hide();
+    $('#family-list').show();
+  });
+  $('#business').click(function() {
+    $('#business-list').removeClass('hide');
+    $('.list-buttons').removeClass('btn-primary');
+    $('.list-buttons').addClass('btn-default');
+    $('#business').addClass('btn-primary');
+    $('.lists').hide();
+    $('#business-list').show();
+  });
+</script>

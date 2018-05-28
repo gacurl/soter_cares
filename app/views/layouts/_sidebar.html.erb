@@ -1,0 +1,13 @@
+<div class="navbar-default sidebar" role="navigation" style="padding: 10px;">
+  <div class="sidebar-nav navbar-collapse" style="padding-left: 0px; padding-right: 0px">
+      <ul class="nav in nav-sidebar">
+        <li class="<%= cp(current_user) %>"><%= link_to "#{fa_icon "dashboard 2x"}".html_safe, current_user %></li>
+        <li class="<%= cp(contacts_path) %>"><%= link_to "#{fa_icon "users 2x"}".html_safe, contacts_path %></li>
+        <li class="<%= cp(communities_path) %>"><%= link_to "#{fa_icon "bed 2x"}".html_safe, communities_path %></li>
+        <li class="<%= cp(companies_path) %>"><%= link_to "#{fa_icon "building 2x"}".html_safe, companies_path %></li>
+        <li class="<%= cp(pharmacies_path) %>"><%= link_to "#{fa_icon "medkit 2x"}".html_safe, pharmacies_path %></li>
+        <li class="<%= cp(settings_path) %>"><%= link_to "#{fa_icon "gear 2x"}".html_safe, settings_path, data: { no_turbolink: true } if current_user.admin? %></li>
+        <li><%= link_to "#{fa_icon "sign-out 2x"}".html_safe, logout_path, method: "delete" %></li>
+      </ul>
+  </div>
+</div>

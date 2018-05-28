@@ -1,0 +1,65 @@
+<%= form_tag(url: contact_community_search_path(@contact), method: "get", remote: true) do %>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title">Community Search</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <%= label_tag(:city, "Enter Location and Distance", class: "col-sm-4 control-label") %>
+            <div class="col-sm-5">
+              <%= text_field_tag :city, nil, class: 'form-control', 
+                    placeholder: "Enter City, State", id: "city" %>
+              <%= hidden_field_tag :city_id, id: "city_id" %>
+            </div>
+            <div class="col-sm-3">
+              <%= text_field_tag :distance, nil, class: 'form-control', 
+                    placeholder: "Max Distance", id: "distance" %>
+            </div>
+          </div>
+        </div>
+        <% end %>
+        <div class="row" id="communities">
+          <%= render partial: 'community_results' %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+  $("#city").autocomplete({
+    source: "/cities/autocomplete",
+    minLength: 3,
+    select: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+      $("#city_id").val(ui.item.value);
+    },
+    focus: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+    }
+  });
+  
+  $( "#distance" ).on('input',function(e) {
+    var city_id = $("#city_id").val();
+    var distance = $("#distance").val();
+    $.ajax({
+      type: "GET",
+      url: "/contacts/<%= @contact.id %>/distance_search",
+      dataType: "json",
+      data: {
+        city_id: city_id,
+        distance: distance
+      }
+    });
+  });
+</script>

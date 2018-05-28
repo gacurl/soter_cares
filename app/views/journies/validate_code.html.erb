@@ -1,0 +1,20 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Community Search</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    There are a total of <strong><%= @communities.count %> communities</strong> that are potential matches.<br>
+   
+    Please enter the code we sent to your cell phone.
+  </p>
+  <div class="row">
+    <div class="col-md-3">
+      <%= form_tag(check_code_journies_path) do %>
+        <%= text_field_tag :code, nil, placeholder: 'Enter code', class: "form-control" %>
+         <%= hidden_field_tag :prospect_id, @prospect.id %>
+        <%= hidden_field_tag :lead_id, @lead.id %>
+        <div><%= submit_tag 'Next', class: 'btn btn-primary' %></div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<br>

@@ -1,0 +1,30 @@
+<% provide(:title, 'Reset password') %>
+<h3 style='text-align: center'>Reset password</h3>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@user, url: password_reset_path(params[:id])) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+
+      <%= hidden_field_tag :email, @user.email %>
+
+      <%= f.label :password %>
+      <%= f.password_field :password, class: 'form-control' %>
+
+      <%= f.label :password_confirmation, "Confirmation" %>
+      <%= f.password_field :password_confirmation, class: 'form-control' %>
+      
+      <%= f.submit "Update password", class: "btn btn-primary submit-btn" %>
+    <% end %>
+  </div>
+</div>
+<div class="row" style="padding: 10px;">
+  <div class="col-md-6 col-md-offset-3" style="background-color: #e6e6e6; border-radius: 10px;">
+    <p style="font-size: 14px;"><strong>Password requirements:</strong></p>
+    <p style="font-size: 12px;">8 characters long</p>
+    <p style="font-size: 12px;">1 uppercase (A..Z)</p>
+    <p style="font-size: 12px;">1 lowercase (a..z)</p>
+    <p style="font-size: 12px;">1 number (1..9)</p>
+    <p style="font-size: 12px;">1 special character (!@#$%^&*()[]{}|\;:'"<>,.?/)</p>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<br>
+<div class="container info-box">
+  <h1 style="text-align: center; color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif; font-size: 40px">Community Search</h1>
+  <p style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+    There are a total of <strong><%= @communities.count %> communities</strong> that are potential matches. <br>
+    
+    What is your name?
+  </p>
+
+<%= form_for(@lead, url: update_lead_name_journies_path(prospect_id: @prospect.id, lead_id: @lead.id)) do |f| %>
+   <% if @lead.errors.any? %>
+    <div id="error_explanation">
+    <div class="alert alert-danger">
+    The form contains <%= pluralize(@lead.errors.count, "error") %>.
+    </div>
+    <ul>
+    <% @lead.errors.full_messages.each do |msg| %>
+    <li id="error"><%= msg %></li>
+    <% end %>
+    </ul>
+    </div>
+    <% end %>
+    <div class="row">
+      <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-12 col-sm-offset-4">
+              <%= f.label :first_name %>
+              <%= f.text_field :first_name, class: 'form-control', placeholder: 'First Name' %>
+            </div>
+            <div class="col-sm-12 col-sm-offset-4">
+              <%= f.label :last_name %>
+              <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last Name' %>
+            </div>
+          </div>
+        </div>
+      </div>
+          <%= f.submit "Next", class: "btn btn-primary" %>
+<% end %>
+
+</div>
+<br>

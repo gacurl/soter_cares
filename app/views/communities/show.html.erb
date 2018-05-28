@@ -1,0 +1,154 @@
+<% provide(:title,"#{@community.name}") %>
+
+<div id="community">
+    <%= render(:partial => 'community') %>
+</div>
+
+<script>
+  $("#image-upload").fileupload({
+    dropZone: $('#picture-dropzone'),
+    add: function(e, data) {
+      data.progressBar = $('<div class="progress" style="width: 300px"><div class="progress-bar"></div></div>').insertAfter(".image_actions");
+      var options      = {
+        extension: data.files[0].name.match(/(\.\w+)?$/)[0], // set the file extension
+        _: Date.now() // prevent caching
+      };
+
+      $.getJSON("/photos/upload/cache/presign", options, function(result) {
+        data.formData  = result.fields;
+        data.url       = result.url;
+        data.paramName = "file";
+        data.submit();
+      });
+
+    },
+
+    progress: function(e, data) {
+      var progress   = parseInt(data.loaded / data.total * 100, 10);
+      var percentage = progress.toString() + '%';
+      data.progressBar.find(".progress-bar").css("width", percentage).html(percentage);
+    },
+
+    done: function(e, data) {
+      data.progressBar.remove();
+
+      var file = {
+        id:       data.formData.key.match(/cache\/(.+)/)[1], // we have to remove the prefix part
+        storage:  'cache',
+        metadata: {
+          size:      data.files[0].size,
+          filename:  data.files[0].name.match(/[^\/\\]+$/)[0], // IE return full path
+          upload_options: {acl: 'public-read' },
+          mime_type: data.files[0].type
+        }
+      };
+
+      var form      = $(this).closest("form");
+      var form_data = new FormData(form[0]);
+      form_data.append($(this).attr("name"), JSON.stringify(file));
+
+      $.ajax(form.attr("action"), {
+        contentType: false,
+        processData: false,
+        data:        form_data,
+        method:      form.attr("method"),
+        dataType:    "json",
+        success: function(response) {
+          var $img = $("<img/>", { class: "img-responsive", src: response.image_url});
+          var $div = $("<div class='col-sm-2'/>").append($img);
+          $("#photos").append($div);
+        }
+      });
+    }
+  });
+  $("#file-upload").fileupload({
+    dropZone: $('#file-dropzone'),
+    add: function(e, data) {
+      data.progressBar = $('<div class="progress" style="width: 300px"><div class="progress-bar"></div></div>').insertAfter(".actions");
+      var options      = {
+        extension: data.files[0].name.match(/(\.\w+)?$/)[0], // set the file extension
+        _: Date.now() // prevent caching
+      };
+
+      $.getJSON("/data_files/upload/cache/presign", options, function(result) {
+        data.formData  = result.fields;
+        data.url       = result.url;
+        data.paramName = "file";
+        data.submit();
+      });
+
+    },
+
+    progress: function(e, data) {
+      var progress   = parseInt(data.loaded / data.total * 100, 10);
+      var percentage = progress.toString() + '%';
+      data.progressBar.find(".progress-bar").css("width", percentage).html(percentage);
+    },
+
+    done: function(e, data) {
+      data.progressBar.remove();
+
+      var file = {
+        id:       data.formData.key.match(/cache\/(.+)/)[1], // we have to remove the prefix part
+        storage:  'cache',
+        metadata: {
+          size:      data.files[0].size,
+          filename:  data.files[0].name.match(/[^\/\\]+$/)[0], // IE return full path
+          upload_options: {acl: 'authenticated-read' },
+          mime_type: data.files[0].type
+        }
+      };
+
+      var form      = $(this).closest("form");
+      var form_data = new FormData(form[0]);
+      form_data.append($(this).attr("name"), JSON.stringify(file));
+
+      $.ajax(form.attr("action"), {
+        contentType: false,
+        processData: false,
+        data:        form_data,
+        method:      form.attr("method"),
+        dataType:    "json",
+        success: function(response) {
+          var $div = $(
+              '<td><a href="' + response.file_url + '">' + response.file_name + '</a></td>' +
+              '<td>' + response.file_date + '</td>' +
+              '<td>' + response.file_poster_name + '</td>'
+            )
+          
+          function addRow(tableID) {
+            // Get a reference to the table
+            var tableRef = document.getElementById(tableID);
+          
+            // Insert a row in the table at row index 0
+            var newRow = tableRef.insertRow(-1);
+          
+            // Insert a cell in the row at index 0
+            var newCell1 = newRow.insertCell(0);
+            var newCell2 = newRow.insertCell(1);
+            var newCell3 = newRow.insertCell(2);
+          
+            // Append a text node to the cell
+            var a = document.createElement('a');
+            var newText1 = document.createTextNode(response.file_name);
+            var newText2 = document.createTextNode(response.file_date);
+            var newText3 = document.createTextNode(response.file_poster_name);
+            
+            a.appendChild(newText1);
+            a.title = response.file_name;
+            a.href = response.file_url;
+            
+            newCell1.appendChild(a);
+            newCell2.appendChild(newText2);
+            newCell3.appendChild(newText3);
+            
+          }
+
+          // Call addRow() with the ID of a table
+          addRow('files');
+          
+        }
+      });
+    }
+  });
+</script>

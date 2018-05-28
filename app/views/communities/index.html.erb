@@ -1,0 +1,72 @@
+<% provide(:title, 'Communities') %>
+<h3><%= current_user.name %></h3>
+
+<h3>Communities <%= link_to "#{fa_icon "plus-circle"} New".html_safe, new_community_path,  
+              class: "btn btn-primary" %> </h3>
+
+<div class="form-group row">
+  <%= form_tag communities_path, :method => 'get', :id => "communities_search", class: "form-inline" do %>
+  <div class="row">
+    <%= label_tag(:city, "Community", class: "col-md-1 control-label") %>
+    <div class="col-md-11">
+      <%= text_field_tag :search, params[:search], class: 'form-control',
+            placeholder: 'Name', id: "community" %>
+    </div>
+  </div>
+  <div class="row">
+      <%= label_tag(:city, "Location", class: "col-md-1 control-label") %>
+      <div class="col-md-4">
+        <%= text_field_tag :city, nil, class: 'form-control', 
+              placeholder: "City, State", id: "city" %>
+        <%= hidden_field_tag :city_id, id: "city_id" %>
+        <%= text_field_tag :distance, nil, class: 'form-control', 
+              placeholder: "Max Distance", id: "distance" %>
+  
+      </div>
+  </div>
+  <% end %>
+</div>
+
+  <div id="search_results">
+    <%= render 'search_results' %>
+  </div>
+    
+</div>
+
+<script>
+    
+  $(function() {
+    $("#communities_search input").keyup(function() {
+      $.get($("#communities_search").attr("action"), $("#communities_search").serialize(), null, "script");
+      return false;
+    });
+  $("#city").autocomplete({
+    source: "/cities/autocomplete",
+    minLength: 3,
+    select: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+      $("#city_id").val(ui.item.value);
+    },
+    focus: function(event, ui) {
+      event.preventDefault();
+      $("#city").val(ui.item.label);
+    }
+  });
+  
+  $( "#distance" ).on('input',function(e) {
+    var city_id = $("#city_id").val();
+    var distance = $("#distance").val();
+    $.ajax({
+      type: "GET",
+      url: "/communities/index",
+      dataType: "json",
+      data: {
+        city_id: city_id,
+        distance: distance
+      }
+    });
+  });
+  });
+</script>
+

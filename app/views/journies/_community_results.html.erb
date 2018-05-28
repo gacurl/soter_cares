@@ -1,0 +1,113 @@
+<% if @communities.any? %>
+  <hr>
+  <div class="row">
+    <div class="col-md-12 col-md-offset-3">
+      <div id="map" style="width: 800px; height: 400px; max-width: 100%"></div>
+    </div>
+  </div>
+  <hr>
+<% end %>
+<% x = 1 %>
+<% @communities.first(9).each do |community| %>
+<br>
+<div class="container info-box">
+  <div class="row">
+  <div class="col-md-6">
+    <h3 style='display: inline'><%= image_tag("https://cdn.sotercares.com/markers/marker-#{x}.png") %>  <%= community.name %></h3>
+    <em> - <%= community.zip_code.city.name %>, <%= community.zip_code.city.county.state.two_digit_code %></em>
+  </div>
+  <div class="col-md-6">
+    <%= link_to "Pricing", update_prospective_communities_journies_path(prospect_id: @prospect.id, lead_id: @lead.id, community_id: community.id),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },
+          class: "btn btn-success btn-sm pull-right", method: :post } %>
+   </div> 
+  </div> 
+    <hr>
+    <div class="row">
+      <% community.photos.where(viewable: true).each do |photo| %>
+        <div class="col-sm-2">
+              <% disposition = "attachment; filename=#{photo.image.original_filename.inspect}" %>
+              <% if Rails.env.production? %>
+                <%= image_tag(photo.image.url(response_content_disposition: disposition, 
+                        virtual_host: true, host: "https://storage.sotercares.com"), class: "img-responsive") %>
+              <% else %>
+                <%= image_tag(photo.image.url(response_content_disposition: disposition), class: "img-responsive") %>
+              <% end %>
+        </div>
+      <% end %>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-1">
+        <strong>Activities:</strong>
+      </div>
+      <div class="col-md-5">
+        <%= highlight(community.activity_list.join(", "), @prospect.activity_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %>
+      </div>
+      <div class="col-md-1">
+        <strong>Dining:</strong>
+      </div>
+      <div class="col-md-5">
+        <%= highlight(community.dining_list.join(", "), @prospect.dining_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <strong>Features:</strong>
+      </div>
+      <div class="col-md-5">
+        <%= highlight(community.feature_list.join(", "), @prospect.feature_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"><strong>Transportation:</strong></div>
+      <div class="col-md-4">
+        <%= if community.transport?
+                "Yes"
+                else
+                "No" 
+                end %>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="col-md-2"><strong>Pets:</strong></div>
+      <div class="col-md-4">
+        <%= if community.pets?
+                "Yes"
+                else
+                "No" 
+                end %>
+      </div>
+    </div>    
+    <div class="row">    
+    
+     </div>
+</div>
+<% x += 1 %>
+<% end %>
+<br>
+<script>
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {
+  }, 
+  internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers([
+      <% x = 1 %>
+      <% @communities.first(9).each do |community| %>
+      {
+        "lat": <%= community.latitude %>,
+        "lng": <%= community.longitude %>,
+        "picture": {
+          "url": "https://cdn.sotercares.com/markers/marker-<%= x %>.png",
+          "width":  32,
+          "height": 32
+        },
+        "infowindow": "<%= community.name %>"
+      },
+      <% x += 1 %>
+      <% end %>
+    ]);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+</script>

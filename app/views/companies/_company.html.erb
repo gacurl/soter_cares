@@ -1,0 +1,144 @@
+<h3><%= @company.name %>
+<%= link_to "Edit Name", edit_company_path(@company, section: :name),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-default btn-xs" } %></h3>
+
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Company Information
+      <%= link_to "Update", edit_company_path(@company, section: :info),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr>
+          <td style='font-weight: bold'>Name:</td><td><%= @company.name %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Website:</td><td><%= link_to @company.website, @company.website if @company.website.present? %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Phone:</td><td><%= link_to number_to_phone(@company.phone_number, area_code: true), "tel:#{@company.phone_number}" %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Fax:</td><td><%= number_to_phone(@company.fax, area_code: true) %></td>
+        </tr>
+        <tr>
+          <td style='font-weight: bold'>Address:</td>
+          <td>
+              <% if @company.zip_code %>
+                <%= @company.address_1 %><br>
+                <% if @company.address_2.present? %>
+                  <%= @company.address_2 %><br>
+                <% end %>
+                <%= @company.zip_code.city.name %> <%= @company.zip_code.city.county.state.two_digit_code %>, <%= @company.zip_code.code %>
+              <% end %>
+          </td>
+        </tr>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Contacts
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr  style='font-weight: bold'>
+          <td>Name</td>
+          <td>Position</td>
+        </tr>
+        <% @company.contacts.each do |contact| %>
+          <tr>
+            <td><%= link_to contact.first_name + " " + contact.last_name, contact %></td>
+            <td><%= contact.position.title if contact.position %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Communities
+      <%= link_to "Add", edit_company_path(@company, section: :communities),
+          {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+          class: "btn btn-default btn-xs pull-right" } %>
+    </div>
+    <div class="panel-body">
+      <table class="table table-condensed ero-table">
+        <tr  style='font-weight: bold'>
+          <td>Name</td>
+          <td>Location</td>
+        </tr>
+        <% @company.communities.each do |community| %>
+          <tr>
+            <td><%= link_to community.name, community %></td>
+            <td><%= community.location %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+</div>
+<div class="col-md-8">
+    <div class="panel panel-default">
+    <div class="panel-heading">
+     Files
+    </div>
+    <div class="panel-body" id='#file-dropzone'>
+      <table class="table table-condensed ero-table" id="files">
+          <tr style='font-weight: bold;'>
+            <th>Name</th>
+            <th>Posted</th>
+            <th>User</th>
+          </tr>
+          <tbody>
+            <%= render partial: "data_files/file_list", locals: {object: @company} %>
+          </tbody>
+      </table>
+      <div class="actions">
+        <%#= f.submit %>
+      </div>
+      <%= form_for([@company, @data_file]) do |f| %>
+        <div class="field">
+          <%#= f.label :image %>
+          <%= f.file_field :file, class: "file-button" %>
+        
+          <%= f.submit "Upload", class: 'btn btn-primary' %>
+        </div>
+      
+        
+      <% end %>
+    </div> 
+  </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Notes
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed ero-table">
+          <tr style='font-weight: bold'>
+            <td>Date</td>
+            <td>User</td>
+            <td>Content</td>
+          </tr>
+        
+        <% @company.notes.order(created_at: :asc).each do |note| %>
+          <tr>
+            <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+            <td><%= note.user.try(:name) %></td>
+            <td><%= sanitize nl2br(note.content) %></td>
+          </tr>
+        <% end %>
+        </table>
+        <%= link_to "#{fa_icon "plus-circle"} New".html_safe, company_new_note_path(@company, @note),
+            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
+            class: "btn btn-primary" } %> 
+      </div>
+    </div>
+  </div>
+  
+
