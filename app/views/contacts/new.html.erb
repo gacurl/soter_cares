@@ -1,34 +1,35 @@
 <% provide(:title, "Create Contact") %>
-<h3>Create Contact</h3>
-<%= form_for(@contact, html: { class: "form-horizontal" }) do |f| %>
-<%= render 'shared/error_messages', object: f.object %>
-<div class="row">
-    <%= f.label :contact_type, class: "col-sm-1 control-label" %>
-    <div class="col-sm-2">
-      <%= f.select(:contact_type, [['Resident', 'Resident'], ['Family/Advocates', 'Family'], 
-          ['Business', 'Business']], { include_blank: true }, { class: 'form-inline selectpicker'}) %>
+<div class="container">
+  <h3>Create Contact</h3>
+  <%= form_for(@contact, html: { class: "form-horizontal" }) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <div class="row">
+      <%= f.label :contact_type, class: "col-sm-1 control-label" %>
+      <div class="col-sm-2">
+        <%= f.select(:contact_type, [['Resident', 'Resident'], ['Family/Advocates', 'Family'],
+                                     ['Business', 'Business']], { include_blank: true }, { class: 'form-inline selectpicker' }) %>
+      </div>
+      <%= f.label "Est Placement", class: "col-sm-1 control-label contact_resident" %>
+      <div class="col-sm-2 contact_resident">
+        <%= f.text_field :placement_input, class: 'form-control', id: 'placement_input', readonly: true %>
+      </div>
     </div>
-    <%= f.label "Est Placement", class: "col-sm-1 control-label contact_resident" %>
-    <div class="col-sm-2 contact_resident">
-      <%= f.text_field :placement_input, class: 'form-control', id: 'placement_input', readonly: true %>
-    </div>
-</div>
-  <br>
-  <div class="row">
-    <div class="col-md-6 contact_person">
+    <br>
+    <div class="row">
+      <div class="col-md-6 contact_person">
         <div class="form-group row">
           <%= f.label :name, class: "col-sm-1 control-label" %>
           <div class="col-sm-1">
             <div id='salutation_male'>
-              <%= f.select(:salutation_male, 
-                  [['Mr.', 'Mr.'],
-                  ['Dr.', 'Dr.']], {}, { class: 'form-inline selectpicker'}) %>
+              <%= f.select(:salutation_male,
+                           [['Mr.', 'Mr.'],
+                            ['Dr.', 'Dr.']], {}, { class: 'form-inline selectpicker' }) %>
             </div>
             <div id='salutation_female'>
-              <%= f.select(:salutation_female, 
-                  [['Mrs.', 'Mrs.'], 
-                  ['Ms.', 'Ms.'], ['Miss', 'Miss'],
-                  ['Dr.', 'Dr.']], {}, { class: 'form-inline selectpicker'}) %>
+              <%= f.select(:salutation_female,
+                           [['Mrs.', 'Mrs.'],
+                            ['Ms.', 'Ms.'], ['Miss', 'Miss'],
+                            ['Dr.', 'Dr.']], {}, { class: 'form-inline selectpicker' }) %>
             </div>
           </div>
           <div class="col-sm-3">
@@ -41,7 +42,7 @@
             <%= f.text_field :last_name, class: 'form-control', placeholder: "Last Name" %>
           </div>
         </div>
-        
+
         <div class="form-group row">
           <%= f.label :email, class: "col-sm-2 control-label" %>
           <div class="col-sm-5">
@@ -54,211 +55,213 @@
         <div class="form-group row">
           <%= f.label :address, class: "col-sm-2 control-label" %>
           <div class="col-sm-10">
-            <%= f.text_field :address_1, class: 'form-control', 
-                  placeholder: "Street Address" %>
+            <%= f.text_field :address_1, class: 'form-control',
+                             placeholder:       "Street Address" %>
           </div>
         </div>
         <div class="form-group row">
           <div class="col-sm-10 col-sm-offset-2">
-            <%= f.text_field :address_2, class: 'form-control', 
-                  placeholder: "Apt. or P.O. Box Number" %>
+            <%= f.text_field :address_2, class: 'form-control',
+                             placeholder:       "Apt. or P.O. Box Number" %>
           </div>
         </div>
         <div class="form-group row">
           <%= f.label :zip, class: "col-sm-2 control-label" %>
           <div class="col-sm-6">
-            <%= f.text_field :zip_code, class: 'form-control', 
-                  placeholder: "5-digit Zip Code", id: "zip_code" %>
+            <%= f.text_field :zip_code, class: 'form-control',
+                             placeholder:      "5-digit Zip Code", id: "zip_code" %>
             <%= f.hidden_field :zip_code_id, :id => "zip_code_id" %>
           </div>
         </div>
         <div class="form-group row">
           <%= f.label :phone, class: "col-sm-2 control-label" %>
           <div class="col-sm-3">
-            <%= f.telephone_field :home_phone, class: 'form-control', 
-                  placeholder: "Home" %>
+            <%= f.telephone_field :home_phone, class: 'form-control',
+                                  placeholder:        "Home" %>
           </div>
           <div class="col-sm-3">
-            <%= f.telephone_field :cell_phone, class: 'form-control', 
-                  placeholder: "Cell" %>
+            <%= f.telephone_field :cell_phone, class: 'form-control',
+                                  placeholder:        "Cell" %>
           </div>
           <div class="col-sm-3">
-            <%= f.telephone_field :work_phone, class: 'form-control', 
-                  placeholder: "Work" %>
+            <%= f.telephone_field :work_phone, class: 'form-control',
+                                  placeholder:        "Work" %>
           </div>
-        
+
         </div>
         <div class="form-group row">
           <%= f.label :ssn, "SSN", class: "col-sm-2 control-label contact_resident" %>
           <div class="col-sm-4 contact_resident">
-            <%= f.text_field :ssn, class: 'form-control', 
-                  placeholder: "XXX-XX-XXXX" %>
+            <%= f.text_field :ssn, class: 'form-control',
+                             placeholder: "XXX-XX-XXXX" %>
           </div>
           <%= f.label :gender, class: "col-sm-2 control-label" %>
           <div class="col-sm-3">
-            <%= f.select(:gender,  
-                  [['Male', 'Male'], ['Female', 'Female']], { include_blank: true },
-                  {class: 'form-inline selectpicker'}) %>
+            <%= f.select(:gender,
+                         [['Male', 'Male'], ['Female', 'Female']], { include_blank: true },
+                         { class: 'form-inline selectpicker' }) %>
           </div>
           <%= f.label :position, class: "col-sm-2 control-label contact_business" %>
           <div class="col-sm-3 contact_business">
-            <%= f.select(:position_id,  
-                  options_from_collection_for_select(Position.all, :id, :title), { include_blank: true },
-                  {class: 'form-inline selectpicker'}) %>
+            <%= f.select(:position_id,
+                         options_from_collection_for_select(Position.all, :id, :title), { include_blank: true },
+                         { class: 'form-inline selectpicker' }) %>
           </div>
           <%= f.label "Relation to Resident", class: "col-sm-4 control-label contact_family" %>
           <div class="col-sm-3 gender_male">
             <%= f.select :male_relationship_type, options_from_collection_for_select(
-                  RelationshipType.all, :id, :male_name), { include_blank: true }, { class: 'form-inline selectpicker'} %>
+                RelationshipType.all, :id, :male_name), { include_blank: true }, { class: 'form-inline selectpicker' } %>
           </div>
           <div class="col-sm-3 gender_female">
             <%= f.select :female_relationship_type, options_from_collection_for_select(
-                  RelationshipType.all, :id, :female_name), { include_blank: true }, { class: 'form-inline selectpicker'} %>
+                RelationshipType.all, :id, :female_name), { include_blank: true }, { class: 'form-inline selectpicker' } %>
           </div>
           <div class="col-sm-3 col-sm-offset-9 relation_mod">
             <%= label_tag :in_law, class: 'checkbox inline' do %>
-            <%= check_box_tag :in_law %>
+              <%= check_box_tag :in_law %>
               <span>In-Law</span>
             <% end %>
             <%= label_tag :step, class: 'checkbox inline' do %>
-            <%= check_box_tag :step %>
+              <%= check_box_tag :step %>
               <span>Step</span>
             <% end %>
             <%= label_tag :great, class: 'checkbox inline' do %>
-            <%= check_box_tag :great %>
+              <%= check_box_tag :great %>
               <span>Great</span>
             <% end %>
           </div>
         </div>
-    </div>
-    <div class="col-md-6 contact_business">
-      <div class="form-group row">
-        <%= f.label :company, class: "col-sm-2 control-label" %>
-        <div class="col-sm-6">
-          <%= f.text_field :company, class: 'form-control', 
-                placeholder: "Company Name", id: "company" %>
-          <%= f.label :copy_company,class: 'checkbox inline' do %>
-          <%= check_box_tag :copy_company %>
-            <span>Copy Address to Company?</span>
-          <% end %>
-          <%= f.hidden_field :company_id, :id => "company_id" %>
+      </div>
+      <div class="col-md-6 contact_business">
+        <div class="form-group row">
+          <%= f.label :company, class: "col-sm-2 control-label" %>
+          <div class="col-sm-6">
+            <%= f.text_field :company, class: 'form-control',
+                             placeholder:     "Company Name", id: "company" %>
+            <%= f.label :copy_company, class: 'checkbox inline' do %>
+              <%= check_box_tag :copy_company %>
+              <span>Copy Address to Company?</span>
+            <% end %>
+            <%= f.hidden_field :company_id, :id => "company_id" %>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-6 contact_business">
-      <div class="form-group row">
-        <%= f.label :community, class: "col-sm-2 control-label" %>
-        <div class="col-sm-6">
-          <%= f.text_field :community, class: 'form-control', 
-                placeholder: "Community Name", id: "community" %>
-          <%= f.label :copy_community, class: 'checkbox inline' do %>
-          <%= check_box_tag :copy_community %>
-            <span>Copy Address to Community?</span>
-          <% end %>
-          <%= f.hidden_field :community_id, :id => "community_id" %>
+      <div class="col-md-6 contact_business">
+        <div class="form-group row">
+          <%= f.label :community, class: "col-sm-2 control-label" %>
+          <div class="col-sm-6">
+            <%= f.text_field :community, class: 'form-control',
+                             placeholder:       "Community Name", id: "community" %>
+            <%= f.label :copy_community, class: 'checkbox inline' do %>
+              <%= check_box_tag :copy_community %>
+              <span>Copy Address to Community?</span>
+            <% end %>
+            <%= f.hidden_field :community_id, :id => "community_id" %>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-6 contact_family">
-      <div class="form-group row">
-        <%= f.label :resident_search, class: "col-sm-2 control-label" %>
-        <div class="col-sm-6">
-          <%= f.text_field :resident_search, class: 'form-control', 
-                placeholder: "Resident Name (First and Last if new)", id: "resident_search" %>
-          <%= f.hidden_field :relation_id, :id => "relation_id" %>
+      <div class="col-md-6 contact_family">
+        <div class="form-group row">
+          <%= f.label :resident_search, class: "col-sm-2 control-label" %>
+          <div class="col-sm-6">
+            <%= f.text_field :resident_search, class: 'form-control',
+                             placeholder:             "Resident Name (First and Last if new)", id: "resident_search" %>
+            <%= f.hidden_field :relation_id, :id => "relation_id" %>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-6 veteran">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Veteran
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <%= f.label "Pay Entry Base Date", class: "col-sm-4 control-label" %>
-            <div class="col-sm-3">
-              <%= f.text_field :pay_entry_base_date_input, class: 'form-control', id: 'pay_entry_base_date', readonly: true %>
-            </div>
+      <div class="col-md-6 veteran">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Veteran
           </div>
-          <div class="row">
-            <%= f.label "End of Active Service", class: "col-sm-4 control-label" %>
-            <div class="col-sm-3">
-              <%= f.text_field :end_of_active_service_input, class: 'form-control', id: 'end_of_active_service', readonly: true %>
+          <div class="panel-body">
+            <div class="row">
+              <%= f.label "Pay Entry Base Date", class: "col-sm-4 control-label" %>
+              <div class="col-sm-3">
+                <%= f.text_field :pay_entry_base_date_input, class: 'form-control', id: 'pay_entry_base_date', readonly: true %>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <%= f.label :va_application_submitted, class: 'col-sm-4 control-label' %>
-            <div class="col-sm-3">
-              <%= f.text_field :va_application_submitted_input, class: 'form-control', id: 'va_application_submitted', readonly: true %>
+            <div class="row">
+              <%= f.label "End of Active Service", class: "col-sm-4 control-label" %>
+              <div class="col-sm-3">
+                <%= f.text_field :end_of_active_service_input, class: 'form-control', id: 'end_of_active_service', readonly: true %>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <%= f.label "Benefit Received", class: "col-sm-4 control-label" %>
-            <div class="col-sm-3">
-              <%= f.text_field :benefit_received_input, class: 'form-control', id: 'benefit_received', readonly: true %>
+            <div class="row">
+              <%= f.label :va_application_submitted, class: 'col-sm-4 control-label' %>
+              <div class="col-sm-3">
+                <%= f.text_field :va_application_submitted_input, class: 'form-control', id: 'va_application_submitted', readonly: true %>
+              </div>
             </div>
-          </div>
-        </div> 
-      </div>
-    </div>
-    <div class="col-md-6 medicaid">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Medicaid
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-10">
-              <%= f.label :medicaid_icp, class: 'checkbox inline' do %>
-              <%= f.check_box :medicaid_icp %>
-                <span>ICP</span>
-              <% end %>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-10">
-              <%= f.label :medicaid_ltmc, class: 'checkbox inline' do %>
-              <%= f.check_box :medicaid_ltmc %>
-                <span>LTMC</span>
-              <% end %>
+            <div class="row">
+              <%= f.label "Benefit Received", class: "col-sm-4 control-label" %>
+              <div class="col-sm-3">
+                <%= f.text_field :benefit_received_input, class: 'form-control', id: 'benefit_received', readonly: true %>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group row contact_resident">
-        <%= f.label "Birthdate", class: "col-sm-2 control-label" %>
-        <div class="col-sm-3">
-          <%= f.text_field :dob_input, class: 'form-control', id: 'dob', readonly: true %>
+      <div class="col-md-6 medicaid">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Medicaid
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-10">
+                <%= f.label :medicaid_icp, class: 'checkbox inline' do %>
+                  <%= f.check_box :medicaid_icp %>
+                  <span>ICP</span>
+                <% end %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-10">
+                <%= f.label :medicaid_ltmc, class: 'checkbox inline' do %>
+                  <%= f.check_box :medicaid_ltmc %>
+                  <span>LTMC</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-1"></div>
-        <div class="col-sm-2">
-          <%= f.label :veteran, class: 'checkbox inline' do %>
-          <%= f.check_box :veteran %>
-            <span>Veteran</span>
-          <% end %>
-          <%= f.label :medicaid, class: 'checkbox inline' do %>
-          <%= f.check_box :medicaid %>
-            <span>Medicaid</span>
-          <% end %>
-        </div>
-        
       </div>
     </div>
-    <div class="col-md-6">
-      
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group row contact_resident">
+          <%= f.label "Birthdate", class: "col-sm-2 control-label" %>
+          <div class="col-sm-3">
+            <%= f.text_field :dob_input, class: 'form-control', id: 'dob', readonly: true %>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-2">
+            <%= f.label :veteran, class: 'checkbox inline' do %>
+              <%= f.check_box :veteran %>
+              <span>Veteran</span>
+            <% end %>
+            <%= f.label :medicaid, class: 'checkbox inline' do %>
+              <%= f.check_box :medicaid %>
+              <span>Medicaid</span>
+            <% end %>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-md-6">
+
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <%= f.submit "Create Contact", class: "btn btn-primary submit-btn contact_person" %>
-  </div>
+    <div class="row">
+      <%= f.submit "Create Contact", class: "btn btn-primary submit-btn contact_person" %>
+    </div>
   <% end %>
+</div>
+
 <script>
  $(function () {
    var initState = $('#contact_contact_type').val();

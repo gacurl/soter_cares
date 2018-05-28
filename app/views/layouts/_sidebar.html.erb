@@ -1,13 +1,49 @@
-<div class="navbar-default sidebar" role="navigation" style="padding: 10px;">
-  <div class="sidebar-nav navbar-collapse" style="padding-left: 0px; padding-right: 0px">
-      <ul class="nav in nav-sidebar">
-        <li class="<%= cp(current_user) %>"><%= link_to "#{fa_icon "dashboard 2x"}".html_safe, current_user %></li>
-        <li class="<%= cp(contacts_path) %>"><%= link_to "#{fa_icon "users 2x"}".html_safe, contacts_path %></li>
-        <li class="<%= cp(communities_path) %>"><%= link_to "#{fa_icon "bed 2x"}".html_safe, communities_path %></li>
-        <li class="<%= cp(companies_path) %>"><%= link_to "#{fa_icon "building 2x"}".html_safe, companies_path %></li>
-        <li class="<%= cp(pharmacies_path) %>"><%= link_to "#{fa_icon "medkit 2x"}".html_safe, pharmacies_path %></li>
-        <li class="<%= cp(settings_path) %>"><%= link_to "#{fa_icon "gear 2x"}".html_safe, settings_path, data: { no_turbolink: true } if current_user.admin? %></li>
-        <li><%= link_to "#{fa_icon "sign-out 2x"}".html_safe, logout_path, method: "delete" %></li>
-      </ul>
-  </div>
+<!-- Sidebar Header -->
+<!--suppress RubyScope -->
+<div id="dismiss">
+  <i class="glyphicon glyphicon-arrow-left"></i>
 </div>
+<div class="sidebar-header">
+  <div>
+    <%= image_tag 'https://cdn.sotercares.com/images/Soter-Logo.png', height: 40 %>
+  </div>
+  <div>
+    <%= fa_icon 'user-circle-o' %> <%= current_user.name %>
+    <br>
+  </div>
+
+</div>
+<ul class="list-unstyled components">
+  <li class="<%= cp(current_user) %> sidebar-item"><%= link_to "<span style='font-size: 16px'>#{fa_icon('dashboard')}</span> <span>Dashboard</span>".html_safe, current_user %></li>
+  <% if current_user.admin? %>
+    <% if cp(users_path) == 'active' || cp(companies_path) == 'active' %>
+      <% status = 'in' %>
+      <% active = 'looking' %>
+    <% else %>
+      <% status = '' %>
+      <% active = '' %>
+    <% end %>
+    <li class="<%= active %>"><!-- Link with dropdown items -->
+      <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false"><%= fa_icon 'lock' %> Admin</a>
+      <ul class="collapse list-unstyled <%= status %>" id="adminSubmenu">
+        <li class="sidebar-item <%= cp(users_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('users')}</span> <span>Users</span>".html_safe, users_path %></li>
+        <li class="sidebar-item <%= cp(settings_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('gears')}</span> <span>Settings</span>".html_safe, settings_path, data: { no_turbolink: true } %></li>
+      </ul>
+    </li>
+  <% end %>
+  <% if cp(users_path) == 'active' || cp(companies_path) == 'active' %>
+    <% status = 'in' %>
+    <% active = 'looking' %>
+  <% else %>
+    <% status = '' %>
+    <% active = '' %>
+  <% end %>
+  <li class="<%= active %>"><!-- Link with dropdown items -->
+    <a href="#prospectsSubmenu" data-toggle="collapse" aria-expanded="false"><%= fa_icon 'lock' %> Contacts</a>
+    <ul class="collapse list-unstyled <%= status %>" id="prospectsSubmenu">
+      <li class="sidebar-item <%= cp(contacts_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('users')}</span> <span>Contacts</span>".html_safe, contacts_path %></li>
+      <li class="sidebar-item <%= cp(companies_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('building')}</span> <span>Companies</span>".html_safe, companies_path %></li>
+    </ul>
+  </li>
+  <li class="sidebar-item"><%= link_to "<span style='font-size: 16px'>#{fa_icon('sign-out')}</span> <span>Logout</span>".html_safe, logout_path, method: "delete" %></li>
+</ul>

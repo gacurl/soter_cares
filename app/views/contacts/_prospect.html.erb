@@ -1,14 +1,17 @@
-<% if @contact.deceased? %>
-<h3><%= @contact.first_name %> <%= @contact.last_name %> - Deceased <%= link_to "Edit Name", edit_contact_path(@contact, section: :name),
-            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
-            class: "btn btn-default btn-xs" } %> </h3>
 
-<% else %>
-<h3><%= @contact.first_name %> <%= @contact.last_name %> - Prospect <%= link_to "Edit Name", edit_contact_path(@contact, section: :name),
-            {remote: true, data: { toggle: "modal", target: '#modal-window' },  
-            class: "btn btn-default btn-xs" } %> </h3>
 <div class="row">
   <div class="col-md-12">
+    <% if @contact.deceased? %>
+      <h3><%= @contact.first_name %> <%= @contact.last_name %> -
+        Deceased <%= link_to "Edit Name", edit_contact_path(@contact, section: :name),
+                             { remote: true, data: { toggle: "modal", target: '#modal-window' },
+                               class:  "btn btn-default btn-xs" } %> </h3>
+
+    <% else %>
+      <h3><%= @contact.first_name %> <%= @contact.last_name %> -
+        Prospect <%= link_to "Edit Name", edit_contact_path(@contact, section: :name),
+                             { remote: true, data: { toggle: "modal", target: '#modal-window' },
+                               class:  "btn btn-default btn-xs" } %> </h3>
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
       <div class="btn-group" role="group">
         <button type="button" class="btn btn-primary list-buttons" id="review">Review/Update</button>

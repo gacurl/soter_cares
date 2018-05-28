@@ -1,17 +1,20 @@
 <% provide(:title, 'Companies') %>
-<h3><%= current_user.name %></h3>
 
-<h3>Companies <%= link_to "#{fa_icon "plus-circle"} New".html_safe, new_company_path,  
-              class: "btn btn-primary" %> </h3>
-<div class="form-group row">
-  <div class="col-sm-4">
-  <%= form_tag companies_path, :method => 'get', :id => "companies_search", class: "form-inline" do %>
-    <%= text_field_tag :search, params[:search], class: 'form-control',
-          placeholder: 'Name', id: "company" %>
-    <%= submit_tag "Search", name: nil, class: 'btn btn-primary' %>
-  <% end %>
+<div class="container">
+
+  <h3><%= current_user.name %></h3>
+
+  <h3>Companies <%= link_to "#{fa_icon "plus-circle"} New".html_safe, new_company_path,
+                class: "btn btn-primary" %> </h3>
+  <div class="form-group row">
+    <div class="col-sm-4">
+    <%= form_tag companies_path, :method => 'get', :id => "companies_search", class: "form-inline" do %>
+      <%= text_field_tag :search, params[:search], class: 'form-control',
+            placeholder: 'Name', id: "company" %>
+      <%= submit_tag "Search", name: nil, class: 'btn btn-primary' %>
+    <% end %>
+    </div>
   </div>
-</div>
 
   <div id="search_results">
     <%= render 'search_results' %>

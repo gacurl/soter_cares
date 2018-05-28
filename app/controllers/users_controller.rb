@@ -120,7 +120,7 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = User.all
+    @users = User.all.paginate(per_page: 50, page: params[:page])
   end
   
   def edit

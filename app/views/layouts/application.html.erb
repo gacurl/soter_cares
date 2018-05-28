@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   
@@ -20,169 +19,91 @@
   <meta name="msapplication-TileImage" content="https://cdn.sotercares.com/favicons/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-<% if current_page?(root_path) || current_page?(start_journies_path) || current_page?(living_journies_path) %>
+
   <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Soter</title>
-    
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.sotercares.com/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.sotercares.com/css/user.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.sotercares.com/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
-    <!-- Custom styles for this template -->
-    <link href="https://cdn.sotercares.com/css/modern-business.css" rel="stylesheet">
-
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light fixed-top">
-        <%= link_to "#{image_tag("https://cdn.sotercares.com/images/Soter-Logo.png", border: 0, height: 30)} SOTER".html_safe, root_url, {class: 'navbar-brand'} %>
-        <button class="navbar-toggler navbar-toggler-right navbar-toggler-inverse" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <%= link_to "Employee Login", login_path, class: "nav-link" if current_page?(root_path) %>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div style="background-color: #f5f5f5">
-     <%= yield %>
-    </div>
-    <div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <h3 class="m-0 text-center text-white">Call Us: <%= link_to "321.419.0041", "tel:3214190041" %></h3>
-            <h3 class="m-0 text-center text-white">Email Us: <%= link_to "info@sotercares.com", "mailto:info@sotercares.com" %></h3>
-            <p class="m-0 text-center text-white">2197 Julian Ave NE</p>
-            <p class="m-0 text-center text-white">Palm Bay, FL 32905</p>
-            <p class="m-0 text-center text-white">Copyright &copy; <%= Time.now.strftime('%Y') %> - Soter, LLC</p>
-        </div>
-        <!-- /.container -->
-    </footer>
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://cdn.sotercares.com/vendor/popper/popper.min.js"></script>
-    <script src="https://cdn.sotercares.com/vendor/bootstrap/js/bootstrap.min.js"></script>
-    
-</body>
-
-<% elsif logged_in? %>
-<head>
     <title><%= full_title(yield(:title)) %></title>
     <%= stylesheet_link_tag 'application', media: 'all',
-      'data-turbolinks-track' => true %>
-    <link rel="stylesheet" href="https://cdn.sotercares.com/css/font-awesome.min.css">
+                            'data-turbolinks-track' => true %>
     <%= javascript_include_tag "https://www.google.com/jsapi", "chartkick" %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    <script src="//maps.google.com/maps/api/js?key=<%= Rails.application.secrets.gmap %>"></script>
-    <script src="//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js"></script>
-    <script src='//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js' type='text/javascript'></script> <!-- only if you need custom infoboxes -->
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
   </head>
   <body>
-    <%= render 'layouts/header' %>
-    <div class="container-fluid">
-        <% if logged_in? %>
-          <%= render partial: 'layouts/sidebar' %>
-        <% end %>
-        <div class="col-md-12">
-          <div id="page-wrapper">
-          
-            <% flash.each do |message_type, message| %>
-              <%= content_tag(:div, class: "alert alert-#{message_type}") do %>
-                <%= message %>
+    <!-- Sidebar -->
+    <% if logged_in? %>
+      <nav id="sidebar" class="<%= cp(current_user) %>">
+        <%= render 'layouts/sidebar' %>
+      </nav>
+    <% end %>
+
+    <!-- Page Content -->
+    <div style="padding-bottom: 10px">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header" style="padding-top: 15px">
+              <% if logged_in? %>
+                <button type="button" id="sidebarCollapse" class="btn btn-primary navbar-btn" style="border-radius: 5px;">
+                  <i class="glyphicon glyphicon-align-left"></i>
+                </button>
+              <% else %>
+                <%= link_to image_tag('https://cdn.sotercares.com/images/Soter-Logo.png', height: 40), root_url %>
               <% end %>
-            <% end %>
-            
-            <%= yield %>
+              <span class="hidden-sm hidden-xs" style="font-size: 18px">Soter Senior Living & Family Advocates</span>
+              <span class="hidden-md hidden-lg" style="font-size: 18px">Soter Family Advocates</span>
+              <%= link_to 'Login', login_path, class: 'btn btn-primary visible-xs-inline pull-right' %>
+            </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right" style="padding: 0px !important">
+              <% if logged_in? %>
+                <li><%= link_to "#{fa_icon 'user-circle-o'} #{current_user.name}".html_safe, current_user %></li>
+                <li><%= link_to "Log out", logout_path, method: "delete" %></li>
+              <% else %>
+                <li><%= link_to "Log in", login_path %></li>
+              <% end %>
+            </ul>
           </div>
         </div>
-        <div class="col-md-12">
-          <div id="page-wrapper">
-            
-              <%= render 'layouts/footer' %>
-            <%= debug(params) if Rails.env.development? %>
-          </div>
-        </div>
-      
-      
-    </div>
-<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-
-<script>    
-  $(document).on('turbolinks:load', function() {
-     $(window).trigger('load.bs.select.data-api');
-     $(".image-button").filestyle({
-      badge: false,
-      input: true,
-      buttonBefore: true,
-      buttonName: "btn-default",
-      buttonText: "Add Image",
-      iconName: "glyphicon glyphicon-camera"
-    });
-    $(".file-button").filestyle({
-      badge: false,
-      input: true,
-      buttonBefore: true,
-      buttonName: "btn-default",
-      buttonText: "Add File",
-      iconName: "glyphicon glyphicon-folder-open"
-    });
-  });
-</script>
-
-
-<% else  %>
-  <head>
-    <title>Soter</title>
-    <%= stylesheet_link_tag 'application', media: 'all',
-      'data-turbolinks-track' => true %>
-    <link rel="stylesheet" href="https://cdn.sotercares.com/css/font-awesome.min.css">
-    <%= javascript_include_tag "https://www.google.com/jsapi", "chartkick" %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    <script src="//maps.google.com/maps/api/js?key=<%= Rails.application.secrets.gmap %>"></script>
-    <script src="//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js"></script>
-    <script src='//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js' type='text/javascript'></script> <!-- only if you need custom infoboxes -->
-    <%= csrf_meta_tags %>
-    <%= render 'layouts/shim' %>
-  </head>
-  <body style="background-color: #f5f5f5">
-    <%= render 'layouts/header_2' %>
-    <div style="background-color: #f5f5f5">
-     <% flash.each do |message_type, message| %>
-        <%= content_tag(:div, class: "alert alert-#{message_type}") do %>
-          <%= message %>
+      </nav>
+      <div style="margin-bottom: 10px">
+        <% flash.each do |message_type, message| %>
+          <%= content_tag(:div, class: "alert alert-#{message_type}") do %>
+            <%= message %>
+          <% end %>
         <% end %>
-      <% end %>
-     <%= yield %>
+        <%= yield %>
+        <br>
+      </div>
     </div>
-        <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white" style="color:white">Copyright &copy; <%= Time.now.strftime('%Y') %> - Soter, LLC</p>
-        </div>
-        <!-- /.container -->
-    </footer>
-      
-      
-    </div>
-<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+    <%= render 'layouts/footer' %>
+  </body>
+  <div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
+  <script>
+      $(document).on('turbolinks:load', function() {
+          $('.selectpicker').each(function (i, el) {
+              if (!$(el).parent().hasClass('bootstrap-select')) {
+                  $(el).selectpicker('refresh');
+              }
+          });
 
-<% end %>
-
-</html>
+          $("#sidebar").mCustomScrollbar({
+              theme: "minimal"
+          });
+          $('#sidebarCollapse').on('click', function () {
+              // open sidebar
+              $('#sidebar').addClass('active');
+          });
+          $('#dismiss').on('click', function () {
+              // hide the sidebar
+              $('#sidebar').removeClass('active');
+          });
+          $('.sidebar-item').on('click', function () {
+              // hide the sidebar
+              $('#sidebar').removeClass('active');
+          });
+          setTimeout(function(){
+              window.location.reload(1);
+          }, 1260000);
+      });
+  </script>
