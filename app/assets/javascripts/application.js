@@ -16,7 +16,6 @@
 //= require select2
 //= require jquery.tokeninput
 //= require underscore
-//= require gmaps/google
 //= require turbolinks
 //= require jquery-fileupload/vendor/jquery.ui.widget
 //= require jquery-fileupload/jquery.iframe-transport

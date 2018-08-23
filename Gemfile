@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.5.0'
+ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.0.7'
 gem 'bootstrap-sass'
 gem 'pg'
 gem 'will_paginate'
@@ -26,7 +26,9 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'redis', '~> 3.0'
+gem 'redis-namespace'
 gem 'redis-rails'
+gem 'redis-rack-cache'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 gem 'sidekiq'

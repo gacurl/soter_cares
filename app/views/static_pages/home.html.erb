@@ -4,16 +4,16 @@
   <div class="jumbotron bg">
     <div class="container-fluid">
       <div class="row" style="padding-top: 20px">
-        <%= image_tag 'https://cdn.sotercares.com/images/Soter-Logo.png', class: 'visible-lg-inline', style: 'width: 10%; padding-left: 20px' %>
-        <h1 class="hand-writing visible-lg-inline" style="display: inline;font-size: 4vw;"> Soter Senior Living &
+        <%= image_tag 'https://cdn.sotercares.com/images/Soter-Logo.png', class: 'visible-lg-inline', style: 'width: 10%; padding-left: 20px;' %>
+        <h1 class="hand-writing visible-lg-inline" style="display: inline;font-size: 4vw; font-family: Papyrus, fantasy"> Soter Senior Living &
           Family Advocates</h1>
           <%= image_tag 'https://cdn.sotercares.com/images/Soter-Logo.png', class: 'visible-md-inline', style: 'width: 15%; padding-left: 20px' %>
-          <h1 class="hand-writing visible-md-inline" style="display: inline;font-size: 4.5vw;"> Soter Senior Living & Family Advocates</h1>
+          <h1 class="hand-writing visible-md-inline" style="display: inline;font-size: 4.5vw; font-family: Papyrus, fantasy"> Soter Senior Living & Family Advocates</h1>
         <%= image_tag 'https://cdn.sotercares.com/images/Soter-Logo.png', class: 'visible-sm-inline visible-xs-inline', style: 'display: inline;width: 15%; padding-left: 20px' %>
-          <span class="hand-writing-mobile visible-sm-inline visible-xs-inline" style="font-size: 5vw;"> Soter Senior Living & Family Advocates</span>
+          <span class="hand-writing-mobile visible-sm-inline visible-xs-inline" style="font-size: 4.5vw; font-family: Papyrus, fantasy"> Soter Senior Living & Family Advocates</span>
       </div>
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 text-center">
           <%= image_tag 'https://cdn.sotercares.com/images/Brake-brothers-1955-2.jpg',
                         height: 125, class: 'old-picture',
                         style: 'transform: rotate(-5deg)' %>
@@ -24,7 +24,7 @@
           <%= image_tag "https://s3.amazonaws.com/cdn.sotercares.com/images/Nanny's+Parents.jpg",
                         height: 150, class: 'old-picture visible-sm-inline', style: 'transform: rotate(-2deg); text-align: center' %>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 text-center">
           <%= image_tag 'https://cdn.sotercares.com/images/tent-city-1968.jpg',
                         height: 125, class: 'old-picture', style: 'transform: rotate(10deg);' %>
           <%= image_tag 'https://cdn.sotercares.com/images/Don+Washburn10142014_0003+-+5x7.jpg',
@@ -33,22 +33,38 @@
                         height: 130, class: 'old-picture visible-sm-inline', style: 'transform: rotate(-15deg);' %>
 
         </div>
-        <div class="col-md-2 hidden-sm hidden-xs">
+        <div class="col-md-2 hidden-sm hidden-xs text-center">
           <%= image_tag 'https://cdn.sotercares.com/images/Dean+Stadel+Dale+Stadel+Ruth+Brake+Stadel+1954+East+of+Carlton+Center+on+M43.jpg',
                         height: 125, class: 'old-picture-noborder', style: 'transform: rotate(0deg)' %>
         </div>
-        <div class="col-md-2 hidden-sm hidden-xs">
+        <div class="col-md-2 hidden-sm hidden-xs text-center">
           <%= image_tag 'https://cdn.sotercares.com/images/Dorothy-Kyser-and-friends.jpg',
                         height: 130, class: 'old-picture', style: 'transform: rotate(15deg);' %>
         </div>
-        <div class="col-md-2 hidden-sm hidden-xs">
+        <div class="col-md-2 hidden-sm hidden-xs text-center">
           <%= image_tag 'https://s3.amazonaws.com/cdn.sotercares.com/images/aj-birthday.jpg',
                         height: 130, class: 'old-picture', style: 'transform: rotate(-15deg);' %>
         </div>
-        <div class="col-md-2 hidden-sm hidden-xs">
+        <div class="col-md-2 hidden-sm hidden-xs text-center">
           <%= image_tag "https://s3.amazonaws.com/cdn.sotercares.com/images/Nanny's+Parents.jpg",
                         height: 150, class: 'old-picture', style: 'transform: rotate(-2deg); text-align: center' %>
         </div>
+      </div>
+    </div>
+    <div class="row" style="padding-top: 30px">
+      <div class="text-center">
+        <%= form_tag(community_search_index_path) do %>
+          <div class="col-md-4 col-md-offset-4">
+            <div class="input-group">
+              <%= text_field_tag :city, nil, { placeholder: "Search #{@city} or enter city", class: 'main-input-box form-control text-center', id: 'city' } %>
+              <div class="input-group-btn">
+                <%= button_tag type: 'submit', class: "btn btn-primary", style: 'margin-top: 10px; font-size: 20px' do %>
+                  <%= fa_icon('search') %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
@@ -373,3 +389,18 @@
     </div>
     <br>
 <% end %>
+
+<script>
+    $("#city").autocomplete({
+        source: "/cities/autocomplete_name",
+        minLength: 3,
+        select: function(event, ui) {
+            event.preventDefault();
+            $("#city").val(ui.item.label);
+        },
+        focus: function(event, ui) {
+            event.preventDefault();
+            $("#city").val(ui.item.label);
+        }
+    });
+</script>

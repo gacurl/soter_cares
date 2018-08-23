@@ -1,0 +1,1 @@
+$redis = ConnectionPool::Wrapper.new(size: 100, timeout: 3) { Redis.new }

@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     UserMailer.problem_report(user, start).deliver_now
   end
 
+  def send_notification_email(message)
+    UserMailer.notification(self.id, message).deliver_now
+  end
+
   # Sends activation email.
   def send_activation_email
     UserMailer.account_activation(self).deliver_now

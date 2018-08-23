@@ -44,7 +44,7 @@ class Contact < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   
   validate :check_contact_type
-  
+  validate :email_phone_present
   validates :email, length: { maximum: 255 }, allow_blank: true,
           format: { with: VALID_EMAIL_REGEX }
   validates :work_email, length: { maximum: 255 }, allow_blank: true,
@@ -78,7 +78,7 @@ class Contact < ActiveRecord::Base
   after_create  :create_decision_makers
   before_save   :check_placement_status
   before_save :generate_code
-#  before_save :case_manager_check
+  before_save :case_manager_check
   
   attr_encrypted :ssn, key: Rails.application.secrets.secret_key_base
   
@@ -274,6 +274,14 @@ class Contact < ActiveRecord::Base
   def check_contact_type
     if contact_type != "Resident" && contact_type != "Business" && contact_type != "Family"
       errors.add(:contact_type, "must be selected as Resident, Business, or Family")
+    end
+  end
+
+  def email_phone_present
+    if web_lead?
+      if email.blank? && cell_phone.blank?
+        errors.add(:base, "Please include a phone number or email")
+      end
     end
   end
   

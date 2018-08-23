@@ -111,7 +111,16 @@ Rails.application.routes.draw do
       get :licenses, as: :licenses
     end 
   end
-  
+
+  resources :community_search, only: [:index, :show] do
+    collection do
+      post :index
+      get :add_to_interest
+      get :get_contact
+      post :submit_contact
+    end
+  end
+
   resources :communities do
     resources :data_files
     resources :photos
@@ -177,7 +186,8 @@ Rails.application.routes.draw do
   resources :cities do
     collection do
       get :autocomplete
-    end 
+      get :autocomplete_name
+    end
   end
   
   resources :users,               except: [:destroy]

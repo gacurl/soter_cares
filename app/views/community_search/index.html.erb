@@ -1,0 +1,133 @@
+<div class="info-box">
+  <div class="row">
+    <div class="col-lg-4 mb-12">
+      <%= form_tag(community_search_index_path) do %>
+      <div class="col-sm-6">
+        <div class="card h-100">
+          <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Searching within <%= session[:distance] %> miles of <%= session[:city] %></h4>
+          <div class="card-body">
+            <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+              <%= text_field_tag :city, nil, { placeholder: "New city", class: 'text-center', style: 'width: 100%', id: 'city', onchange: 'this.form.submit();' } %>
+              <%= number_field_tag :distance, nil, { placeholder: "Change distance", class: 'text-center', style: 'width: 100%', id: 'distance', onchange: 'this.form.submit();' } %>
+            </p>
+          </div>
+        </div>
+        <div class="card h-100">
+          <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Medicaid Providers</h4>
+          <div class="card-body">
+            <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+
+              <%= select_tag :medicaid_provider_ids,
+                             options_from_collection_for_select(MedicaidProvider.all,
+                                                                :id, :name, session[:medicaid_provider_ids]), multiple: true, style: 'width: 100%', id: 'provider_list', onchange: 'this.form.submit();' %>
+
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card h-100">
+          <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Budget</h4>
+          <div class="card-body">
+            <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+
+              <%= radio_button_tag :budget, 250000, session[:budget] == 250000, onchange: 'this.form.submit();' %> Up to $2500<br>
+              <%= radio_button_tag :budget, 300000, session[:budget] == 300000, onchange: 'this.form.submit();' %> Up to $3000<br>
+              <%= radio_button_tag :budget, 350000, session[:budget] == 350000, onchange: 'this.form.submit();' %> Up to $3500<br>
+              <%= radio_button_tag :budget, 400000, session[:budget] == 400000, onchange: 'this.form.submit();' %> Up to $4000<br>
+              <%= radio_button_tag :budget, 450000, session[:budget] == 450000, onchange: 'this.form.submit();' %> Up to $4500<br>
+              <%= radio_button_tag :budget, 500000, session[:budget] == 500000, onchange: 'this.form.submit();' %> Up to $5000<br>
+              <%= radio_button_tag :budget, 550000, session[:budget] == 550000, onchange: 'this.form.submit();' %> Up to $5500<br>
+              <%= radio_button_tag :budget, 600000, session[:budget] == 600000, onchange: 'this.form.submit();' %> Up to $6000<br>
+              <%= radio_button_tag :budget, 10000000, session[:budget] == 10000000, onchange: 'this.form.submit();' %> More than $6000<br>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="card h-100">
+          <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Medical Needs</h4>
+          <div class="card-body">
+            <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+
+                <%= select_tag :medical_needs,
+                               options_from_collection_for_select(TaggingManual.tokens('licenses', nil),
+                                                                  :id, :name, session[:medical_needs]), multiple: true, style: 'width: 100%', id: 'licenses_list', onchange: 'this.form.submit();' %>
+            </p>
+          </div>
+        </div>
+        <div class="card h-100">
+          <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Activities</h4>
+          <div class="card-body">
+            <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+
+              <%= select_tag :activities,
+                             options_from_collection_for_select(TaggingManual.tokens('activities', nil),
+                                                                :id, :name, session[:activities]), multiple: true, style: 'width: 100%', id: 'activities_list', onchange: 'this.form.submit();' %>
+            </p>
+          </div>
+        </div>
+        <div class="card h-100">
+          <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">Dining</h4>
+          <div class="card-body">
+            <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+
+              <%= select_tag :dining,
+                             options_from_collection_for_select(TaggingManual.tokens('dinings', nil),
+                                                                :id, :name, session[:dining]), multiple: true, style: 'width: 100%', id: 'dining_list', onchange: 'this.form.submit();' %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+      <div class="col-sm-12" id="interest_list">
+        <%= render 'interest_list' %>
+      </div>
+    </div>
+
+    <div class="col-lg-8 mb-12">
+      <div class="col-sm-12" id="communities">
+        <%= render 'communities' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $("#city").autocomplete({
+      source: "/cities/autocomplete_name",
+      minLength: 3,
+      select: function(event, ui) {
+          event.preventDefault();
+          $("#city").val(ui.item.label);
+      },
+      focus: function(event, ui) {
+          event.preventDefault();
+          $("#city").val(ui.item.label);
+      }
+  });
+  $('#licenses_list').select2({
+      theme: "bootstrap"
+  });
+  $('#dining_list').select2({
+      theme: "bootstrap"
+  });
+  $('#activities_list').select2({
+      theme: "bootstrap"
+  });
+  $('#provider_list').select2({
+      theme: "bootstrap"
+  });
+  // Activate Carousel
+  $("#myCarousel").carousel();
+
+  // Enable Carousel Indicators
+  $(".item").click(function(){
+      $("#myCarousel").carousel(1);
+  });
+
+  // Enable Carousel Controls
+  $(".left").click(function(){
+      $("#myCarousel").carousel("prev");
+  });
+</script>

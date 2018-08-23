@@ -1,6 +1,21 @@
 class UserMailer < ApplicationMailer
   include ActionView::Helpers::NumberHelper
-  
+
+  def notification(user_id, message)
+    user = User.find_by_id(user_id)
+
+    message = {
+        from_name: "SoterCares",
+        from_email: "no-reply@#{ENV['HOST_URL']}",
+        subject: "System Notification",
+        to: [{email: user.email,
+              name: user.email}],
+        text: message
+    }
+
+    mandrill_client.messages.send message
+  end
+
   def initial_lead(email, prospect_id, lead_id)
     lead = Contact.find_by_id(lead_id)
     prospect = Contact.find_by_id(prospect_id)

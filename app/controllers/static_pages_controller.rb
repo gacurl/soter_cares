@@ -1,7 +1,9 @@
 class StaticPagesController < ApplicationController
   before_action :admin_user, only: [:settings]
   
-  def home  
+  def home
+    results = Geocoder.search(remote_ip())
+    @city = results.first.city + ', ' + results.first.region_code
     if logged_in?
       redirect_to current_user
     end

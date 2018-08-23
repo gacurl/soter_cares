@@ -94,7 +94,7 @@ class UsersController < ApplicationController
     else
       @leads = Contact.where(user: current_user).joins(:results).joins(:placement_status)
                 .where('results.updated_at = (SELECT MAX(results.updated_at) FROM results WHERE results.contact_id = contacts.id)')
-                .where('results.result_type_id = ?', ResultType.find_by(name: "Qualified, OK to pursue").id)
+                .where('results.result_type_id = ?', ResultType.find_or_create_by(name: "Qualified, OK to pursue").id)
                 .joins(:placement_status)
                 .where.not(placement_statuses: { status: "Placed" })
                 .paginate(page: params[:lead_page], :per_page => 25)

@@ -1,0 +1,30 @@
+<%= form_for(@contact, url: submit_contact_community_search_index_path, id: 'frm', remote: true) do |f| %>
+  <div class="modal-dialog" style="overflow-y: initial !important" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="display:inline" class="modal-title">Contact me about my list</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= render 'shared/error_messages', object: f.object %>
+        <%= f.label :first_name %>
+        <%= f.text_field :first_name, class: 'form-control', placeholder: 'Your first name' %>
+
+        <%= f.label :last_name %>
+        <%= f.text_field :last_name, class: 'form-control', placeholder: 'Your last name' %>
+
+        <%= f.label :email %>
+        <%= f.text_field :email, class: 'form-control', placeholder: 'john@example.com' %>
+
+        <%= f.label :cell_phone %>
+        <%= f.text_field :cell_phone, class: 'form-control', placeholder: '323-555-1212' %>
+      </div>
+      <div class="modal-footer">
+        <%= f.submit "Submit", class: "btn btn-primary", data: { disable_with: "Sending..." }, id: 'send' %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+<% end %>

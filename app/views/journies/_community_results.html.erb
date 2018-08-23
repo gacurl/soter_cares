@@ -87,27 +87,9 @@
 <% end %>
 <br>
 <script>
-  handler = Gmaps.build('Google');
-  handler.buildMap({ provider: {
-  }, 
-  internal: {id: 'map'}}, function(){
-    markers = handler.addMarkers([
-      <% x = 1 %>
-      <% @communities.first(9).each do |community| %>
-      {
-        "lat": <%= community.latitude %>,
-        "lng": <%= community.longitude %>,
-        "picture": {
-          "url": "https://cdn.sotercares.com/markers/marker-<%= x %>.png",
-          "width":  32,
-          "height": 32
-        },
-        "infowindow": "<%= community.name %>"
-      },
-      <% x += 1 %>
-      <% end %>
-    ]);
-    handler.bounds.extendWith(markers);
-    handler.fitMapToBounds();
-  });
+    new GMaps({
+        div: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+    });
 </script>
