@@ -23,7 +23,6 @@
     <br>
     <!-- Page Content -->
     <br>
-<% cache do %>
   <div class="container info-box">
     <div class="row">
       <h2>The Free, Unbiased, & Simple Soter Process:</h2>
@@ -228,9 +227,7 @@
         <div class="container">
           <div style="text-align: center; padding-top: 90px">
             <h2 style="color: white; text-shadow: 2px 2px #000000">World Class Communities</h2>
-            <% if Rails.env.development? %>
-              <%= link_to "Start your Search", '#search', class: "btn btn-danger btn-lg" %>
-            <% end %>
+            <%= link_to "Start your Search", '#search', class: "btn btn-danger btn-lg" %>
           </div>
         </div>
       </div>
@@ -249,7 +246,6 @@
       </div>
     </div>
     <br>
-<% end %>
 
 <script>
     $("#city").autocomplete({
