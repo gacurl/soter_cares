@@ -22,6 +22,11 @@
         <%= f.text_field :cell_phone, class: 'form-control', placeholder: '323-555-1212' %>
       </div>
       <div class="modal-footer">
+        <div class="pull-left">
+          <%= link_to "Privacy Policy", privacy_path %>
+          |
+          <%= link_to "Terms of Use", terms_path %>
+        </div>
         <%= f.submit "Submit", class: "btn btn-primary", data: { disable_with: "Sending..." }, id: 'send' %>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>

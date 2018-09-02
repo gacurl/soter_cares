@@ -2,13 +2,30 @@ class StaticPagesController < ApplicationController
   before_action :admin_user, only: [:settings]
   
   def home
-    results = Geocoder.search(remote_ip())
-    @city = results.first.city + ', ' + results.first.region_code
+    if session[:city].present?
+      @city = session[:city]
+    else
+      results = Geocoder.search(remote_ip())
+      @city = results.first.city + ', ' + results.first.region_code
+    end
+
     if logged_in?
       redirect_to current_user
     end
   end
-  
+
+  def privacy
+  end
+
+  def terms
+  end
+
+  def team
+  end
+
+  def testimonials
+  end
+
   def settings
     @activities = Activity.all
     @activity = Activity.new

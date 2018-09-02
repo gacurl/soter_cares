@@ -2,6 +2,9 @@
   <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">My Interest List</h4>
   <div class="card-body">
     <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
+      <% if @interest_communities.empty? %>
+        <span style="font-style: italic">Add communities that interest you to the list...</span>
+      <% end %>
       <% @interest_communities.each do |community| %>
         <%= link_to "#{fa_icon "close"}".html_safe, community_search_index_path(
             remove_id: community.id,
@@ -11,10 +14,8 @@
         <br>
       <% end %>
     </p>
-    <div style="position: fixed; left: 10px; bottom: 20px">
-      <%= link_to "Find out more", get_contact_community_search_index_path,
+      <%= link_to "Get Pricing and Availability", get_contact_community_search_index_path,
                   {remote: true, data: { toggle: "modal", target: '#modal-window' },
                    class: "btn btn-success btn-block" } %>
-    </div>
   </div>
 </div>

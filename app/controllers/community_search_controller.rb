@@ -6,7 +6,7 @@ class CommunitySearchController < ApplicationController
   end
 
   def submit_contact
-    user = User.find_by(email: 'dave@provsystems.com')
+    user = User.find_by(email: 'troy@sotercares.com')
     @contact = Contact.new(
         first_name: params[:contact][:first_name],
         last_name: params[:contact][:last_name],
@@ -132,7 +132,7 @@ class CommunitySearchController < ApplicationController
   
   private
     def send_email
-      user = User.find_by(email: 'dave@provsystems.com')
+      user = User.find_by(email: 'troy@sotercares.com')
       message = "WEBSITE LEAD\n"
       message += "MEDICAID PROVIDERS:\n"
       MedicaidProvider.where(id: session[:medicaid_provider_ids]).each do |mp|

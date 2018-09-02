@@ -60,6 +60,10 @@
                 <li><%= link_to "#{fa_icon 'user-circle-o'} #{current_user.name}".html_safe, current_user %></li>
                 <li><%= link_to "Log out", logout_path, method: "delete" %></li>
               <% else %>
+                <li>Call us today at <span  style="font-weight: bold">321-419-0041</span></li>
+                <li><%= link_to fa_icon('facebook-square', class: "fa-2x"), 'https://www.facebook.com/sotercares/' %></li>
+                <li><%= link_to "Testimonials", testimonials_path %></li>
+                <li><%= link_to "Team", team_path %></li>
                 <li><%= link_to "Log in", login_path %></li>
               <% end %>
             </ul>

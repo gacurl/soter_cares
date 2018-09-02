@@ -4,6 +4,19 @@
     DEMO STYLE
 */
 
+.numberCircle {
+  border-radius: 50%;
+  behavior: url(PIE.htc);
+  /* remove if you don't care about IE8 */
+  width: 48px;
+  height: 48px;
+  padding: 8px;
+  border: 2px solid #666;
+  color: #666;
+  text-align: center;
+  font: 28px Arial, sans-serif;
+}
+
 .select2-container--bootstrap .select2-selection {
   font-size: 16px;
 }
@@ -164,10 +177,10 @@ blockquote {
 }
 
 .bg {
-  background: url('http://cdn.sotercares.com/images/soter_parchment_15.jpg') center center;
-  width: 100%;
-  top:0;
-  left:0;
+  background: url('http://cdn.sotercares.com/images/home-2880x1920-med.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* Set up positioning */
   z-index: -1;
 }
 

@@ -5,6 +5,9 @@ class SendContact
     contact = Contact.find(contact_id)
     user = User.find_by(email: 'dave@provsystems.com')
     message = "WEBSITE LEAD\n"
+    message += "Name: " + contact.name + "\n"
+    message += "Cell Phone: " + contact.cell_phone + "\n"
+    message += "Email: " + contact.email + "\n\n"
     message += "MEDICAID PROVIDERS:\n"
     MedicaidProvider.where(id: medicaid_provider_ids).each do |mp|
       message += mp.name + "\n"

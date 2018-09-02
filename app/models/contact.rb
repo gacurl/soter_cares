@@ -78,7 +78,7 @@ class Contact < ActiveRecord::Base
   after_create  :create_decision_makers
   before_save   :check_placement_status
   before_save :generate_code
-  before_save :case_manager_check
+#  before_save :case_manager_check
   
   attr_encrypted :ssn, key: Rails.application.secrets.secret_key_base
   

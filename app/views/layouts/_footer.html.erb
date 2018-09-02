@@ -1,7 +1,15 @@
 
   <footer class="footer" style="margin-top: 10px">
   <small>
+    <div class="pull-left" style="margin-left: 10px">
+      <%= link_to "<span style='font-size: 16px; color: white'>#{fa_icon('facebook-square')}</span>".html_safe, 'https://www.facebook.com/sotercares/' %>
+    </div>
     © <%= Time.now.strftime('%Y') %> - All Rights Reserved - Soter, LLC
+    <div class="pull-right" style="margin-right: 10px">
+      <%= link_to "Privacy Policy", privacy_path, style: "color: white" %>
+      |
+      <%= link_to "Terms of Use", terms_path, style: "color: white" %>
+    </div>
   </small>
   <br>
   

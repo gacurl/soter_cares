@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
   
   get     'settings'         => 'static_pages#settings'
+  get     'team'         => 'static_pages#team'
+  get     'testimonials'         => 'static_pages#testimonials'
+  get     'terms'         => 'static_pages#terms'
+  get     'privacy'         => 'static_pages#privacy'
   get     'login'             => 'sessions#new'
   post    'login'             => 'sessions#create'
   delete  'logout'            => 'sessions#destroy'
