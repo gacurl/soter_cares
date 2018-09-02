@@ -5,11 +5,6 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   def remote_ip
-    if Rails.env.development?
-      # Hard coded remote address
-      '24.3.158.222'
-    else
-      request.remote_ip
-    end
+    request.remote_ip
   end
 end
