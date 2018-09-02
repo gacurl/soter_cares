@@ -6,5 +6,6 @@ class ApplicationController < ActionController::Base
 
   def remote_ip
     request.remote_ip
+    p request.remote_ip
   end
 end
