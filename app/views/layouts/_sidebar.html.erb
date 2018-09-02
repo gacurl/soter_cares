@@ -42,6 +42,8 @@
     <a href="#prospectsSubmenu" data-toggle="collapse" aria-expanded="false"><%= fa_icon 'lock' %> Contacts</a>
     <ul class="collapse list-unstyled <%= status %>" id="prospectsSubmenu">
       <li class="sidebar-item <%= cp(contacts_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('users')}</span> <span>Contacts</span>".html_safe, contacts_path %></li>
+      <li class="sidebar-item <%= cp(communities_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('home')}</span> <span>Communities</span>".html_safe, communities_path %></li>
+      <li class="sidebar-item <%= cp(pharmacies_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('prescription-bottle-alt')}</span> <span>Pharmacies</span>".html_safe, pharmacies_path %></li>
       <li class="sidebar-item <%= cp(companies_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('building')}</span> <span>Companies</span>".html_safe, companies_path %></li>
     </ul>
   </li>
