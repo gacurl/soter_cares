@@ -70,8 +70,6 @@ class CommunitySearchController < ApplicationController
 
         if params[:city].present?
           city_name = params[:city]
-          p 'city_name'
-          p city_name
         elsif session[:city].blank?
           results = Geocoder.search(remote_ip())
           city_name = results.first.city + ', ' + results.first.region_code
@@ -130,6 +128,11 @@ class CommunitySearchController < ApplicationController
         end
       }
     end
+
+  rescue
+    @communities = Community.where(name: nil).paginate(page: params[:page], :per_page => 5)
+    flash.now[:danger] = 'Please enter a valid value'
+    render 'index'
   end
   
   private
