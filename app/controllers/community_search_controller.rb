@@ -70,6 +70,8 @@ class CommunitySearchController < ApplicationController
 
         if params[:city].present?
           city_name = params[:city]
+          p 'city_name'
+          p city_name
         elsif session[:city].blank?
           results = Geocoder.search(remote_ip())
           city_name = results.first.city + ', ' + results.first.region_code
@@ -78,7 +80,7 @@ class CommunitySearchController < ApplicationController
         end
 
         city_search = city_name.try { strip.split(',')[0].strip.titlecase }
-        state_search = city_name.try { strip.split(',')[1].strip.upcase }
+        state_search = city_name.try { strip.split(',')[1].try { strip.upcase } }
         city_length = city_search.length
         state_length = state_search.length if state_search
 
