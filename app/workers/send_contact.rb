@@ -3,7 +3,7 @@ class SendContact
 
   def perform(user_id, medicaid_provider_ids, medical_needs, activity_tags, dining_tags, interest_ids, contact_id)
     contact = Contact.find(contact_id)
-    user = User.find_by(email: 'dave@provsystems.com')
+    user = User.find_by(email: 'troy@sotercares.com')
     message = "WEBSITE LEAD\n"
     message += "Name: " + contact.name + "\n"
     message += "Cell Phone: " + contact.cell_phone + "\n"
