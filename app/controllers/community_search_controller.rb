@@ -118,8 +118,8 @@ class CommunitySearchController < ApplicationController
 
         session[:activities] =  params[:activities] if params[:activities]
         session[:dining] =  params[:dining] if params[:dining]
-        session[:activity_tags] = [] if session[:activity_tags].nil?
-        session[:dining_tags] = [] if session[:dining_tags].nil?
+        session[:activity_tags] = [] if session[:activities].nil?
+        session[:dining_tags] = [] if session[:dining].nil?
         session[:activity_tags] = ActsAsTaggableOn::Tag.where(id: params[:activities]).pluck(:name) if params[:activities]
         session[:dining_tags] = ActsAsTaggableOn::Tag.where(id: params[:dining]).pluck(:name) if params[:dining]
         if session[:activity_tags].present? && session[:dining_tags].blank?
