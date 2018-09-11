@@ -66,7 +66,7 @@ class CommunitySearchController < ApplicationController
           session[:distance] = 10
         end
 
-        session[:medicaid_provider_ids] = params[:medicaid_provider_ids] || MedicaidProvider.all.pluck(:id)
+        session[:medicaid_provider_ids] = params[:medicaid_provider_ids]
 
         if params[:city].present?
           city_name = params[:city]
@@ -104,8 +104,7 @@ class CommunitySearchController < ApplicationController
                              .joins(:medicaid_providers).where(medicaid_providers: { id: session[:medicaid_provider_ids] }).distinct
 
         else
-          @communities = Community.where('semi_private_cents <= ? OR private_cents <= ?', budget, budget).near(session[:city],  session[:distance].to_i)
-                             .joins(:medicaid_providers).where(medicaid_providers: { id: session[:medicaid_provider_ids] }).distinct
+          @communities = Community.where('semi_private_cents <= ? OR private_cents <= ?', budget, budget).near(session[:city],  session[:distance].to_i).distinct
         end
 
         session[:activities] =  params[:activities] if params[:activities]
