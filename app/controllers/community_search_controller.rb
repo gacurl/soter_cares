@@ -100,7 +100,7 @@ class CommunitySearchController < ApplicationController
 
         if session[:medical_needs].present?
           license_ids = LicenseType.tagged_with(ActsAsTaggableOn::Tag.where(id: params[:medical_needs]), on: :licenses, any: true).pluck(:id)
-          if session[:medicaid_provider_ids].any?
+          if session[:medicaid_provider_ids].present?
             @communities = Community.with_licenses(license_ids).where('semi_private_cents <= ? OR private_cents <= ?', budget, budget).near(session[:city], session[:distance].to_i)
                                .joins(:medicaid_providers).where(medicaid_providers: { id: session[:medicaid_provider_ids] }).distinct
           else
@@ -108,7 +108,7 @@ class CommunitySearchController < ApplicationController
           end
 
         else
-          if session[:medicaid_provider_ids].any?
+          if session[:medicaid_provider_ids].present?
             @communities = Community.where('semi_private_cents <= ? OR private_cents <= ?', budget, budget).near(session[:city],  session[:distance].to_i)
                                .joins(:medicaid_providers).where(medicaid_providers: { id: session[:medicaid_provider_ids] }).distinct
           else
