@@ -4,6 +4,10 @@
     DEMO STYLE
 */
 
+div.token-input-dropdown-facebook {
+  z-index: 5000;
+}
+
 .numberCircle {
   border-radius: 50%;
   behavior: url(PIE.htc);
