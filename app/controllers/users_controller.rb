@@ -101,7 +101,6 @@ class UsersController < ApplicationController
       @notes = @user.notes.order(created_at: :desc).paginate(page: params[:notes_page], :per_page => 25)
       @recent_placements = Contact.where(user: current_user).joins(:results)
                           .where(results: { result_type: ResultType.where('name = ? OR name = ?', "Placed Semi-Private", "Placed Private") })
-                          .where('contacts.placement > ?', 60.days.ago)
                           .order('contacts.placement DESC')
                           .distinct
                           .paginate(page: params[:recent_placement_page], :per_page => 25)
