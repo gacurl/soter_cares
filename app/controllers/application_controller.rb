@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   def remote_ip
-    request.remote_ip
+    request.headers['x-forwarded-for'].split(',').first
   end
 end
