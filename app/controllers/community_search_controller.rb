@@ -66,7 +66,9 @@ class CommunitySearchController < ApplicationController
           session[:distance] = 10
         end
 
-        session[:medicaid_provider_ids] = params[:medicaid_provider_ids]
+        if params[:medicaid_provider_ids].present?
+          session[:medicaid_provider_ids] = params[:medicaid_provider_ids]
+        end
 
         if params[:city].present?
           city_name = params[:city]
@@ -92,10 +94,8 @@ class CommunitySearchController < ApplicationController
 
         session[:city] = city.name + ', ' + city.state
 
-        if params[:medical_needs]
+        if params[:medical_needs].present?
           session[:medical_needs] = params[:medical_needs]
-        else
-          session[:medical_needs] = nil
         end
 
         if session[:medical_needs].present?

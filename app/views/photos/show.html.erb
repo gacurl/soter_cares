@@ -1,26 +1,28 @@
-<p>
-  <strong>Image data:</strong>
-  <%= @photo.image_data %>
-</p>
-<%= form_for @photo do |f| %>
-    
+<div class="container">
+  <p>
+    <strong>Image data:</strong>
+    <%= @photo.image_data %>
+  </p>
+  <%= form_for @photo do |f| %>
+
     <%= f.select :orient, options_for_select([["0", "0"], ["90", "90"], ["180", "180"], ["-90", "270"]], :orient),
-                                                    class: 'form-control input-sm form-inline',
-                                                    style: 'display: inline;'  %>
-                                                    
+                 class: 'form-control input-sm form-inline',
+                 style: 'display: inline;'  %>
+
     <%= f.label :viewable, class: 'checkbox inline' do %>
       <%= f.check_box :viewable %>
       <span>Viewable to Public</span>
     <% end %>
-    
+
     <%= f.submit "Update Picture", class: "btn btn-primary submit-btn" %>
   <% end %>
 
-<%= link_to "Delete", community_photo_path(@community, @photo), method: :delete, class: "btn btn-danger",
-      data: { confirm: "Are you sure you want to delete #{@photo.image.data["metadata"]["filename"]}?" } %>
-<br>
-<div>
-  <% disposition = "attachment; filename=#{@photo.image.original_filename.inspect}" %>
-  <%= image_tag @photo.image.url(response_content_disposition: disposition, 
-                        virtual_host: true, host: "https://storage.sotercares.com"), height: 200, class: "" %>
+  <%= link_to "Delete", community_photo_path(@community, @photo), method: :delete, class: "btn btn-danger",
+              data: { confirm: "Are you sure you want to delete #{@photo.image.data["metadata"]["filename"]}?" } %>
+  <br>
+  <div>
+    <% disposition = "attachment; filename=#{@photo.image.original_filename.inspect}" %>
+    <%= image_tag @photo.image.url(response_content_disposition: disposition,
+                                   virtual_host: true, host: "https://storage.sotercares.com"), height: 200, class: "" %>
+  </div>
 </div>
