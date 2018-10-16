@@ -8,7 +8,7 @@ class CommunitiesController < ApplicationController
   def destroy
     if @community.patients.empty?
       @community.employees.update_all(community_id: nil)
-      if @community.delete
+      if @community.destroy
         redirect_to communities_path, flash: { success: "#{@community.name} successfully deleted." }
       else
         redirect_to communities_path, flash: { danger: "Something went wrong." }
