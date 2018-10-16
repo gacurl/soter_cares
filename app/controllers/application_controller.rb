@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   def remote_ip
-    request.headers['x-forwarded-for'].split(',').first
+    if Rails.env.development?
+      '24.3.158.222'
+    else
+      request.headers['x-forwarded-for'].split(',').first
+    end
   end
 end
