@@ -74,7 +74,7 @@ class Community < ActiveRecord::Base
   end
   
   def full_street_address
-    if address_1
+    if address_1 && zip_code
       [address_1, zip_code.city.name, zip_code.city.county.state.name, 'US'].compact.join(', ')
     end
   end

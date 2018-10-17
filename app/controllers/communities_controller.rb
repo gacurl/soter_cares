@@ -112,7 +112,13 @@ class CommunitiesController < ApplicationController
     elsif params[:community][:clinician_id].present?
       @community.clinicians << Contact.find_by_id(params[:community][:clinician_id])
     end
-    
+
+    @community.nursing_director =  nil if params[:community][:nursing_director].blank?
+    @community.executive_director = nil if params[:community][:executive_director].blank?
+    @community.admissions_director = nil if params[:community][:admissions_director].blank?
+    @community.marketing_director = nil if params[:community][:marketing_director].blank?
+    @community.zip_code = nil if params[:community][:zip_code].blank?
+
     nursing_director =  params[:community][:nursing_director]
     executive_director = params[:community][:executive_director]
     admissions_director = params[:community][:admissions_director]
