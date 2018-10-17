@@ -68,6 +68,8 @@ class CommunitySearchController < ApplicationController
 
         if params[:medicaid_provider_ids].present?
           session[:medicaid_provider_ids] = params[:medicaid_provider_ids]
+        else
+          session[:medicaid_provider_ids] = nil
         end
 
         if params[:city].present?
@@ -96,6 +98,8 @@ class CommunitySearchController < ApplicationController
 
         if params[:medical_needs].present?
           session[:medical_needs] = params[:medical_needs]
+        else
+          session[:medical_needs] = nil
         end
 
         if session[:medical_needs].present?
@@ -116,8 +120,18 @@ class CommunitySearchController < ApplicationController
           end
         end
 
-        session[:activities] =  params[:activities] if params[:activities]
-        session[:dining] =  params[:dining] if params[:dining]
+        if params[:activities].present?
+          session[:activities] =  params[:activities]
+        else
+          session[:activities] = nil
+        end
+
+        if params[:dining].present?
+          session[:dining] = params[:dining]
+        else
+          session[:dining] = nil
+        end
+
         session[:activity_tags] = [] if session[:activities].nil?
         session[:dining_tags] = [] if session[:dining].nil?
         session[:activity_tags] = ActsAsTaggableOn::Tag.where(id: params[:activities]).pluck(:name) if params[:activities]
