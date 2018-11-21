@@ -298,33 +298,47 @@ class ContactsController < ApplicationController
   def index
     search = params[:search] || nil
     if search
-      @contacts = Contact.search(search).order(last_name: :asc).paginate(page: params[:contact_page], :per_page => 50)
-      @prospects = Contact.where(contact_type: "Resident").search(search)
-                    .where.not(deceased: true, placement_status_id: PlacementStatus.find_by(status: "Placed"))
-                    .order(last_name: :asc)
-                    .paginate(page: params[:prospect_page], :per_page => 50)
-      @residents = Contact.where(contact_type: "Resident").search(search)
-                    .where.not(deceased: true).where(placement_status_id: PlacementStatus.find_by(status: "Placed"))
-                    .order(last_name: :asc)
-                    .paginate(page: params[:resident_page], :per_page => 50)
-      @businesses = Contact.where(contact_type: "Business").search(search)
-                    .order(last_name: :asc).paginate(page: params[:business_page], :per_page => 50)
-      @family = Contact.where(contact_type: "Family").search(search)
-                    .order(last_name: :asc).paginate(page: params[:family_page], :per_page => 50)
+      case params[:contact_type]
+      when 'All' || nil
+        @contacts = Contact.search(search).order(last_name: :asc).paginate(page: params[:contact_page], :per_page => 50)
+      when 'Prospect'
+        @contacts = Contact.where(contact_type: "Resident").search(search)
+                         .where.not(deceased: true, placement_status_id: PlacementStatus.find_by(status: "Placed"))
+                         .order(last_name: :asc)
+                         .paginate(page: params[:prospect_page], :per_page => 50)
+      when 'Family'
+        @contacts = Contact.where(contact_type: "Family").search(search)
+                      .order(last_name: :asc).paginate(page: params[:family_page], :per_page => 50)
+      when 'Resident'
+        @contacts = Contact.where(contact_type: "Resident").search(search)
+                         .where.not(deceased: true).where(placement_status_id: PlacementStatus.find_by(status: "Placed"))
+                         .order(last_name: :asc)
+                         .paginate(page: params[:resident_page], :per_page => 50)
+      when 'Business'
+        @contacts = Contact.where(contact_type: "Business").search(search)
+                          .order(last_name: :asc).paginate(page: params[:business_page], :per_page => 50)
+      end
     else
-      @contacts = Contact.order(last_name: :asc).paginate(page: params[:contact_page], :per_page => 50)
-      @prospects = Contact.where(contact_type: "Resident")
-                    .where.not(deceased: true, placement_status_id: PlacementStatus.find_by(status: "Placed"))
-                    .order(last_name: :asc)
-                    .paginate(page: params[:prospect_page], :per_page => 50)
-      @residents = Contact.where(contact_type: "Resident")
-                    .where.not(deceased: true).where(placement_status_id: PlacementStatus.find_by(status: "Placed"))
-                    .order(last_name: :asc)
-                    .paginate(page: params[:resident_page], :per_page => 50)
-      @businesses = Contact.where(contact_type: "Business")
-                    .order(last_name: :asc).paginate(page: params[:business_page], :per_page => 50)
-      @family = Contact.where(contact_type: "Family")
-                    .order(last_name: :asc).paginate(page: params[:family_page], :per_page => 50)
+      case params[:contact_type]
+      when 'All'
+        @contacts = Contact.order(last_name: :asc).paginate(page: params[:contact_page], :per_page => 50)
+      when 'Prospect'
+        @contacts = Contact.where(contact_type: "Resident")
+                         .where.not(deceased: true, placement_status_id: PlacementStatus.find_by(status: "Placed"))
+                         .order(last_name: :asc)
+                         .paginate(page: params[:prospect_page], :per_page => 50)
+      when 'Family'
+        @contacts = Contact.where(contact_type: "Family")
+                      .order(last_name: :asc).paginate(page: params[:family_page], :per_page => 50)
+      when 'Resident'
+        @contacts = Contact.where(contact_type: "Resident")
+                         .where.not(deceased: true).where(placement_status_id: PlacementStatus.find_by(status: "Placed"))
+                         .order(last_name: :asc)
+                         .paginate(page: params[:resident_page], :per_page => 50)
+      when 'Business'
+        @contacts = Contact.where(contact_type: "Business")
+                          .order(last_name: :asc).paginate(page: params[:business_page], :per_page => 50)
+      end
     end
   end
   

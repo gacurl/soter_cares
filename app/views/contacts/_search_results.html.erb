@@ -1,78 +1,77 @@
 <div class="row">
   <div class="col-md-12">
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
-      <div class="btn-group btn-group-xs" role="group">
-        <button type="button" class="btn btn-primary list-buttons" id="all">All</button>
+      <div class="btn-group btn-group-xs %>" role="group">
+        <%= link_to 'All', contacts_path(contact_type: 'All'), class: "btn #{params[:contact_type] == 'All' || nil ? "btn-primary" : "btn-default"} list-buttons" %>
       </div>
       <div class="btn-group btn-group-xs" role="group">
-        <button type="button" class="btn btn-default list-buttons" id="prospective">Prospects</button>
+        <%= link_to 'Prospects', contacts_path(contact_type: 'Prospect'), class: "btn #{params[:contact_type] == 'Prospect' ? "btn-primary" : "btn-default"} list-buttons" %>
       </div>
       <div class="btn-group btn-group-xs" role="group">
-        <button type="button" class="btn btn-default list-buttons" id='family'>Family</button>
+        <%= link_to 'Family', contacts_path(contact_type: 'Family'), class: "btn #{params[:contact_type] == 'Family' ? "btn-primary" : "btn-default"} list-buttons" %>
       </div>
       <div class="btn-group btn-group-xs" role="group">
-        <button type="button" class="btn btn-default list-buttons" id="residents">Residents</button>
+        <%= link_to 'Resident', contacts_path(contact_type: 'Resident'), class: "btn #{params[:contact_type] == 'Resident' ? "btn-primary" : "btn-default"} list-buttons" %>
       </div>
       <div class="btn-group btn-group-xs" role="group">
-        <button type="button" class="btn btn-default list-buttons" id='business'>Business</button>
+        <%= link_to 'Business', contacts_path(contact_type: 'Business'), class: "btn #{params[:contact_type] == 'Business' ? "btn-primary" : "btn-default"} list-buttons" %>
       </div>
     </div>
   </div>
 </div>
 <div id="contact-list" class="lists">
+  <% case params[:contact_type] %>
+  <% when 'All' %>
     <%= render(:partial => 'contact_list', locals: { contacts: @contacts }) %>
-</div>
-<div id="prospective-list" class="hide lists">
-    <%= render(:partial => 'prospective_list', locals: { prospects: @prospects }) %>
-</div>
-<div id="residents-list" class="hide lists">
-    <%= render(:partial => 'resident_list', locals: { residents: @residents }) %>
-</div>
-<div id="family-list" class="hide lists">
-    <%= render(:partial => 'family_list', locals: { members: @family }) %>
-</div>
-<div id="business-list" class="hide lists">
-    <%= render(:partial => 'business_list', locals: { businesses: @businesses }) %>
+  <% when 'Prospect' %>
+    <%= render(:partial => 'prospective_list', locals: { prospects: @contacts }) %>
+  <% when 'Resident' %>
+    <%= render(:partial => 'resident_list', locals: { residents: @contacts }) %>
+  <% when 'Family' %>
+    <%= render(:partial => 'family_list', locals: { members: @contacts }) %>
+  <% when 'Business' %>
+    <%= render(:partial => 'business_list', locals: { businesses: @contacts }) %>
+  <% end %>
 </div>
 
-<script>
-    $('#all').click(function() {
-    $('.list-buttons').removeClass('btn-primary');
-    $('.list-buttons').addClass('btn-default');
-    $('#all').addClass('btn-primary');
-    $('.lists').hide();
-    $('#contact-list').show();
-  });
-  $('#prospective').click(function() {
-    $('#prospective-list').removeClass('hide');
-    $('.list-buttons').removeClass('btn-primary');
-    $('.list-buttons').addClass('btn-default');
-    $('#prospective').addClass('btn-primary');
-    $('.lists').hide();
-    $('#prospective-list').show();
-  });
-  $('#residents').click(function() {
-    $('#residents-list').removeClass('hide');
-    $('.list-buttons').removeClass('btn-primary');
-    $('.list-buttons').addClass('btn-default');
-    $('#residents').addClass('btn-primary');
-    $('.lists').hide();
-    $('#residents-list').show();
-  });
-  $('#family').click(function() {
-    $('#family-list').removeClass('hide');
-    $('.list-buttons').removeClass('btn-primary');
-    $('.list-buttons').addClass('btn-default');
-    $('#family').addClass('btn-primary');
-    $('.lists').hide();
-    $('#family-list').show();
-  });
-  $('#business').click(function() {
-    $('#business-list').removeClass('hide');
-    $('.list-buttons').removeClass('btn-primary');
-    $('.list-buttons').addClass('btn-default');
-    $('#business').addClass('btn-primary');
-    $('.lists').hide();
-    $('#business-list').show();
-  });
-</script>
+<!--<script>-->
+<!--    $('#all').click(function() {-->
+<!--    $('.list-buttons').removeClass('btn-primary');-->
+<!--    $('.list-buttons').addClass('btn-default');-->
+<!--    $('#all').addClass('btn-primary');-->
+<!--    $('.lists').hide();-->
+<!--    $('#contact-list').show();-->
+<!--  });-->
+<!--  $('#prospective').click(function() {-->
+<!--    $('#prospective-list').removeClass('hide');-->
+<!--    $('.list-buttons').removeClass('btn-primary');-->
+<!--    $('.list-buttons').addClass('btn-default');-->
+<!--    $('#prospective').addClass('btn-primary');-->
+<!--    $('.lists').hide();-->
+<!--    $('#prospective-list').show();-->
+<!--  });-->
+<!--  $('#residents').click(function() {-->
+<!--    $('#residents-list').removeClass('hide');-->
+<!--    $('.list-buttons').removeClass('btn-primary');-->
+<!--    $('.list-buttons').addClass('btn-default');-->
+<!--    $('#residents').addClass('btn-primary');-->
+<!--    $('.lists').hide();-->
+<!--    $('#residents-list').show();-->
+<!--  });-->
+<!--  $('#family').click(function() {-->
+<!--    $('#family-list').removeClass('hide');-->
+<!--    $('.list-buttons').removeClass('btn-primary');-->
+<!--    $('.list-buttons').addClass('btn-default');-->
+<!--    $('#family').addClass('btn-primary');-->
+<!--    $('.lists').hide();-->
+<!--    $('#family-list').show();-->
+<!--  });-->
+<!--  $('#business').click(function() {-->
+<!--    $('#business-list').removeClass('hide');-->
+<!--    $('.list-buttons').removeClass('btn-primary');-->
+<!--    $('.list-buttons').addClass('btn-default');-->
+<!--    $('#business').addClass('btn-primary');-->
+<!--    $('.lists').hide();-->
+<!--    $('#business-list').show();-->
+<!--  });-->
+<!--</script>-->
