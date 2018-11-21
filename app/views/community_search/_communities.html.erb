@@ -1,6 +1,6 @@
 <div class="card h-100">
   <h6 style='margin-bottom: 1px'><%= page_entries_info @communities, :model => "communities" %></h6>
-  <%= will_paginate @communities, :param_name => 'page', :style => 'font-size: 9px; margin: 1px' %>
+  <%= will_paginate @communities, params: params.reject{|k,v| k == 'authenticity_token' }, param_name: 'page', :style => 'font-size: 9px; margin: 1px' %>
   <% @communities.each do |community| %>
     <h4 class="card-header" style="color: #0075b4;font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
       <%= community.name %>
