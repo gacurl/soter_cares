@@ -285,12 +285,19 @@ end %>
               </td>
             </tr>
             <tr>
-              <tr>
+            <tr>
               <td style='font-weight: bold'>Pet Fee (Monthly):</td>
               <td><div class="input-group">
-                    <div class="input-group-addon">$</div>
-                      <%= f.text_field :pet_fee, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
-                  </div>
+                <div class="input-group-addon">$</div>
+                <%= f.text_field :pet_fee, class: 'form-control', id: 'result_date', placeholder: 'Amount' %>
+              </div>
+              </td>
+            </tr>
+            <tr>
+            <tr>
+              <td style='font-weight: bold'>Additional Rate Info:</td>
+              <td>
+                <%= f.text_area :price_notes, class: 'form-control', placeholder: 'Add notes', rows: 10 %>
               </td>
             </tr>
           </table>

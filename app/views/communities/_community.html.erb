@@ -144,6 +144,9 @@
             <td style='font-weight: bold'>Pet Fee (Monthly):</td><td><%= number_to_currency(@community.pet_fee) %>/month</td>
           </tr>
         <% end %>
+        <tr>
+          <td style='font-weight: bold'>Additional Rate Info:</td><td><%= @community.price_notes %></td>
+        </tr>
       </table>
     </div> 
   </div>

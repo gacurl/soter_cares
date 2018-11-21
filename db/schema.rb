@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180821162218) do
+ActiveRecord::Schema.define(version: 20181121021449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20180821162218) do
     t.boolean  "spanish",                      default: false
     t.integer  "second_person_fee_cents",      default: 0,     null: false
     t.string   "second_person_fee_currency",   default: "USD", null: false
+    t.text     "price_notes"
     t.index ["company_id"], name: "index_communities_on_company_id", using: :btree
     t.index ["executive_director_id"], name: "index_communities_on_executive_director_id", using: :btree
     t.index ["nursing_director_id"], name: "index_communities_on_nursing_director_id", using: :btree

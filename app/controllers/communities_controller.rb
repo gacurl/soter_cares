@@ -237,7 +237,7 @@ class CommunitiesController < ApplicationController
           :pharmacy_id, :transport, :zip_code_id, :activity_list_tokens,
           :dining_list_tokens, :feature_list_tokens, :undesired_list_tokens,
           :phone_number, :fax, :al_license, :company_id, :website, :average_age,
-          :private_availability, :semi_private_availability, :clinician_id, :clinician_search,
+          :private_availability, :semi_private_availability, :clinician_id, :clinician_search, :price_notes,
           :license_type_ids => [], :medicaid_provider_ids => []]
           
       list_params_allowed << :user_id if current_user.admin?
