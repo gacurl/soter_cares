@@ -256,15 +256,16 @@ class Contact < ActiveRecord::Base
   
   def self.search(search)
     if search
-      if search.is_number? 
+      if search.is_number?
+        p "Number"
         where(ssn_digest: Contact.digest(search))
-      else
-        begin
+      elsif search.kind_of?(Date)
+        p "Date"
           where('dob = ?',"%#{Date.parse(search)}%")
-        rescue ArgumentError
-            where('last_name ilike ? OR first_name ilike ? OR first_name ilike ? AND last_name ilike ?', 
+      else
+        p "Esle"
+            where('last_name ilike ? OR first_name ilike ? OR first_name ilike ? AND last_name ilike ?',
                   "%#{search}%", "%#{search}%", "%#{search.split[0]}%", "%#{search.split[1]}%")
-        end
       end
     else
       nil

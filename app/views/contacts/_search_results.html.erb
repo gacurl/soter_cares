@@ -20,17 +20,21 @@
   </div>
 </div>
 <div id="contact-list" class="lists">
-  <% case params[:contact_type] %>
-  <% when 'All' %>
+  <% if params[:contact_type].present? %>
+    <% case params[:contact_type] %>
+    <% when 'All' %>
+      <%= render(:partial => 'contact_list', locals: { contacts: @contacts }) %>
+    <% when 'Prospect' %>
+      <%= render(:partial => 'prospective_list', locals: { prospects: @contacts }) %>
+    <% when 'Resident' %>
+      <%= render(:partial => 'resident_list', locals: { residents: @contacts }) %>
+    <% when 'Family' %>
+      <%= render(:partial => 'family_list', locals: { members: @contacts }) %>
+    <% when 'Business' %>
+      <%= render(:partial => 'business_list', locals: { businesses: @contacts }) %>
+    <% end %>
+  <% else %>
     <%= render(:partial => 'contact_list', locals: { contacts: @contacts }) %>
-  <% when 'Prospect' %>
-    <%= render(:partial => 'prospective_list', locals: { prospects: @contacts }) %>
-  <% when 'Resident' %>
-    <%= render(:partial => 'resident_list', locals: { residents: @contacts }) %>
-  <% when 'Family' %>
-    <%= render(:partial => 'family_list', locals: { members: @contacts }) %>
-  <% when 'Business' %>
-    <%= render(:partial => 'business_list', locals: { businesses: @contacts }) %>
   <% end %>
 </div>
 
