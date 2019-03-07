@@ -12,6 +12,7 @@
           <div class="col-sm-12">
             <%= label_tag(:city, "Enter Location and Distance", class: "col-sm-4 control-label") %>
             <div class="col-sm-5">
+              <%= hidden_field_tag :city_id, id: "city_id" %>
               <%= text_field_tag :city, nil, class: 'form-control', 
                     placeholder: "Enter City, State", id: "city" %>
               <%= hidden_field_tag :city_id, id: "city_id" %>

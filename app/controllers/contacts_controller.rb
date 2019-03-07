@@ -44,14 +44,18 @@ class ContactsController < ApplicationController
   
   def distance_search
     city = City.find_by_id(params[:city_id])
-    if @contact.license_list.present?
-      license_ids = LicenseType.tagged_with(@contact.license_list, on: :licenses, any: true).pluck(:id)
-      @communities = Community.with_licenses(license_ids).near("#{city.name}, #{city.county.state.two_digit_code}", params[:distance].to_i)
+    if city
+      if @contact.license_list.present?
+        license_ids = LicenseType.tagged_with(@contact.license_list, on: :licenses, any: true).pluck(:id)
+        @communities = Community.with_licenses(license_ids).near("#{city.name}, #{city.county.state.two_digit_code}", params[:distance].to_i)
+      else
+        @communities = Community.near("#{city.name}, #{city.county.state.two_digit_code}", params[:distance].to_i)
+      end
+      tags = @contact.dining_list + @contact.activity_list + @contact.feature_list + @contact.undesired_list
+      @communities = @communities.sort_by { |o| -(tags & (o.dining_list + o.activity_list + o.feature_list + o.undesired_list)).length }
     else
-      @communities = Community.near("#{city.name}, #{city.county.state.two_digit_code}", params[:distance].to_i)
+      @communities = Community.search(params[:name])
     end
-    tags = @contact.dining_list + @contact.activity_list + @contact.feature_list + @contact.undesired_list
-    @communities = @communities.sort_by { |o| -(tags & (o.dining_list + o.activity_list + o.feature_list + o.undesired_list)).length }                  
   #  @activities = Community.tag_counts_on(:activities)
   end
   

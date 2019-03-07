@@ -35,8 +35,10 @@
                  <%= license.name + ", " %>
                 <% end %></td>
                 
-          <td><%= highlight(community.activity_list.join(", "), @contact.activity_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %></td>
-          <td><%= highlight(community.dining_list.join(", "), @contact.dining_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %></td>
+          <td><%= highlight(((@contact.activity_list & community.activity_list) + (community.activity_list.first(10) - session[:activity_tags])).join(", "), session[:activity_tags], highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %>
+            <span style="font-weight: bold"><%= "and #{community.activity_list.size - 10 - session[:activity_tags].size} more..." if (session[:activity_tags].size + 10) < community.activity_list.size %></td>
+          <td><%= highlight(((@contact.dining_list & community.dining_list) + (community.dining_list.first(5) - session[:dining_tags])).join(", "), session[:dining_tags], highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %>
+            <span style="font-weight: bold"><%= "and #{community.dining_list.size - 5 - session[:dining_tags].size} more..." if (session[:dining_tags].size + 5) < community.dining_list.size %></td>
           <td><%= highlight(community.feature_list.join(", "), @contact.feature_list, highlighter: '<em style="color: blue; font-weight: bold">\1</em>') %></td>
           <td><%= highlight(community.undesired_list.join(", "), @contact.undesired_list, highlighter: '<em style="color: red; font-weight: bold">\1</em>') %></td>
           <% if community.semi_private_cents > @contact.finance.monthly_cents
