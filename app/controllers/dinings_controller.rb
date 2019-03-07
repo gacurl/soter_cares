@@ -1,42 +1,42 @@
 class DiningsController < ApplicationController
   before_action :admin_user
-  
-  def update_multiple
-    @dinings = Dining.update(params[:dinings].keys, params[:dinings].values)
-    @dinings.reject! { |p| p.errors.empty? }
-    flash[:success] = "Dinings updated"
-    redirect_to settings_path
+  before_action :set_dining, except: [:index]
+
+  def index
+    @dinings = ActsAsTaggableOn::Tag.joins(:taggings).where(taggings: { context: 'dinings' }).distinct.order(name: :asc).paginate(page: params[:page], per_page: 50)
   end
-  
-  def create
-    Dining.create(dining_params)
-    flash[:success] = "Dining option created"
-    redirect_to settings_path
+
+  def edit
+
   end
-  
+
   def update
-    Dining.find(params[:id]).update(dining_params)
-    flash[:success] = "Dining option updated"
-    redirect_to settings_path
+    @dining.update(dinings_params)
+    flash[:success] = "Dining updated"
+    redirect_to dinings_path
   end
-  
+
   def destroy
-    Dining.find(params[:id]).destroy
-    flash[:success] = "Dining option deleted"
-    redirect_to settings_path
+    @dining.destroy
+    flash[:success] = "Dining deleted"
+    redirect_to dinings_path
   end
-  
+
   private
-    def dining_params
-      params.require(:dining).permit!
+  def set_dining
+    @dining = ActsAsTaggableOn::Tag.find(params[:id])
+  end
+
+  def dinings_params
+    params.require(:acts_as_taggable_on_tag).permit(:name)
+  end
+
+  def admin_user
+    if logged_in?
+      redirect_to current_user, flash: { danger: "Administrator permission required" } unless current_user.admin?
+    else
+      flash[:danger] = "Authorization failure"
+      redirect_to root_url
     end
-  
-    def admin_user
-      if logged_in?
-        redirect_to current_user, flash: { danger: "Administrator permission required" } unless current_user.admin?
-      else
-        flash[:danger] = "Authorization failure"
-        redirect_to root_url
-      end
-    end
+  end
 end

@@ -32,6 +32,33 @@
       </div>
       <br>
       <div class="row">
+        <%= form_tag update_multiple_license_types_path, method: :put do %>
+          <table class="table table-condensed ero-table">
+            <tr style='font-weight: bold'>
+              <th>License Type</th>
+              <th>Clinical Needs</th>
+              <th></th>
+            </tr>
+            <% @licenses.order(name: :desc).each do |license| %>
+              <%= fields_for "licenses[]", license do |f| %>
+                <tr>
+                  <td><%= f.text_field :name, class: 'form-control' %></td>
+                  <td><%= f.text_area(:license_list, cols: 20, rows: 3,
+                                      placeholder:         "Clinical Needs (separate with commas)",
+                                      class:               'form-control',
+                                      style:               "overflow-y: scroll") %></td>
+                  <td><%= link_to "Delete", license, method: :delete,
+                                  data:                      { confirm: "Are you sure you want to delete #{license.name}?" },
+                                  class:                     "btn btn-danger btn-sm", style: "color: white" %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </table>
+          <%= submit_tag "Update Licenses", class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </div>
+      <br>
+      <div class="row">
         <%= form_for(@license) do |f| %>
           <table class="table table-condensed ero-table">
             <tr style='font-weight: bold'>

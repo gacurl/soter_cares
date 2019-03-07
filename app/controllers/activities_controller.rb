@@ -1,5 +1,6 @@
 class ActivitiesController < ApplicationController
   before_action :admin_user
+  before_action :set_activity, except: [:index]
   
   def update_multiple
     @activities = Activity.update(params[:activities].keys, params[:activities].values)
@@ -7,28 +8,34 @@ class ActivitiesController < ApplicationController
     flash[:success] = "Activities updated"
     redirect_to settings_path
   end
-  
-  def create
-    Activity.create(activities_params)
-    flash[:success] = "Activity created"
-    redirect_to settings_path
+
+  def index
+    @activities = ActsAsTaggableOn::Tag.joins(:taggings).where(taggings: { context: 'activities' }).distinct.order(name: :asc).paginate(page: params[:page], per_page: 50)
   end
-  
+
+  def edit
+
+  end
+
   def update
-    Activity.find(params[:id]).update(activities_params)
+    @activity.update(activities_params)
     flash[:success] = "Activity updated"
-    redirect_to settings_path
+    redirect_to activities_path
   end
   
   def destroy
-    Activity.find(params[:id]).destroy
+    @activity.destroy
     flash[:success] = "Activity deleted"
-    redirect_to settings_path
+    redirect_to activities_path
   end
   
   private
+    def set_activity
+      @activity = ActsAsTaggableOn::Tag.find(params[:id])
+    end
+
     def activities_params
-      params.require(:activity).permit!
+      params.require(:acts_as_taggable_on_tag).permit(:name)
     end
   
     def admin_user
