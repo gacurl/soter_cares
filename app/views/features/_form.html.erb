@@ -1,0 +1,21 @@
+<div class="col-md-12">
+  <%= form_for @feature, url: feature_path(@feature) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-inline">
+          <div class="row">
+            <%= f.label :name, class: "control-label col-sm-2" %>
+            <div class="col-md-4">
+              <%= f.text_field :name, class: "form-control", style: "width: 100%" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <%= f.submit 'Save', class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

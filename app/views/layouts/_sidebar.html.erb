@@ -16,7 +16,7 @@
 <ul class="list-unstyled components">
   <li class="<%= cp(current_user) %> sidebar-item"><%= link_to "<span style='font-size: 16px'>#{fa_icon('dashboard')}</span> <span>Dashboard</span>".html_safe, current_user %></li>
   <% if current_user.admin? %>
-    <% if cp(users_path) == 'active' || cp(companies_path) == 'active' || cp(activities_path) == 'active' %>
+    <% if cp(users_path) == 'active' || cp(companies_path) == 'active' || cp(activities_path) == 'active' || cp(features_path) == 'active' || cp(dinings_path) == 'active' %>
       <% status = 'in' %>
       <% active = 'looking' %>
     <% else %>
@@ -30,6 +30,7 @@
         <li class="sidebar-item <%= cp(settings_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('gears')}</span> <span>Settings</span>".html_safe, settings_path, data: { no_turbolink: true } %></li>
         <li class="sidebar-item <%= cp(activities_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('bicycle')}</span> <span>Activities</span>".html_safe, activities_path %></li>
         <li class="sidebar-item <%= cp(dinings_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('cutlery')}</span> <span>Dinings</span>".html_safe, dinings_path %></li>
+        <li class="sidebar-item <%= cp(features_path) %>"><%= link_to "<span style='font-size: 16px'>#{fa_icon('stack-overflow')}</span> <span>Features</span>".html_safe, features_path %></li>
       </ul>
     </li>
   <% end %>

@@ -1,42 +1,42 @@
 class FeaturesController < ApplicationController
   before_action :admin_user
-  
-  def update_multiple
-    @features = Feature.update(params[:features].keys, params[:features].values)
-    @features.reject! { |p| p.errors.empty? }
-    flash[:success] = "Features updated"
-    redirect_to settings_path
+  before_action :set_activity, except: [:index]
+
+  def index
+    @features = ActsAsTaggableOn::Tag.joins(:taggings).where(taggings: { context: 'features' }).distinct.order(name: :asc).paginate(page: params[:page], per_page: 50)
   end
-  
-  def create
-    Feature.create(features_params)
-    flash[:success] = "Feature created"
-    redirect_to settings_path
+
+  def edit
+
   end
-  
+
   def update
-    Feature.find(params[:id]).update(features_params)
+    @feature.update(features_params)
     flash[:success] = "Feature updated"
-    redirect_to settings_path
+    redirect_to features_path
   end
-  
+
   def destroy
-    Feature.find(params[:id]).destroy
+    @feature.destroy
     flash[:success] = "Feature deleted"
-    redirect_to settings_path
+    redirect_to features_path
   end
-  
+
   private
-    def features_params
-      params.require(:feature).permit!
+  def set_activity
+    @feature = ActsAsTaggableOn::Tag.find(params[:id])
+  end
+
+  def features_params
+    params.require(:acts_as_taggable_on_tag).permit(:name)
+  end
+
+  def admin_user
+    if logged_in?
+      redirect_to current_user, flash: { danger: "Administrator permission required" } unless current_user.admin?
+    else
+      flash[:danger] = "Authorization failure"
+      redirect_to root_url
     end
-  
-    def admin_user
-      if logged_in?
-        redirect_to current_user, flash: { danger: "Administrator permission required" } unless current_user.admin?
-      else
-        flash[:danger] = "Authorization failure"
-        redirect_to root_url
-      end
-    end
+  end
 end
