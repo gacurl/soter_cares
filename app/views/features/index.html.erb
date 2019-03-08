@@ -1,11 +1,11 @@
 <div class="container">
-  <h6 style='margin-bottom: 1px'><%= page_entries_info @activities, :model => "activities" %></h6>
-  <%= will_paginate @activities, :param_name => 'page', :style => 'font-size: 9px; margin: 1px' %>
-  <% @activities.each do |activity| %>
+  <h6 style='margin-bottom: 1px'><%= page_entries_info @features, :model => "features" %></h6>
+  <%= will_paginate @features, :param_name => 'page', :style => 'font-size: 9px; margin: 1px' %>
+  <% @features.each do |feature| %>
     <div>
-      <%= activity.name %>
-      <%= link_to 'Edit', edit_activity_path(activity) %>
-      <%= link_to 'Destroy', activity_path(activity), method: :delete %>
+      <%= feature.name %>
+      <%= link_to 'Edit', edit_feature_path(feature) %>
+      <%= link_to 'Destroy', feature_path(feature), method: :delete %>
     </div>
   <% end %>
 </div>

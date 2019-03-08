@@ -1,6 +1,6 @@
 class FeaturesController < ApplicationController
   before_action :admin_user
-  before_action :set_activity, except: [:index]
+  before_action :set_feature, except: [:index]
 
   def index
     @features = ActsAsTaggableOn::Tag.joins(:taggings).where(taggings: { context: 'features' }).distinct.order(name: :asc).paginate(page: params[:page], per_page: 50)
@@ -23,7 +23,7 @@ class FeaturesController < ApplicationController
   end
 
   private
-  def set_activity
+  def set_feature
     @feature = ActsAsTaggableOn::Tag.find(params[:id])
   end
 
