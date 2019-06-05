@@ -44,6 +44,8 @@ class ContactsController < ApplicationController
   
   def distance_search
     city = City.find_by_id(params[:city_id])
+    session[:activity_tags] ||= []
+    session[:dining_tags] ||= []
     if city
       if @contact.license_list.present?
         license_ids = LicenseType.tagged_with(@contact.license_list, on: :licenses, any: true).pluck(:id)

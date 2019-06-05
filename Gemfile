@@ -68,7 +68,7 @@ gem 'geocoder'
 gem 'acts-as-taggable-on'
 gem 'rails-jquery-tokeninput'
 gem "select2-rails"
-gem 'twilio-ruby', '~> 5.4.0'
+gem 'twilio-ruby', '~> 5.23.1'
 gem 'image_processing'
 gem 'mini_magick', '>= 4.3.5'
 gem 'gibbon'
