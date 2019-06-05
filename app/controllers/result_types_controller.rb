@@ -28,7 +28,7 @@ class ResultTypesController < ApplicationController
   
   private
     def result_params
-      params.require(:result_type).permit!
+      params.require(:result_type).permit(:name)
     end
   
     def admin_user
