@@ -40,7 +40,13 @@ class ContactsController < ApplicationController
     respond_to do |format|
       format.js { render 'update_prospective_communities.js.erb' }
     end
-  end  
+  end
+
+  def send_claim_email
+    @contact.prospective_communities.each do |community|
+      community.claim_email_contact.send_claim_email(@contact.id)
+    end
+  end
   
   def distance_search
     city = City.find_by_id(params[:city_id])

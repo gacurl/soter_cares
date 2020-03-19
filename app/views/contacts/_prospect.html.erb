@@ -185,6 +185,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
        Prospective Communities
+        <%= link_to 'Send Claim', contact_send_claim_email_path(@contact), class: 'btn btn-xs btn-primary pull-right' %>
       </div>
       <div class="panel-body" id="small_prospects">
         <%= render 'small_prospects' %>
@@ -350,7 +351,7 @@
             <td style='font-weight: bold'>Activities:</td><td><%= @contact.activity_list %></td>
           </tr>
           <tr>
-            <td style='font-weight: bold'>Dining Options:</td><td><%= @contact.dining_list %></td>
+            <td style='font-weight: bold'>Languages:</td><td><%= @contact.dining_list %></td>
           </tr>
           <tr>
             <td style='font-weight: bold'>Features:</td><td><%= @contact.feature_list %></td>

@@ -37,7 +37,7 @@ class UserMailer < ApplicationMailer
   def lead(user, prospect_id)
     prospect = Contact.find_by_id(prospect_id)
     
-    text = "A new case has been assigend to you. The prospective client's name is #{prospect.first_name} #{prospect.last_name}."
+    text = "A new case has been assigned to you. The prospective client's name is #{prospect.first_name} #{prospect.last_name}."
     
     message = {
       from_name: "Soter Family Advocates",

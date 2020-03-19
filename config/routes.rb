@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     get :edit_result
     get :edit_finance
     get :decision_makers
+    get :send_claim_email
     post :update_prospective_communities
     post :destroy_prospective_communities
     post :save_note

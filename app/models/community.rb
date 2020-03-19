@@ -56,7 +56,11 @@ class Community < ActiveRecord::Base
   after_validation :geocode          # auto-fetch coordinates
   
   validates :name, presence: true, length: { maximum: 50 }
-  
+
+  def claim_email_contact
+    marketing_director || admissions_director || executive_director
+  end
+
   def send_claim_email(prospect_id, lead_id)
     ContactMailer.lead(self, prospect_id, lead_id).deliver_now
   end

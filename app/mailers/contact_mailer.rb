@@ -1,6 +1,29 @@
 class ContactMailer < ApplicationMailer
   include ActionView::Helpers::NumberHelper
-  
+
+  def claim(contact, prospect_id)
+    prospect = Contact.find prospect_id
+    template_name = 'claim'
+    template_content = [
+
+    ]
+    message = {
+        to: [{name: contact.name, email: contact.email }],
+        merge_vars: [
+            {rcpt: contact.email,
+             vars: [
+                 { name: "CLIENT", content: prospect.name },
+                 { name: "ADVOCATE", content: prospect.user.name },
+                 { name: "ADVOCATE_PHONE", content: prospect.user.name },
+             ]
+            }
+        ]
+    }
+
+    mandrill_client.messages.send_template template_name, template_content, message
+
+  end
+
   def validation(contact, prospect_id)
     template_name = 'soter-validation'
     template_content = []

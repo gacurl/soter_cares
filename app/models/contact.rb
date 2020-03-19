@@ -104,7 +104,11 @@ class Contact < ActiveRecord::Base
    scope :lead_to_pursue, -> { joins(:results)
     .where('results.created_on = (SELECT MAX(results.created_on) FROM results WHERE results.contact_id = contacts.id)')
     .where('results.result_type = Qualified') }
-  
+
+  def send_claim_email(prospect_id)
+    ContactMailer.claim(self, prospect_id).deliver_now
+  end
+
   def case_manager_check
     if self.contact_type == "Resident"
       if self.user && self.user_id_changed?
