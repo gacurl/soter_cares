@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
                                   allow_blank: true
 
   def contact_method
-    email
+    phone_number.present? ? phone_number: email
   end
 
   def send_lead_email(lead_id)

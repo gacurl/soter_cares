@@ -15,6 +15,7 @@
       <tr style='font-weight: bold'>
         <td>Name</td>
         <td>E-Mail</td>
+        <td>Phone</td>
         <td>Admin</td>
         <td>Disabled</td>
           
@@ -25,6 +26,7 @@
         <tr>
           <td><%= link_to user.name, edit_user_path(user) %></td>
           <td><%= user.email %></td>
+          <td><%= user.phone_number %></td>
           <td><%= check_box_tag("Admin", "1", user.admin, disabled: true) %></td>
           <td><%= check_box_tag("Disabled", "1", user.disable, disabled: true) %></td>
         </tr>

@@ -71,7 +71,7 @@ class UsersController < ApplicationController
     @user = User.find_by_id(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] =  "User updated."
-      redirect_to settings_path
+      redirect_to users_path
     end
   end
   
@@ -146,7 +146,7 @@ class UsersController < ApplicationController
     end
     
     def user_params
-      params.require(:user).permit(:name, :email, :admin, 
+      params.require(:user).permit(:name, :email, :admin, :phone_number,
                                     :disable, :profile, :pic_link)
     end
     

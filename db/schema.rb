@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181121021449) do
+ActiveRecord::Schema.define(version: 20200502210639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "activities", force: :cascade do |t|
     t.string "activity_type"
@@ -348,53 +349,6 @@ ActiveRecord::Schema.define(version: 20181121021449) do
     t.index ["user_id"], name: "index_notes_on_user_id", using: :btree
   end
 
-  create_table "patients", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "middle_name"
-    t.string   "last_name"
-    t.string   "salutation"
-    t.string   "gender"
-    t.string   "email"
-    t.string   "work_email"
-    t.string   "county"
-    t.string   "home_phone"
-    t.string   "cell_phone"
-    t.string   "ssn_digest"
-    t.string   "encrypted_ssn"
-    t.string   "encrypted_ssn_iv"
-    t.string   "dob"
-    t.string   "address_1"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip"
-    t.string   "address_2"
-    t.integer  "user_id"
-    t.integer  "placement_statuses_id"
-    t.boolean  "veteran"
-    t.string   "branch"
-    t.date     "pay_entry_base_date"
-    t.date     "end_of_active_service"
-    t.date     "a_a_application_submitted"
-    t.date     "benefit_received"
-    t.boolean  "medicaid"
-    t.boolean  "medicaid_icp"
-    t.boolean  "medicaid_ltmc"
-    t.text     "personal_history"
-    t.text     "clinical_history"
-    t.text     "financial"
-    t.integer  "community_id"
-    t.date     "placement"
-    t.integer  "balance_cents"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.index ["community_id"], name: "index_patients_on_community_id", using: :btree
-    t.index ["placement_statuses_id"], name: "index_patients_on_placement_statuses_id", using: :btree
-    t.index ["ssn_digest"], name: "index_patients_on_ssn_digest", unique: true, using: :btree
-    t.index ["user_id"], name: "index_patients_on_user_id", using: :btree
-  end
-
   create_table "payments", force: :cascade do |t|
     t.integer  "amount_cents"
     t.integer  "company_id"
@@ -549,6 +503,7 @@ ActiveRecord::Schema.define(version: 20181121021449) do
     t.datetime "reset_sent_at"
     t.string   "pic_link"
     t.text     "profile"
+    t.string   "phone_number"
     t.index ["email"], name: "index_users_on_email", using: :btree
   end
 

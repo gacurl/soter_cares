@@ -1,0 +1,31 @@
+<% provide(:title, "Edit User") %>
+<h3 style="text-align: center">Edit a User</h3>
+
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <%= form_for(@user) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+  
+        <%= f.label :name, "User Full Name" %>
+        <%= f.text_field :name, class: 'form-control' %>
+
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control' %>
+
+        <%= f.label :phone_number %>
+        <%= f.text_field :phone_number, class: 'form-control' %>
+        
+        <%= f.label :admin, class: 'checkbox inline' do %>
+          <%= f.check_box :admin %>
+          <span>Admin User</span>
+        <% end %>
+
+        <%= f.label :disable, class: 'checkbox inline' do %>
+          <%= f.check_box :disable %>
+          <span>Disable User</span>
+        <% end %>
+        
+        <%= f.submit "Save", class: "btn btn-primary submit-btn" %>
+      <% end %>
+    </div>
+  </div>
