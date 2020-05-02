@@ -7,7 +7,7 @@ class ContactsController < ApplicationController
                   :new_result, :save_result, :new_respite, :save_respite, :edit_result, :edit_finance,
                   :save_finance, :community_search, :distance_search,
                   :update_prospective_communities, :destroy_prospective_communities, 
-                  :upload_data_file]
+                  :upload_data_file, :send_claim_email]
 
   def upload_data_file
     @data_file = @contact.data_files.new(data_file_params)
@@ -43,9 +43,13 @@ class ContactsController < ApplicationController
   end
 
   def send_claim_email
-    @contact.prospective_communities.each do |community|
-      community.claim_email_contact.send_claim_email(@contact.id)
+    community = Community.find params[:community_id]
+    email_to = community.claim_email_contact
+    if email_to
+      email_to.send_claim_email(@contact.id, current_user.id)
+      @contact.notes << Note.new(content: "Claim sent to #{community.name}", user: current_user)
     end
+    redirect_to @contact, flash: { success: 'Claim email sent'}
   end
   
   def distance_search

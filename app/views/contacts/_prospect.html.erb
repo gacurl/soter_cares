@@ -185,7 +185,6 @@
     <div class="panel panel-default">
       <div class="panel-heading">
        Prospective Communities
-        <%= link_to 'Send Claim', contact_send_claim_email_path(@contact), class: 'btn btn-xs btn-primary pull-right' %>
       </div>
       <div class="panel-body" id="small_prospects">
         <%= render 'small_prospects' %>
@@ -424,20 +423,20 @@
       </div>
       <div class="panel-body">
         <table class="table">
-            <tr style='font-weight: bold'>
-              <td>Comunity</td>
-              <td>Start</td>
-              <td>End</td>
-              <td>Total</td>
-            </tr>
-        <% @contact.respite_stays.each do |stay| %>
-          <tr>
-            <td><%= stay.community.name %></td>            
-            <td><%= stay.start.strftime("%m/%d/%Y") %></td>            
-            <td><%= stay.stop.try(:strftime, "%m/%d/%Y") %></td>            
-            <td><%= number_to_currency((stay.fee_cents * (stay.stop.to_date - stay.start.to_date).to_i).to_f/100) %></td>            
+          <tr style='font-weight: bold'>
+            <td>Community</td>
+            <td>Start</td>
+            <td>End</td>
+            <td>Total</td>
           </tr>
-        <% end %>
+          <% @contact.respite_stays.each do |stay| %>
+            <tr>
+              <td><%= stay.community.name %></td>
+              <td><%= stay.start.strftime("%m/%d/%Y") %></td>
+              <td><%= stay.stop.try(:strftime, "%m/%d/%Y") %></td>
+              <td><%= number_to_currency((stay.fee_cents * (stay.stop.to_date - stay.start.to_date).to_i).to_f/100) %></td>
+            </tr>
+          <% end %>
         </table>
       </div> 
     </div>

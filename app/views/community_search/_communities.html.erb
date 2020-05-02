@@ -28,7 +28,7 @@
       <div class="col-sm-10">
         <p class="card-text" style="font-family: Source Sans Pro,Arial,Helvetica,sans-serif">
           <span style="font-weight: bold">Licenses:</span> <%= community.license_types.pluck(:name).join(", ") %><br>
-          <span style="font-weight: bold">Dining:</span> <%= highlight(((session[:dining_tags] & community.dining_list) + (community.dining_list.first(5) - session[:dining_tags])).join(", "), session[:dining_tags]) %>
+          <span style="font-weight: bold">Languages:</span> <%= highlight(((session[:dining_tags] & community.dining_list) + (community.dining_list.first(5) - session[:dining_tags])).join(", "), session[:dining_tags]) %>
           <span style="font-weight: bold"><%= "and #{community.dining_list.size - 5 - session[:dining_tags].size} more..." if (session[:dining_tags].size + 5) < community.dining_list.size %></span><br>
           <span style="font-weight: bold">Interests and Activities:</span> <%= highlight(((session[:activity_tags] & community.activity_list) + (community.activity_list.first(10) - session[:activity_tags])).join(", "), session[:activity_tags]) %>
           <span style="font-weight: bold"><%= "and #{community.activity_list.size - 10 - session[:activity_tags].size} more..." if (session[:activity_tags].size + 10) < community.activity_list.size %></span><br>

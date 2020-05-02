@@ -169,7 +169,7 @@ class CommunitySearchController < ApplicationController
       message += ActsAsTaggableOn::Tag.where(id: session[:medical_needs]).pluck(:name).join(', ')
       message += "\nActivities:\n"
       message += session[:activity_tags].join(',') + "\n"
-      message += "\nDining:\n"
+      message += "\nLanguages:\n"
       message += session[:dining_tags].join(', ') + "\n"
 
       message += "\nINTERESTED COMMUNITIES\n"

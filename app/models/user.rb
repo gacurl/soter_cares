@@ -22,7 +22,11 @@ class User < ActiveRecord::Base
                                   format: { with: VALID_PASSWORD_REGEX,
                                   message: "does not meet minimum strength" },
                                   allow_blank: true
-  
+
+  def contact_method
+    email
+  end
+
   def send_lead_email(lead_id)
     UserMailer.lead(self, lead_id).deliver_now
   end

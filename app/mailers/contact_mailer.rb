@@ -1,20 +1,25 @@
 class ContactMailer < ApplicationMailer
   include ActionView::Helpers::NumberHelper
 
-  def claim(contact, prospect_id)
+  def claim(contact, prospect_id, user_id)
     prospect = Contact.find prospect_id
+    user = User.find user_id
     template_name = 'claim'
     template_content = [
 
     ]
     message = {
-        to: [{name: contact.name, email: contact.email }],
+        to: [{name: contact.name, email: contact.claim_email_address }],
         merge_vars: [
-            {rcpt: contact.email,
+            {rcpt: contact.claim_email_address,
              vars: [
                  { name: "CLIENT", content: prospect.name },
                  { name: "ADVOCATE", content: prospect.user.name },
-                 { name: "ADVOCATE_PHONE", content: prospect.user.name },
+                 { name: "ADVOCATE_PHONE", content: user.contact_method },
+                 { name: "CLIENT_PHONE", content: number_to_phone(prospect.client_phone, area_code: true) },
+                 { name: "CLIENT_ADDRESS", content: prospect.client_address },
+                 { name: "ADVOCATE_PHONE", content: user.contact_method },
+                 { name: "FAMILY_MEMBERS", content: prospect.family_members }
              ]
             }
         ]

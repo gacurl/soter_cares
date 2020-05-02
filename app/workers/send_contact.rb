@@ -16,7 +16,7 @@ class SendContact
     message += ActsAsTaggableOn::Tag.where(id: medical_needs).pluck(:name).join(', ')
     message += "\nActivities:\n"
     message += activity_tags.join(',') + "\n"
-    message += "\nDining:\n"
+    message += "\nLanguages:\n"
     message += dining_tags.join(', ') + "\n"
 
     message += "\nINTERESTED COMMUNITIES\n"

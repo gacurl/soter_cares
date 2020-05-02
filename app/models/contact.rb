@@ -105,8 +105,30 @@ class Contact < ActiveRecord::Base
     .where('results.created_on = (SELECT MAX(results.created_on) FROM results WHERE results.contact_id = contacts.id)')
     .where('results.result_type = Qualified') }
 
-  def send_claim_email(prospect_id)
-    ContactMailer.claim(self, prospect_id).deliver_now
+  def family_members
+    relationships.map { |r| r.name }.join(", ")
+  end
+
+  def client_phone
+    if cell_phone.present?
+      cell_phone
+    else
+      home_phone.present? ? home_phone : work_phone
+    end
+  end
+
+  def claim_email_address
+    work_email || email
+  end
+
+  def client_address
+    "#{address_1}\n" +
+    "#{address_2}\n" +
+    "#{zip_code.city.name}, #{zip_code.city.county.state.two_digit_code} #{zip_code.code}"
+  end
+
+  def send_claim_email(prospect_id, user_id)
+    ContactMailer.claim(self, prospect_id, user_id).deliver_now
   end
 
   def case_manager_check
