@@ -1,5 +1,5 @@
 <div class="container">
-  <h6 style='margin-bottom: 1px'><%= page_entries_info @dinings, :model => "dinings" %></h6>
+  <h6 style='margin-bottom: 1px'><%= page_entries_info @dinings, :model => "languages" %></h6>
   <%= will_paginate @dinings, :param_name => 'page', :style => 'font-size: 9px; margin: 1px' %>
   <% @dinings.each do |dining| %>
     <div>
