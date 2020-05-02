@@ -323,7 +323,7 @@
         
         <% @contact.notes.order(created_at: :asc).each do |note| %>
           <tr>
-            <td><%= note.created_at.strftime("%m/%d/%Y %TZ") %></td>
+            <td><%= note.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y %T") %></td>
             <td><%= note.user.try(:name) %></td>
             <td><%= sanitize nl2br(note.content) %></td>
           </tr>
