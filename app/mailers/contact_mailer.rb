@@ -14,7 +14,7 @@ class ContactMailer < ApplicationMailer
             {rcpt: contact.claim_email_address,
              vars: [
                  { name: "CLIENT", content: prospect.name },
-                 { name: "ADVOCATE", content: prospect.user.name },
+                 { name: "ADVOCATE", content: user.name },
                  { name: "ADVOCATE_PHONE", content: user.contact_method },
                  { name: "CLIENT_PHONE", content: number_to_phone(prospect.client_phone, area_code: true) },
                  { name: "CLIENT_ADDRESS", content: prospect.client_address },
