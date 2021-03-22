@@ -233,7 +233,7 @@ class CommunitiesController < ApplicationController
           :name, :address_1, :address_2, :zip, :open_since_input, :semi_private_capacity,
           :semi_private, :private_capacity, :private, :community_fee, :second_person_fee,
           :respite_rate, :adult_day_care_rate, :pets, :admissions_director_id,
-          :marketing_director_id,
+          :marketing_director_id, :youtube_identifier,
           :pharmacy_id, :transport, :zip_code_id, :activity_list_tokens,
           :dining_list_tokens, :feature_list_tokens, :undesired_list_tokens,
           :phone_number, :fax, :al_license, :company_id, :website, :average_age,

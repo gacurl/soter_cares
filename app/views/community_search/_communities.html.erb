@@ -38,6 +38,10 @@
           <% if community.semi_private_cents > 0 %>
             <span style="font-weight: bold">Semi-Private Rate:</span><%= number_to_currency(community.semi_private) %> <br>
           <% end %>
+          <% if community.youtube_identifier.present? %>
+            <span style="font-weight: bold">Video Tour:</span><br>
+            <iframe width="280" height="158" src="https://www.youtube.com/embed/<%= community.youtube_identifier %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <% end %>
         </p>
       </div>
     </div>

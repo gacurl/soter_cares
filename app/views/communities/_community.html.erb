@@ -23,6 +23,9 @@
           <td style='font-weight: bold'>Website:</td><td><%= link_to @community.website, @community.website if @community.website.present? %></td>
         </tr>
         <tr>
+          <td style='font-weight: bold'>Video Tour:</td><td><%= link_to "https://www.youtube.com/watch?v=#{@community.youtube_identifier}", "https://www.youtube.com/watch?v=#{@community.youtube_identifier}" if @community.youtube_identifier.present? %></td>
+        </tr>
+        <tr>
           <td style='font-weight: bold'>AL License:</td><td><%= @community.al_license %></td>
         </tr>
         <tr>
