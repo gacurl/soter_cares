@@ -6,7 +6,7 @@ default: &default
 
 development:
   <<: *default
-  database: soter_dev
+  database: soter
 
 test:
   <<: *default
