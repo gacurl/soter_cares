@@ -26,7 +26,7 @@ class PhotosController < ApplicationController
   # PATCH/PUT /photos/1.json
   def update
     @photo.assign_attributes(photo_params)
-    image = @photo.image.download
+    image = @photo.download
     converted_image = MiniMagick::Image.open(image.path)
     converted_image.rotate @photo.orient
      @photo.image = File.open(converted_image.path)

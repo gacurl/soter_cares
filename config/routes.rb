@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   root    'static_pages#home'
 #  mount Sidekiq::Web, at: '/sidekiq'
 #  mount Resque::Server, :at => "/resque"
-  mount FileUploader::UploadEndpoint => "/data_files/upload"
-  mount ImageUploader::UploadEndpoint => "/photos/upload"
+  mount Shrine.presign_endpoint(:cache) => "/data_files/upload/cache/presign"
+  mount Shrine.presign_endpoint(:cache) => "/photos/upload/cache/presign"
   
   require 'sidekiq/web'
   require 'admin_constraint'

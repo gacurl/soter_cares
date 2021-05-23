@@ -383,12 +383,12 @@
         <div id="photos">
           <% @community.photos.each do |photo| %>
             <div class="col-sm-2">
-              <% disposition = "attachment; filename=#{photo.image.original_filename.inspect}" %>
+              <% disposition = "attachment; filename=#{photo.original_filename.inspect}" %>
               <% if Rails.env.production? %>
-                <%= link_to image_tag(photo.image.url(response_content_disposition: disposition, 
+                <%= link_to image_tag(photo.url(response_content_disposition: disposition,
                         virtual_host: true, host: "https://storage.sotercares.com"), class: "img-responsive"), community_photo_path(@community, photo) %>
               <% else %>
-                <%= link_to image_tag(photo.image.url(response_content_disposition: disposition), class: "img-responsive"), community_photo_path(@community, photo) %>
+                <%= link_to image_tag(photo.url(response_content_disposition: disposition), class: "img-responsive"), community_photo_path(@community, photo) %>
               <% end %>
             </div>
           <% end %>
