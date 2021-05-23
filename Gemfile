@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
 
-ruby '2.5.1'
+ruby '2.6.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.7'
+gem 'rails', '~> 5.2.6'
+gem 'bootsnap'
 gem 'bootstrap-sass'
 gem 'pg'
 gem 'will_paginate'
@@ -36,7 +37,6 @@ gem 'mandrill-api', require: "mandrill"
 gem 'mandrill-rails'
 gem "font-awesome-rails"
 
-gem 'chartkick'
 gem 'groupdate'
 gem 'goldiloader'
 gem 'savon'
@@ -44,11 +44,10 @@ gem 'rest-client'
 gem 'money-rails'
 gem 'business_time'
 gem 'holidays'
-gem 'aws-sdk', '~> 2'
+gem 'aws-sdk-s3'
 gem 'descriptive_statistics', '~> 2.4.0', :require => 'descriptive_statistics/safe'
 gem 'axlsx', '~> 2.0'
 gem "axlsx_rails"
-gem 'sidetiq'
 gem 'sinatra', :require => nil
 gem 'smarter_csv'
 gem 'attr_encrypted', "~> 3.0.0"
@@ -87,7 +86,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
